@@ -1,0 +1,12 @@
+image: gmoney23/outyet
+manifests:
+  -
+    image: gmoney23/outyet-s390x
+    platform:
+      architecture: s390x
+      os: linux
+  -
+    image: gmoney23/outyet-x86
+    platform:
+      architecture: amd64
+      os: linux

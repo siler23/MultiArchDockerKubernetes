@@ -1,0 +1,45 @@
+# Licensed Materials - Property of IBM
+# (C) Copyright IBM Corp. 2018. All Rights Reserved.
+# US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  {{ if not .Values.autoscaling.enabled -}}
+  replicas: 1
+  {{- end }}
+  template:
+    metadata:
+      # Here's where a user could define their own annotation too
+      annotations:
+        productName: Node.js Sample Application
+        productID: Node.js_Sample_Application_1.2.0_perpetual_00000
+        productVersion: 1.2.0    
+      labels:
+        app: {{ template "fullname" . }}-selector
+    spec:
+      containers:
+      - name: {{ .Chart.Name  }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.service.port }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds}}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds}}
+        env:
+          - name: PORT
+            value : "{{ .Values.service.port }}"
+      # Uncomment if you want to restrict which workers the deployment will go to
+      # this is only really important if you're not building multi-arch Docker images to use
+      # nodeSelector:
+        # beta.kubernetes.io/arch: amd64
+        # beta.kubernetes.io/arch: s390x
+        # beta.kubernetes.io/arch: ppc64le
