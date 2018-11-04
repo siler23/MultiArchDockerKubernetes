@@ -1,0 +1,21 @@
+FROM golang:1.11.1
+
+WORKDIR /go/src/href
+
+COPY app.go .
+
+# Get all go dependencies
+RUN go get -d ./...
+
+RUN CGO_ENABLED=0 go build -o app .
+
+FROM alpine:3.8
+RUN addgroup -g 1000 href && adduser -u 1000 -G href -s /bin/sh -D href && \ 
+apk --no-cache add ca-certificates
+USER href
+
+WORKDIR /home/href
+
+COPY --from=0 /go/src/href/app .
+
+CMD ["./app"]

@@ -1,0 +1,12 @@
+image: gmoney23/smallest-outyet
+manifests:
+  -
+    image: gmoney23/smallest-outyet-s390x
+    platform:
+      architecture: s390x
+      os: linux
+  -
+    image: gmoney23/smallest-outyet-x86
+    platform:
+      architecture: amd64
+      os: linux

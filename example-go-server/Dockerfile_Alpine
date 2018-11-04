@@ -1,0 +1,25 @@
+# Stage 1 build go application
+FROM golang:1.11.1 as build
+
+WORKDIR /go/src/go-server
+
+#Copy necessary files to container
+COPY main.go .
+
+# Get all go dependencies
+RUN go get -d ./...
+
+#Build webserver in container
+RUN CGO_ENABLED=0 go build -o go-server .
+
+# Stage 2 run go application in minimal alpine image
+FROM alpine:3.8
+RUN addgroup -g 1000 server && adduser -u 1000 -G server -s /bin/sh -D server
+USER server
+COPY --from=build /go/src/go-server /home/server
+WORKDIR /home/server
+CMD ["./go-server"]
+
+# Document 5000 as listening port
+EXPOSE 5000
+

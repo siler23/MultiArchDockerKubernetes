@@ -1,0 +1,12 @@
+image: gmoney23/href
+manifests:
+  -
+    image: gmoney23/href-s390x
+    platform:
+      architecture: s390x
+      os: linux
+  -
+    image: gmoney23/href-x86
+    platform:
+      architecture: amd64
+      os: linux

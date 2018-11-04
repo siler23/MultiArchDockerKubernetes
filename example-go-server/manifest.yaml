@@ -1,0 +1,12 @@
+image: gmoney23/example-go-server
+manifests:
+  -
+    image: gmoney23/example-go-server-s390x
+    platform:
+      architecture: s390x
+      os: linux
+  -
+    image: gmoney23/example-go-server-x86
+    platform:
+      architecture: amd64
+      os: linux

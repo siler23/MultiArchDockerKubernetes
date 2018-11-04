@@ -1,0 +1,12 @@
+image: gmoney23/node-web-app
+manifests:
+  -
+    image: gmoney23/node-web-app-s390x
+    platform:
+      architecture: s390x
+      os: linux
+  -
+    image: gmoney23/node-web-app-x86
+    platform:
+      architecture: amd64
+      os: linux

@@ -1,0 +1,18 @@
+image: gmoney23/icp-nodejs-sample-incomplete:latest
+
+manifests:
+  -
+    image: gmoney23/nodejs-sample-x86:latest
+    platform:
+      os: linux
+      architecture: amd64
+  -
+    image: gmoney23/nodejs-sample-ppc64le:latest
+    platform:
+      os: linux
+      architecture: ppc64le
+  -
+    image: gmoney23/nodejs-sample-s390x:latest
+    platform:
+      os: linux
+      architecture: s390x
