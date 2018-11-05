@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels: {app: node-web}
+  name: node-web
+spec:
+  selector:
+    matchLabels:
+      app: node-web
+  replicas: 1
+  template:
+    metadata: {labels: {app: node-web}}
+    spec:
+      containers:
+      - name: node-web
+        image: gmoney23/node-web-app:1.0
+        ports:
+          - containerPort: 8080

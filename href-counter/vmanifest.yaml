@@ -3,7 +3,7 @@ manifests:
   -
     image: gmoney23/href-s390x:1.0
     platform:
-      architecture: s390x:1.0
+      architecture: s390x
       os: linux
   -
     image: gmoney23/href-x86:1.0

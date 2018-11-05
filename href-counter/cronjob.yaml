@@ -1,0 +1,23 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  labels: 
+    app: href-counter
+  name: href-counter
+spec:
+  schedule: "*/1 * * * *"  
+  jobTemplate:
+    spec:
+      template:
+        metadata: {labels: {app: href-counter}}
+        spec:
+          containers:
+          - name: href-counter
+            image: gmoney23/href:1.0
+            env:
+            - name: url
+              valueFrom:
+                configMapKeyRef:
+                  name: site-url
+                  key: http-url
+          restartPolicy: OnFailure

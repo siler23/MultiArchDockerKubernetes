@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels: {app: outyet}
+  name: outyet
+spec:
+  selector:
+    matchLabels:
+      app: outyet
+  replicas: 1
+  template:
+    metadata: {labels: {app: outyet}}
+    spec:
+      containers:
+      - name: outyet
+        image: gmoney23/outyet:1.0
+        ports:
+          - containerPort: 8080

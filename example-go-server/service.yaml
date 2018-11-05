@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: go-example
+spec:
+  selector:
+    app: go-example
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
+  type: NodePort
