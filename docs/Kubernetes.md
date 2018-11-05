@@ -93,6 +93,7 @@ Here, we can now see the two pods endpoints using the service instead of the one
 
 To access the application itself I can get the IP and NodePort using kubectl
 
+
 ```CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 NODEPORT=$(kubectl get svc $deployment -o jsonpath='{.spec.ports[0].nodePort}')
 echo $CLUSTERIP:$NODEPORT```
