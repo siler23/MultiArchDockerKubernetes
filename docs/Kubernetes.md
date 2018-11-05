@@ -93,21 +93,20 @@ Here, we can now see the two pods endpoints using the service instead of the one
 
 To access the application itself I can get the IP and NodePort using kubectl
 
-
-```CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+`CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 NODEPORT=$(kubectl get svc $deployment -o jsonpath='{.spec.ports[0].nodePort}')
-echo $CLUSTERIP:$NODEPORT```
+echo $CLUSTERIP:$NODEPORT`
 
 I can plug this address into my browser to view the app. To clean app I can delete the deployment using the yaml I created it with. Same goes for the service.
 
-```kubectl delete -f deployment.yaml
+`kubectl delete -f deployment.yaml
 deployment.extensions "small-outyet" deleted
 kubectl delete -f service.yaml
-service "small-outyet" deleted```
+service "small-outyet" deleted`
 
 For a new app of the same type, I can follow similar steps to access it:
 
-```kubectl apply -f deployment.yaml
+`kubectl apply -f deployment.yaml
 deployment.extensions/smallest-outyet created
 kubectl apply -f service.yaml
 service/smallest-outyet created
@@ -115,7 +114,7 @@ deployment=smallest-outyet
 peer_pod="$(kubectl get pods -l app=$deployment -o jsonpath='{.items[*].metadata.name}')"
 CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 NODEPORT=$(kubectl get svc $deployment -o jsonpath='{.spec.ports[0].nodePort}')
-echo $CLUSTERIP:$NODEPORT```
+echo $CLUSTERIP:$NODEPORT`
 
 I can do similary for all of the outyets, example-go-server, and node-web-app since they are all webapps with similar constraints.
 
