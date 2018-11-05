@@ -4,7 +4,7 @@ This guide has 5 main parts
 [1. Official Docker Repos and Multi-Arch Primer](docs/MultiArch.md)
 [2. Build go docker images](docs/go.md)
 [3. Build nodejs docker images](docs/Nodejs.md)
-[4. Build multi-arch docker images](docs/build.md)
+[4. Build multi-arch docker images](docs/Build.md)
 [5. Use these images in your kubernetes cluster](Kubernetes.md)
 
 ## Prerequisites
