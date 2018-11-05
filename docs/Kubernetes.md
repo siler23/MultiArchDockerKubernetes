@@ -80,8 +80,8 @@ We can look at how the service maps to the pod by looking at the endpoints.
 `deployment=small-outyet`
 `kubectl get ep $deployment`
 
-```NAME      ENDPOINTS           AGE
-small-outyet    10.1.184.199:8080   39m```
+NAME      ENDPOINTS           AGE
+small-outyet    10.1.184.199:8080   39m
 
 Now, I can scale the deployment to having 2 replicas instead of 1.
 `kubectl patch deployment $deployment -p '{"spec": {"replicas": 2}}'`
