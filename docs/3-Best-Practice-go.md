@@ -73,4 +73,4 @@ We can try the tool out against different sites using `docker run --rm -e url=ht
               {"internal":98,"external":35}
 For more go best practices and tips with docker see this [excellent article](https://blog.docker.com/2016/09/docker-golang/)
 
-[Time to build](Build.md)
+[Time to build some images!](4-Build-MultiArch.md)

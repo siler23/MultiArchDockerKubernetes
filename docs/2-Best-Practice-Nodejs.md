@@ -20,4 +20,4 @@ Run it with `docker run --rm -p 3000:8080 gmoney23/node-web-app` and go to `loca
 
 For further help in crafting the best docker images possible for Node.js see [Node.js Docker Best Practices](https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md)
 
-Time to get [go](go.md)ing
+[Time to get go-ing](3-Best-Practice-go.md)

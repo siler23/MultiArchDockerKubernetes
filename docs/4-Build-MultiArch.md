@@ -10,8 +10,8 @@ i.e. for outyet the image is gmoney23/outyet so set image=outyet. You will need 
 
 a. Build and push image for s390x (Go onto an s390x linux instance, ssh in)
 
-        
-        
+
+
    i. Get your code onto the instance (i.e. download git files or git clone https://github.com/siler23/MultiArchMultiArchDockerICP.git)
 
    ii. Get to the directory with the code (cd MultiArchDockerICP)
@@ -102,4 +102,4 @@ First docker login to your registry, then
 `docker manifest create gmoney23/outyet gmoney23/outyet-s390x gmoney23/outyet-x86`
 `docker manifest push gmoney23/outyet` (It takes a minute to push, be patient)
 
-Now, it's time to get these images into [Kubernetes](Kubernetes.md)
+[Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)

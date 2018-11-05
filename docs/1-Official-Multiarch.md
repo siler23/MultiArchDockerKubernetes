@@ -46,4 +46,4 @@ This image is "A simple utility and backend for querying Docker v2 API-supportin
          * Supports: s390x/linux
 Note: You can also use the mainfest-tool itself and docker manifest inspect to do this but the manifest-tool needs to be installed first and gives more verbose output and the docker manifest inspect command doesn't work for all supported registries yet as it continues to be improved and needs to be enabled (*it's currently experimental*). Thus, using the mquery image is generally better.
 
-Next up, we will build some Node.js docker images and learn some Node.js docker best practices. [Node.js Docker](Nodejs.md)
+Next up, we will build some Node.js docker images and learn some Node.js docker best practices. [Node.js Docker Best Practices](2-Best-Practice-Nodejs.md)
