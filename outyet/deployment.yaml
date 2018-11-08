@@ -16,3 +16,7 @@ spec:
         image: gmoney23/outyet:1.0
         ports:
           - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: proxy-config
+            optional: true

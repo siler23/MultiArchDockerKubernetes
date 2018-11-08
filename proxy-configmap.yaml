@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: proxy-config
+# If want to target other namespace add namespace field
+# namespace: default
+#
+# add your proxy values to the following variables
+data:
+  http_proxy:  specify_proxy_here
+  https_proxy: specify_proxy_here
+  no_proxy: specify_no_proxy_here

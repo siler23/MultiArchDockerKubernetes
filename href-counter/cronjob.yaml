@@ -1,11 +1,11 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  labels: 
+  labels:
     app: href-counter
   name: href-counter
 spec:
-  schedule: "*/1 * * * *"  
+  schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
@@ -20,4 +20,8 @@ spec:
                 configMapKeyRef:
                   name: site-url
                   key: http-url
+            envFrom:
+            - configMapRef:
+                name: proxy-config
+                optional: true
           restartPolicy: OnFailure
