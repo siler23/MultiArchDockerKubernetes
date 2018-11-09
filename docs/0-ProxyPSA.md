@@ -90,7 +90,7 @@ Now, our proxy environment variables don't show up to the end user. ![build args
 If you have this info in your proxy environment variables users will be able to see it
 in the running container's environment as well as by inspecting the container. If you used build args the
 user will be able to see it by inspecting the container with `docker inspect` as well.
-So what do we do. Well, we can use multi-stage builds which I go over in the [Go section](Best-Practice-go.md)
+So what do we do. Well, we can use multi-stage builds which I go over in [3-Best-Practice-go](3-Best-Practice-go.md)
 of this tutorial to accomplish the task since our final container will only have copies of the files built
 using the proxy in a previous container. To see how to actually do this look at [Accessing Private Repository](https://vsupalov.com/build-docker-image-clone-private-repo-ssh-key/).
 You can follow the steps outlined in the article for your proxy with username/password declaration for security.
@@ -116,4 +116,4 @@ This passes the environment variables to the docker container.
 If you still have docker proxy needs see this article [Docker Behind a Corporate Firewall](https://elegantinfrastructure.com/docker/ultimate-guide-to-docker-http-proxy-configuration/)
 
 ### Onwards
-[1 - Official Docker Repos and Multi-Arch Primer](docs/1-Official-Multiarch.md)
+[1 - Official Docker Repos and Multi-Arch Primer](1-Official-Multiarch.md)
