@@ -2,12 +2,15 @@
 
 This section goes through the official docker repositories for building images and what multi-architecture images are and how to spot them.
 
+## If Using Proxy
+If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your http_proxy, https_proxy, and no_proxy variables for your environment as specified there. Also note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
+
 ## Official Repositories
 [Docker Official Repositories](https://docs.docker.com/docker-hub/official_repos/) are a special set of Docker repositories on DockerHub that host images for operating systems and base software that follow Dockerfile best practices and undergo regular security scans to allow them to serve as building blocks for your applications. These repositories are where you get the images to build your applications on top of.
 
 [Check out the Docker Official Repositories here](https://hub.docker.com/explore/)
 
-We will specifically be looking at building Node.js and Go applications so we will use the [Node.js Official Docker Repository](https://hub.docker.com/_/node/) and the [Golang Official Docker Repository](https://hub.docker.com/_/golang/). These images are multi-arch which means they support multiple architectures. All official images are [multi-arch] (https://blog.docker.com/2017/09/docker-official-images-now-multi-platform/). However, we want to know if these images support both s390x and x86. How do we know? If we look at the supported architectures under Quick reference we can see both images support both the x86 [amd64] and LINUXONE/z [s390x] architectures. :) [Note: If not otherwise noted in documentation containers are assumed to use Linux as the operating system]
+We will specifically be looking at building Node.js and Go applications so we will use the [Node.js Official Docker Repository](https://hub.docker.com/_/node/) and the [Golang Official Docker Repository](https://hub.docker.com/_/golang/). These images are multi-arch which means they support multiple architectures. All official images are [multi-arch](https://blog.docker.com/2017/09/docker-official-images-now-multi-platform/). However, we want to know if these images support both s390x and x86. How do we know? If we look at the supported architectures under Quick reference we can see both images support both the x86 [amd64] and LINUXONE/z [s390x] architectures. :) [Note: If not otherwise noted in documentation containers are assumed to use Linux as the operating system]
 ![docker golang architectures](../images/docker_golang.png)
 **This means that if I run `docker pull node` on z, it will pull me the s390x image. Simalarly, if I run `docker pull node` on x86, it will pull me the x86 image.** Thus, once the image is built and set up as multi-arch the difference is abstracted away from applications using the image (such as a node application built using the Node.js official image as the base) **[i.e. `FROM node` works on both x86 and s390x].**
 
@@ -46,9 +49,9 @@ Many times you will want to find out if an image supports your archtitecture. If
 
 REGULAR: `docker run --rm mplatform/mquery ibmcom/icp-nodejs-sample`
 
-PROXY: `docker run --rm -e http_proxy=%proxy% -e https_proxy=%proxy% -e no_proxy=%noproxy% mplatform/mquery ibmcom/icp-nodejs-sample`
+PROXY: `docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy=%no_proxy% mplatform/mquery ibmcom/icp-nodejs-sample`
 
-<sup>where %proxy%, etc. are environment variables previously set in windows to the value of the proxy with set proxy=yourproxyaddress:yourproxyport. For mac/linux you would set with proxy=yourproxyaddress:yourproxyport and reference with $proxy</sup>
+<sup>where %http_proxy%, etc. are environment variables previously set in windows to the value of the http_proxy with set http_proxy=yourproxyaddress:yourproxyport. For mac/linux you would set with http_proxy=yourproxyaddress:yourproxyport and reference with $http_proxy</sup>
 
 
         Image: ibmcom/icp-nodejs-sample
@@ -62,7 +65,7 @@ This image is "A simple utility and backend for querying Docker v2 API-supportin
 
   REGULAR: `docker run --rm mplatform/mquery s390x/node`
 
-  PROXY: `docker run --rm -e http_proxy=%proxy% -e https_proxy=%proxy% -e no_proxy=%noproxy% mplatform/mquery s390x/node`
+  PROXY: `docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy=%"no_proxy"% mplatform/mquery s390x/node`
 
         Image: s390x/node
          * Manifest List: No
@@ -70,4 +73,5 @@ This image is "A simple utility and backend for querying Docker v2 API-supportin
 
 Note: You can also use the mainfest-tool itself and docker manifest inspect to do this but the manifest-tool needs to be installed first and gives more verbose output and the docker manifest inspect command doesn't work for all supported registries yet as it continues to be improved and needs to be enabled (*it's currently experimental*). Thus, using the mquery image is generally better.
 
-Next up, we will build some Node.js docker images and learn some Node.js docker best practices. [Part 2: Node.js Docker Best Practices](2-Best-Practice-Nodejs.md)
+Next up, we will build some Node.js docker images and learn some Node.js docker best practices.
+##### [Part 2: Node.js Docker Best Practices](2-Best-Practice-Nodejs.md)

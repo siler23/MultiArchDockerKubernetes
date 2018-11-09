@@ -5,10 +5,10 @@ We will go over three apps and show how to optimize our go code for docker
 3. Go href-counter
 
 ### But first...Download go for later
-Here is the [Go download](https://golang.org/dl/) if you want to run it locally to familiarize yourslef with it/develop with it. For this section, you actually don't need golang installed on your computer because of the magic of docker. However, you may need it sooner than you'd expect: nudge, nudge, wink, wink => *translation: section 5 of this tutorial*
+Here is the [Go download](https://golang.org/dl/) if you want to run it locally to familiarize yourslef with it/develop with it. For this section, you actually don't need golang installed on your computer because of the magic of docker.
 
 ## If Using Proxy
-If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA) and have set your http_proxy, https_proxy, and no_proxy variables for your environment as specified there. Also note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
+If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your http_proxy, https_proxy, and no_proxy variables for your environment as specified there. Also note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
 ## Outyet
 Outyet is a go example program from [Go Outyet Example](https://github.com/golang/example/tree/master/outyet). This app checks if the version of Go specified (in our case 1.11 is outyet) Since we are using it, it better be! We will be dockerizing this app, shrinking our image down on the way over 3 iterations.
@@ -68,7 +68,9 @@ gmoney23/smallest-outyet   latest              5a46896a4b2c        4 days ago   
 ***From 13.9MB -> 6.89MB for a grand transformation of 786MB -> 6.89MB, a little over 114X smaller than the original image! That's a lot of room for dessert :)***
 ## Go Hello world
 Using the techniques we just employed, let's so how small of a docker image we can make for a [basic go hello world app](https://gist.github.com/enricofoltran/10b4a980cd07cb02836f70a4ab3e72d7) from gist.
-In the example-go-server directory of the MultiArchDockerICP project we find the following Dockerfile I made. ![example-go-server-Dockerfile](../images/example-go-server-Dockerfile.png)
+In the example-go-server directory of the MultiArchDockerICP project we find the following Dockerfile I made.
+
+![example-go-server-Dockerfile](../images/example-go-server-Dockerfile.png)
 
 Run it with `docker run --rm -it -p 3000:5000 gmoney23/example-go-server` and go to `localhost:3000` in web browser to see it.
 
@@ -85,10 +87,19 @@ gmoney23/example-go-server   latest              a4907d7afdda        4 days ago 
 This gives us an image of 4.9MB, quite astounding!
 
 ## Href-Counter
-Finally, lets dockerize an app that prints output for us instead of a web app. [Href-counter](https://github.com/alexellis/href-counter) is an application that counts the number of internal and external-hrefs on a web-page to rate SEO. It is referenced in the multi-stage build manual for docker we looked at [before](https://docs.docker.com/develop/develop-images/multistage-build/) and fits the bill for us. Let's look at its Dockerfile at href-counter inside of MultiArchDockerICP. ![href-counter-Dockerfile](../images/href-counter-Dockerfile.png)
+Finally, lets dockerize an app that prints output for us instead of a web app. [Href-counter](https://github.com/alexellis/href-counter) is an application that counts the number of internal and external-hrefs on a web-page to rate SEO. It is referenced in the multi-stage build manual for docker we looked at [before](https://docs.docker.com/develop/develop-images/multistage-build/) and fits the bill for us. Let's look at its Dockerfile at href-counter inside of MultiArchDockerICP.
+
+![href-counter-Dockerfile](../images/href-counter-Dockerfile.png)
 We can try the tool out against different sites using `docker run --rm -e url=http://blog.alexellis.io/ gmoney23/href`
 
               {"internal":30,"external":2}
+
+**Note: For PROXY**: add your -e for http_proxy, etc.:
+
+`docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy=%"no_proxy"% -e url=http://google.com href`
+
+**More Examples**
+
 `docker run --rm -e url=http://yahoo.com gmoney23/href`
 
               {"internal":5,"external":96}
@@ -102,4 +113,4 @@ gmoney23/href       latest              df5ad8db9a46        4 days ago          
 
 For more go best practices and tips with docker see this [excellent article](https://blog.docker.com/2016/09/docker-golang/)
 
-[Part 4: Time to build some images!](4-Build-MultiArch.md)
+##### [Part 4: Time to build some images!](4-Build-MultiArch.md)

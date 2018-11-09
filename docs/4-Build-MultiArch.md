@@ -2,6 +2,9 @@
 
 This section goes through installing the manifest tool and building the multi-arch docker images.
 
+## If Using Proxy
+If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your http_proxy, https_proxy, and no_proxy variables for your environment as specified there. Also note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
+
 ## Making multi-arch docker images
 
 ### 1.	Build image for all architectures and push to docker registry.
@@ -34,7 +37,7 @@ First is the list of basic steps, then a pattern you can use with both the mac a
 
     iv. Docker login to your docker registry (docker login registry_address)
 
-    vi. Docker push image (docker push myrepo/outyet-x86)
+    v. Docker push image (docker push myrepo/outyet-x86)
 
 #### Quick pattern for this:
 ###### Mac/Linux
@@ -142,7 +145,7 @@ If it doesn't exist, make a new folder called .docker and create a new file call
 
 ###### Check for Success
 In the end check your docker version to see that the change persisted. Specifically, look for client's experimental section being marked `Experimental: True`.
-![Experimental Final](../images/Final_Exp.png)
+![Experimental Final](../images/Final_Exp.PNG)
 
 First `docker login` to your registry
 
@@ -172,7 +175,7 @@ If you want to inspect your manifest, use `docker manifest inspect gmoney23/outy
 For example, you just pushed version 2.0 of your app, you can update the existing manifest by using:
 
  `docker manifest create --amend gmoney23/outyet gmoney23/outyet-s390x gmoney23/outyet-x86`
- 
+
   to replace the new latest manifest with the old one after you have already updated the latest individual images to the version 2.0 images.
 
 
@@ -209,4 +212,4 @@ IF USING PROXY: make sure your http_proxy, https_proxy, and no_proxy our set if 
 `manifest-tool --username gmoney23 --password *** push from-spec smallest-outyet/manifest.yaml`
 
 
-[Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)
+##### [Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)
