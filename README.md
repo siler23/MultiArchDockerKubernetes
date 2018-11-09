@@ -27,5 +27,6 @@ Additional topics to look at after finishing everything here are:
 2. [Cross-building images to build x86 and z images on your local x86 workstation](https://stefanscherer.github.io/cross-build-nodejs-with-docker/) Note: Alpine has been made multi-arch after the posting of the linked article and the base image now runs on s390x/z.
 
 ### IBM Guidance on Containers and ICP Multi-Arch Process
-[IBM Guidance on running docker containers on IBM Z PDF](http://public.dhe.ibm.com/software/dw/linux390/docu/l177vd00.pdf)</br>
-[IBM Cloud Private Enablement Guide for ISV](https://developer.ibm.com/linuxonpower/ibm-cloud-private-on-power/isv-guide/)
+- [IBM Guidance on running docker containers on IBM Z PDF](http://public.dhe.ibm.com/software/dw/linux390/docu/l177vd00.pdf)</br>
+
+- [IBM Cloud Private Enablement Guide for ISV](https://developer.ibm.com/linuxonpower/ibm-cloud-private-on-power/isv-guide/)
