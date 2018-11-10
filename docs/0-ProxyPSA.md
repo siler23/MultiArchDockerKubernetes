@@ -87,8 +87,11 @@ Here is an example:
  Using our environment variables defined previously this becomes
 
  **BASH (Mac/Linux)**
+
  `docker build -t href --build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy --build-arg no_proxy="$no_proxy" .`</br>
+
  **Windows (Command Prompt)**
+
 `docker build -t href --build-arg http_proxy=%http_proxy% --build-arg https_proxy=%https_proxy% --build-arg no_proxy="%no_proxy%" .`</br>
 Now, our proxy environment variables don't show up to the end user. ![build args no leak](../images/no_leak_env.PNG)
 3. What about if I have confidential information such as a username/password in my proxy? <br/>
@@ -117,7 +120,7 @@ use -e with the proxy variables:
 
 This passes the environment variables to the docker container.
 
-### To use a proxy with Kubernetes see [5-Deploy-to-Kubernetes](5-Deploy-to-Kubernetes.md)
+##### To use a proxy with Kubernetes see [5-Deploy-to-Kubernetes](5-Deploy-to-Kubernetes.md)
 
 #### Reference
 If you still have docker proxy needs see this article [Docker Behind a Corporate Firewall](https://elegantinfrastructure.com/docker/ultimate-guide-to-docker-http-proxy-configuration/)
