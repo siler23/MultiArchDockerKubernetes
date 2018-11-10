@@ -97,7 +97,7 @@ This deployment is available. However, I can't access it from nodes outside of m
 NAME         TYPE       CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
 go-example   NodePort   10.0.0.73    <none>        5000:32532/TCP   32s
 
-Now if I go to my ingress IP:32532 as specified in port I can see my app running. You will probably see a different one for yours, so get to that one.
+Now if I go to my $CLUSTERIP:32532 as specified in port I can see my app running. You will probably see a different one for yours, so get to that one.
 
 Now I can save the deployment and service I created to a file with --export.
 
@@ -107,7 +107,7 @@ Now I can save the deployment and service I created to a file with --export.
 
 Since this pod doesn't have a bash shell since it was made from scratch I'll use kubectl get node to figure out which architecture the node is.
 
-`kubectl get node $(kubectl get pod $peer_pod -o jsonpath='{.spec.nodeName}') --show-labels`
+`peer_pod="$(kubectl get pods -l app=$deployment-selector -o jsonpath='{.items[*].metadata.name}')"`.
 
 I'll find the arch by looking at the nodeInfo on the node where the pod is scheduled using `kubectl get node $(kubectl get pod $peer_pod -o jsonpath='{.spec.nodeName}') -o jsonpath='{.status.nodeInfo.architecture}'`
 
