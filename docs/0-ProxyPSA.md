@@ -3,12 +3,15 @@ We will show how to use a proxy for docker, how to use a proxy throughout this t
 
 ## Docker proxy for push/pull
 
-To setup docker proxies for docker pull and docker push, you will follow different steps for the different versions of docker. For windows/mac use the UI. Navigate to Docker Settings in Windows (Preferences in Mac) and fill in the proxy section with your manual proxy configuration like so:
+To setup docker proxies for docker pull and docker push, you will follow different steps for the different versions of docker.
+###### Windows/mac
+Use the UI. Navigate to Docker Settings in Windows (Preferences in Mac) and fill in the proxy section with your manual proxy configuration like so:
 
 ![Manual Proxy Configuration Docker](../images/Docker_Proxy_Settings.PNG)
 For more information on setting proxies in Docker for Windows see [Setting Docker Proxies for Windows](https://mandie.net/2017/12/10/docker-for-windows-behind-a-corporate-web-proxy-tips-and-tricks/)
 
-For Linux make a docker.service.d file and restart docker as below:
+###### Linux
+Make a docker.service.d file and restart docker as below:
 
 `mkdir -p /etc/systemd/system/docker.service.d`<br/>
 `cat > /etc/systemd/system/docker.service.d/http-proxy.conf << EOF`<br/>
