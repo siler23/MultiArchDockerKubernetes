@@ -14,9 +14,12 @@ For everyone else this guide has 5 main parts:
 ## Prerequisites
 * Have an up and running Kubernetes cluster
 * Setup access to that cluster using kubectl
-* Setup docker on your host machine
+* Download docker on your workstation
 
-This Tutorial will start by looking at what Official Repositories are and how to build from them. Then, it will spread light on how to tell if an app will run on your platform (architecture). Next, we will look at how best to build images for go and nodejs in docker with examples and then actually build these images with Multi-Architecture manifests. Finally, we will use these images or my pre-build images to deploy to a kubernetes cluster.
+This Tutorial will start by looking at what Official Repositories are and how to build from them. Then, it will shine light on how to tell if an app will run on your platform (architecture). Next, we will look at how best to build images for go and nodejs in docker with examples and then actually build these images with Multi-Architecture manifests. Finally, we will use these images or my pre-build images to deploy to a kubernetes cluster.
+
+## Get the Code
+The code for this tutorial is on this github. If you have git installed it can be brought onto your computer with `git clone https://github.com/siler23/MultiArchDockerICP.git`. If you don't have git or don't want to clone the repo, you can use the download link in the top right corner of this page. ![Download Image](../images/DownloadRepo.png)
 ## Let's Begin
 **Non-Proxy Users** (Regular Users) Start Here:</br> [Official Docker Repos and Multi-Arch Primer](docs/1-Official-Multiarch.md)
 
