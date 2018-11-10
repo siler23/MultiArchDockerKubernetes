@@ -19,7 +19,7 @@ First is the list of basic steps, then a pattern you can use with both the mac a
 
     iii. Build the image using docker (docker build -t myrepo/outyet-s390x .)
 
-    PROXY: add build args for PROXY using previously set variables or if not reset variables and then run (docker build -t myrepo/outyet-x86 --build-arg http_proxy=%http_proxy% --build-arg https_proxy=%https_proxy% --build-arg no_proxy=%no_proxy% .)
+    PROXY: add build args for PROXY using previously set variables or if not reset variables and then run (docker build -t myrepo/outyet-x86 --build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy --build-arg no_proxy="$no_proxy" .)
 
     iv. Docker login to your docker registry (docker login registry_address) [only need to do once for each command prompt/terminal session on a machine]
 
@@ -33,7 +33,7 @@ First is the list of basic steps, then a pattern you can use with both the mac a
 
     iii. Build the image using docker (docker build -t myrepo/outyet-x86 .)
 
-    PROXY: add build args for PROXY using previously set variables or if not reset variables and then run (docker build -t myrepo/outyet-x86 --build-arg http_proxy=%http_proxy% --build-arg https_proxy=%https_proxy% --build-arg no_proxy=%no_proxy% .)
+    PROXY: add build args for PROXY using previously set variables or if not reset variables and then run (docker build -t myrepo/outyet-x86 --build-arg http_proxy=%http_proxy% --build-arg https_proxy=%https_proxy% --build-arg no_proxy="%no_proxy%" .)
 
     iv. Docker login to your docker registry (docker login registry_address)
 
@@ -57,7 +57,7 @@ cd `Desired Directory for given image`
 
 ***Build Using Proxy***
 
-`docker build -t ${REPO}/${IMAGE}-${ARCH}:${VERSION} --build-arg http_proxy=%proxy% --build-arg https_proxy=%proxy% --build-arg no_proxy=%noproxy% .`
+`docker build -t ${REPO}/${IMAGE}-${ARCH}:${VERSION} --build-arg http_proxy=${http_proxy} --build-arg https_proxy=${https_proxy} --build-arg no_proxy="${no_proxy}" .`
 
 ***Other Steps same if using proxy or not***
 
@@ -84,7 +84,7 @@ cd `Desired Directory for given image`
 
 ***Using Proxy***
 
-`docker build -t %REPO%/%IMAGE%-%ARCH%:%VERSION --build-arg http_proxy=%proxy% --build-arg https_proxy=%proxy% --build-arg no_proxy=%noproxy% .`
+`docker build -t %REPO%/%IMAGE%-%ARCH%:%VERSION% --build-arg http_proxy=%http_proxy% --build-arg https_proxy=%https_proxy% --build-arg no_proxy="%no_proxy%" .`
 
 ***Other Steps same if using proxy or not***
 
@@ -204,7 +204,7 @@ Install manifest-tool here with package for your os/arch [here](https://github.c
 ##### Push versioned manifest first
 First, you will update the yaml files in the given directory of the image you are trying to push (in this case outyet) as well as change into the directory. Then, switch my username/password in the following command for yours for the image repository you are pushing to and:
 
-IF USING PROXY: make sure your http_proxy, https_proxy, and no_proxy our set if pushing to a repo outside of your internal network.
+IF USING PROXY: make sure your http_proxy, https_proxy, and no_proxy are set if pushing to a repo outside of your internal network.
 
 `manifest-tool --username gmoney23 --password *** push from-spec smallest-outyet/vmanifest.yaml`
 

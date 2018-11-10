@@ -74,7 +74,7 @@ In the example-go-server directory of the MultiArchDockerICP project we find the
 
 Run it with `docker run --rm -it -p 3000:5000 gmoney23/example-go-server` and go to `localhost:3000` in web browser to see it.
 
-Here is what it will look like in the browser ![go-hello-web](../images/go-hello.PNG)
+Here is what it will look like in the browser ![go-hello-web](../images/go_hello.PNG)
 
 Here's what it will look like in the cli ![go-hello-cli](../images/go-hello-cli.png)
 
@@ -96,7 +96,7 @@ We can try the tool out against different sites using `docker run --rm -e url=ht
 
 **Note: For PROXY**: add your -e for http_proxy, etc.:
 
-`docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy=%"no_proxy"% -e url=http://google.com href`
+`docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" -e url=http://google.com href`
 
 **More Examples**
 

@@ -27,6 +27,8 @@ For Linux make a docker.service.d file and restart docker as below:
 
 If using a proxy, declare your environment variables to reference in commands. Here is an example with a proxy of http://myproxy:8080 and no proxy of localhost and 127.0.0.1.
 
+#### PSA: Proxy must have either http:// or https:// at the beginning to be used. Otherwise it will be ignored.
+
 ###### MAC/Linux
 
  `http_proxy=http://myproxy:8080`
@@ -41,7 +43,7 @@ If using a proxy, declare your environment variables to reference in commands. H
 
   `set https_proxy=http://myproxy:8080`
 
-  `set no_proxy="localhost, 127.0.0.1"`
+  `set no_proxy=localhost, 127.0.0.1`
 
 ###### Windows PowerShell
 
@@ -103,10 +105,12 @@ proxy the docker container needs the correct environment variables set. The way 
 use -e with the proxy variables:
 
 **BASH (Mac/Linux)**
-`docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" mplatform/mquery gmoney23/outyet`
+
+`docker run --rm -e http_proxy=$http_proxy -e https_proxy=$https_proxy -e no_proxy="$no_proxy" mplatform/mquery gmoney23/outyet`
 
 **Windows (Command Prompt)**
-`docker run --rm -e http_proxy=$http_proxy -e https_proxy=$https_proxy -e no_proxy="$no_proxy" mplatform/mquery gmoney23/outyet`
+
+`docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" mplatform/mquery gmoney23/outyet`
 
 This passes the environment variables to the docker container.
 

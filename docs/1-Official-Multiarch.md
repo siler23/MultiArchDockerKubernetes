@@ -49,7 +49,7 @@ Many times you will want to find out if an image supports your archtitecture. If
 
 REGULAR: `docker run --rm mplatform/mquery ibmcom/icp-nodejs-sample`
 
-PROXY: `docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy=%no_proxy% mplatform/mquery ibmcom/icp-nodejs-sample`
+PROXY: `docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" mplatform/mquery ibmcom/icp-nodejs-sample`
 
 <sup>where %http_proxy%, etc. are environment variables previously set in windows to the value of the http_proxy with set http_proxy=yourproxyaddress:yourproxyport. For mac/linux you would set with http_proxy=yourproxyaddress:yourproxyport and reference with $http_proxy</sup>
 
@@ -65,7 +65,7 @@ This image is "A simple utility and backend for querying Docker v2 API-supportin
 
   REGULAR: `docker run --rm mplatform/mquery s390x/node`
 
-  PROXY: `docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy=%"no_proxy"% mplatform/mquery s390x/node`
+  PROXY: `docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" mplatform/mquery s390x/node`
 
         Image: s390x/node
          * Manifest List: No
