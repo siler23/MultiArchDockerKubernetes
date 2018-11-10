@@ -1,5 +1,5 @@
 # Hello Proxy users
-We will show how to use a proxy for docker, how to use a proxy throughout this tutorial and give links to great proxy user articles.
+We will show how to use a proxy for docker, how to use a proxy throughout this guide and give links to great proxy user articles.
 
 ## Docker proxy for push/pull
 
@@ -99,7 +99,7 @@ If you have this info in your proxy environment variables users will be able to 
 in the running container's environment as well as by inspecting the container. If you used build args the
 user will be able to see it by inspecting the container with `docker inspect` as well.
 So what do we do. Well, we can use multi-stage builds which I go over in [3-Best-Practice-go](3-Best-Practice-go.md)
-of this tutorial to accomplish the task since our final container will only have copies of the files built
+of this guide to accomplish the task since our final container will only have copies of the files built
 using the proxy in a previous container. To see how to actually do this look at [Accessing Private Repository](https://vsupalov.com/build-docker-image-clone-private-repo-ssh-key/).
 You can follow the steps outlined in the article for your proxy with username/password declaration for security.
 

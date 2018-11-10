@@ -233,7 +233,7 @@ configmap "site-url" deleted
 
 In reality, our CronJob could be used to do anything from running the logs at the end of a day, to sending emails to a list of participants weekly, to running health checks on an application every minute to other automated taks that need to be done every period of time.
 
-If you need more kubernetes skills, cover your bases with [Kubernetes basics](https://kubernetes.io/docs/tutorials/kubernetes-basics/). Additionally, if you have a hard time figuring out which api to put for a given type look no [further](https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html)
+If you need more kubernetes skills, cover your bases with [Kubernetes basics](https://kubernetes.io/docs/guides/kubernetes-basics/). Additionally, if you have a hard time figuring out which api to put for a given type look no [further](https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html)
 
 THAT'S ALL FOLKS!
 
