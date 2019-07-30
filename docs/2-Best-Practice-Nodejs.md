@@ -1,15 +1,15 @@
 # 2. Making Node.js apps with Docker
-First, we will go over the icp-node-js-sample app and Dockerfile. Then, show Dockerfile best practices for nodejs using the basic hello world app from Node.js site.
+First, we will go over the icp-node-js-sample app and Dockerfile. Then, we will see Dockerfile best practices for nodejs using the basic hello world app from the Node.js site.
 
 ### Node.js Download for Later
-Here is the [Node.js download](https://nodejs.org/en/) if you want to run it locally to familiarize yourslef with it/develop with it. For this guide, you actually don't need Node.js installed on your computer because of the magic of docker ![Docker ryu](../images/docker-ryu.png)
+Here is the [Node.js download](https://nodejs.org/en/) if you want to run it locally to familiarize yourself with it/develop with it. For this guide, you actually don't need Node.js installed on your computer because of the magic of Docker ![Docker ryu](../images/docker-ryu.png)
 
-## If Using Proxy
-If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your http_proxy, https_proxy, and no_proxy variables for your environment as specified there. Also note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
+## If Using a Proxy
+If using a proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your http_proxy, https_proxy, and no_proxy variables for your environment as specified there. Additionally, note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
 
 ## ICP Node.js Sample
-From the main directory for this `MultiArchDockerICP` guide go into `icp-nodejs-sample` directory. Here, open up the `Dockerfile`. The code for this project comes from [ibm-cloud-private-nodejs-sample](https://github.com/ibm-developer/icp-nodejs-sample). Let's see what we got here folks.
+From the main directory for this `MultiArchDockerICP` guide, go into `icp-nodejs-sample` directory. Here, open up the `Dockerfile`. The code for this project comes from [ibm-cloud-private-nodejs-sample](https://github.com/ibm-developer/icp-nodejs-sample). Let's see what we got here folks.
 
 ![Node.js-icp-sample-Docker](../images/icp-nodejs-sample-Dockerfile.png)
 
@@ -32,6 +32,6 @@ Here's what it will look like in the cli ![node-web-cli](../images/node-web-cli.
 
 Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell
 
-For further help in crafting the best docker images possible for Node.js see [Node.js Docker Best Practices](https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md)
+The above Dockerfile can be used as a template for creating best-practice nodejs Docker images in the future. For further help in crafting the best docker images possible for Node.js see [Node.js Docker Best Practices](https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md).
 
 ##### [Part 3: Time to get go-ing](3-Best-Practice-go.md)

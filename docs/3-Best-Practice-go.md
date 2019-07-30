@@ -11,7 +11,7 @@ Here is the [Go download](https://golang.org/dl/) if you want to run it locally 
 If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your http_proxy, https_proxy, and no_proxy variables for your environment as specified there. Also note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
 ## Outyet
-Outyet is a go example program from [Go Outyet Example](https://github.com/golang/example/tree/master/outyet). This app checks if the version of Go specified (in our case 1.11 is outyet) Since we are using it, it better be! We will be dockerizing this app, shrinking our image down on the way over 3 iterations.
+Outyet is a go example program from [Go Outyet Example](https://github.com/golang/example/tree/master/outyet). This app checks if the version of Go specified (in our case 1.11 is out yet). Since we are using it, it better be! We will be dockerizing this app, shrinking our image down on the way over 3 iterations.
 ### Iteration 1: Outyet
 In this first iteration we make the go app in a container and get it running. Since there is a large base image needed for compiling the application and a large os is used for that image, this will be a rather large container. From folder `MultiArchDockerICP` go to outyet and open its Dockerfile. Read the comments for details about the Dockerfile.
 
@@ -23,12 +23,14 @@ Here's what it will look like in the browser ![outyet initial page](../images/ou
 
 Here's the git page for go 1.11 when you click YES ![outyet secondary page](../images/outyet-link.PNG)
 
+Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
+
 To check it's size I ran `docker images gmoney23/outyet`
 and get a whopping 786 Mb, no room for dessert :(
 
+```
 gmoney23/outyet     latest              1bfff6d47511        4 days ago          ***786MB***
-
-Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell
+```
 
 *Seeing the room for improvement fills us with determination ...*
 
@@ -39,17 +41,19 @@ In this second iteration, we attempt to improve upon our original endeavor using
 
 Run it with `docker run --rm -it -p 3000:8080 gmoney23/small-outyet` and go to `localhost:3000` in web browser to see it.
 
-*Note: The images are the same as for outyet since it's the same app so I've omitted them here.*
+*Note: The  web page looks the same as for outyet since it's the same app so I've omitted images here.*
 
-Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell
+Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
 
 To check it's size I ran `docker images gmoney23/small-outyet`
 
+```
 gmoney23/small-outyet   latest              aa8b746dc754        4 days ago          ***13.9MB***
+```
 
-From 786MB -> 13.9MB that's some serious shrinking.
+From 786MB -> 13.9MB that's some serious shrinkage.
 
-*The amount that container shrunk fills us with determination...*
+*The amount the container has shrunk fills us with determination...*
 
 ## Iteration 3: Smallest-Outyet
 How do we get smaller than starting with a 5MB alpine image? How about start with nothing. We are going to use the special [scratch image](https://hub.docker.com/_/scratch/) which starts fresh. Since everything can be set to statically compile in go with CGO_ENABLED=0, we can just package the binary in a container without even a shell. This lessons attack surface area and gives us a super light image. On top of that, we'll add some compiler flags for production to cut off the debug info space in go. Here's how it all looks in the smallest-outyet directory's Dockerfile.
@@ -57,13 +61,15 @@ How do we get smaller than starting with a 5MB alpine image? How about start wit
 
 Run it with `docker run --rm -it -p 3000:8080 gmoney23/smallest-outyet` and go to `localhost:3000` in web browser to see it.
 
-*Note: The images are the same as for outyet since it's the same app so I've omitted them here.*
+*Note: The  web page looks the same as for outyet since it's the same app so I've omitted images here.*
 
 Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell
 
 To check it's size I ran `docker images gmoney23/smallest-outyet`
 
+```
 gmoney23/smallest-outyet   latest              5a46896a4b2c        4 days ago          ***6.89MB***
+```
 
 ***From 13.9MB -> 6.89MB for a grand transformation of 786MB -> 6.89MB, a little over 114X smaller than the original image! That's a lot of room for dessert :)***
 ## Go Hello world
@@ -82,7 +88,9 @@ Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ co
 
 To check its size I ran `docker images gmoney23/example-go-server`
 
+```
 gmoney23/example-go-server   latest              a4907d7afdda        4 days ago          4.9MB
+```
 
 This gives us an image of 4.9MB, quite astounding!
 
@@ -92,7 +100,9 @@ Finally, lets dockerize an app that prints output for us instead of a web app. [
 ![href-counter-Dockerfile](../images/href-counter-Dockerfile.png)
 We can try the tool out against different sites using `docker run --rm -e url=http://blog.alexellis.io/ gmoney23/href`
 
-              {"internal":30,"external":2}
+```
+{"internal":51,"external":2}
+```
 
 **Note: For PROXY**: add your -e for http_proxy, etc.:
 
@@ -102,14 +112,22 @@ We can try the tool out against different sites using `docker run --rm -e url=ht
 
 `docker run --rm -e url=http://yahoo.com gmoney23/href`
 
-              {"internal":5,"external":96}
+```
+{"internal":16,"external":74}
+```
+
 `docker run --rm -e url=http://honolulu.gov gmoney23/href`
 
-              {"internal":98,"external":35}
+```
+{"internal":78,"external":31}
+```
+
 You'll be pleased to know our Dockerfile made this image small as well. We can see with `docker images gmoney23/href`
 
+```
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 gmoney23/href       latest              df5ad8db9a46        4 days ago          ***5MB***
+```
 
 For more go best practices and tips with docker see this [excellent article](https://blog.docker.com/2016/09/docker-golang/)
 
