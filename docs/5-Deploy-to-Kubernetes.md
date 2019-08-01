@@ -237,9 +237,8 @@ If you need more kubernetes skills, cover your bases with [Kubernetes basics](ht
 
 THAT'S ALL FOLKS!
 
-### Additional Topics
-Additional topics to look at after finishing everything here are:
-1. [Building a Helm Chart from kubernetes yaml files](https://www.ibm.com/blogs/bluemix/2017/10/quick-example-helm-chart-for-kubernetes/)
-2. [Cross-building images to build x86 and z images on your local x86 workstation](https://stefanscherer.github.io/cross-build-nodejs-with-docker/) Note: Alpine has been made multi-arch after the posting of the linked article and the base image now runs on s390x/z.
+### Additional Topic
+An additional topic to look at after finishing everything here is:
+[Building a Helm Chart from kubernetes yaml files](https://www.ibm.com/blogs/bluemix/2017/10/quick-example-helm-chart-for-kubernetes/)
 
 ##### [MAIN MENU](../README.md)
