@@ -14,10 +14,12 @@ If you don't have at least this version, please upgrade
 ![Upgrade Docker](../images/DockerUpdate.png)
 
 Check with `docker version`
-![Docker Version Output](../images/Docker_Version_Experimental_Check.PNG)
-Under Client: If `Experimental: false` like in the above picture then you need to do the Client steps. If `Experimental: true` then you can skip Client steps.
 
-Under Server: If `Experimental: false` like in the picture, you need to do Server steps. If `Experimental: true` then you can skip Server steps.
+![Docker Version Output](../images/Docker_Version_Experimental_Check.PNG)
+
+*Under Client:* If `Experimental: false` like in the above picture then you need to do the *Client* steps. If `Experimental: true` then you can skip the *Client* steps.
+
+*Under Server:* If `Experimental: false` like in the above picture, you need to do the *Server* steps. If `Experimental: true` then you can skip the *Server* steps.
 
 ###### Linux
 *Client*
@@ -26,10 +28,12 @@ Under Server: If `Experimental: false` like in the picture, you need to do Serve
 
 If `~/.docker/config.json` exists:
 
-(Open config.json with favorite text editor)
+(Open config.json with your favorite text editor)
 
 `vim ~/.docker/config.json`
+
 Add `"experimental": "enabled"` to config.json file
+
 ![End Result](../images/Linux_add_experimental.png)
 
 If `~/.docker/config.json` doesn’t exist:
@@ -39,6 +43,7 @@ If `~/.docker/config.json` doesn’t exist:
 `echo $'{\n    "experimental": "enabled"\n}' | tee ~/.docker/config.json`
 
 Add `"experimental": "enabled"` to `config.json` file
+
 ![Client Enabled Result](../images/Linux_add_client_fresh.png)
 
 *Server*
@@ -47,7 +52,7 @@ Add `"experimental": "enabled"` to `config.json` file
 
 If `/etc/docker/daemon.json` exists:
 
-(Open daemon.json with favorite text editor)
+(Open daemon.json with your favorite text editor)
 
 `sudo vim /etc/docker/daemon.json`
 Add `"experimental": true` to `daemon.json` file
@@ -55,13 +60,15 @@ Add `"experimental": true` to `daemon.json` file
 If `/etc/docker/daemon.json` doesn't exist:
 
 `echo $'{\n    "experimental": true\n}' | sudo tee /etc/docker/daemon.json`
+
 ![Server Enabled Result](../images/Linux_add_server_experimental.png)
 
-**Restart Docker to Pick Up Changes**
+*Restart Docker to Pick Up Changes*
 
 `sudo service docker restart`
 
-Once docker is started check `docker version` again to see experimental set to true for both client and server.
+Once docker is started, check `docker version` again to see experimental set to true for both client and server.
+
 ![Docker Version Final Linux](../images/Docker_Version_Final_Mac.png)
 
 ###### Mac
@@ -82,28 +89,30 @@ Go to `Docker Engine` and change false to true for experimental. Then, click`App
 ![Docker Engine Mac](../images/Docker_Engine_Mac.png)
 
 Once docker is started check `docker version` again to see experimental set to true for both client and server.
+
 ![Docker Version Final Mac](../images/Docker_Version_Final_Mac.png)
 
 ###### Windows
-In the Windows file explorer go to your users directory and see if .docker exists if so open that directory and edit it with your favorite text editor. Add `"experimental": "enabled"` to config.json file
+In the Windows file explorer go to your users directory and see if `.docker` exists if so open that directory and edit it with your favorite text editor. Add `"experimental": "enabled"` to the `config.json` file
 
-If it doesn't exist, make a new folder called .docker and create a new file called config.json. Add "experimental: enabled" inside of brackets.
+If it doesn't exist, make a new folder called `.docker` and create a new file called `config.json`. Add "experimental: enabled" inside of brackets.
 
 ![End Result](../images/Enabling-experimental.PNG)
 
 ###### Check for Success
 In the end check your docker version to see that the change persisted. Specifically, look for client's experimental section being marked `Experimental: True`.
+
 ![Docker Version Final Mac](../images/Docker_Version_Final_Mac.png)
 
 ## Cross-Architecture Docker
 
-Normally, one can only run docker images compiled for their architecture. This means that in order to run an s390x image you would need an s390x server. Additionally, since building an s390x image in most cases requires running s390x binaries on your system, this also requires an s390x server. The same holds true for x86 (amd64), power (ppc64le), arm, etc. This limits the ability to build images that are available across all platforms. One way to overcome this limitation is by using [binfmt_misc](https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html) in conjunction with [qemu](https://www.qemu.org/) (quick emulation) running using [User-mode-emulation](https://ownyourbits.com/2018/06/13/transparently-running-binaries-from-any-architecture-in-linux-with-qemu-and-binfmt_misc/). Qemu dynamically translates the target architecture's instructions to the the host architecture's instruction set to enable binaries of a different architecture to run on a host system. Binfmt_misc comes in to enable the kernel to read the foreign architecture binary by ["directing"](https://lwn.net/Articles/679308/) the kernel to the correct qemu static binary to interpret the code.
+Normally, one can only run docker images compiled for the host machine's architecture. This means that in order to run an s390x image, you would need an s390x server. Additionally, since building an s390x image in most cases requires running s390x binaries on your system, this also requires an s390x server. The same holds true for x86 (amd64), power (ppc64le), arm, etc. This limits the ability to build images that are available across all platforms. One way to overcome this limitation is by using [binfmt_misc](https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html) in conjunction with [qemu](https://www.qemu.org/) (quick emulation) running using [User-mode-emulation](https://ownyourbits.com/2018/06/13/transparently-running-binaries-from-any-architecture-in-linux-with-qemu-and-binfmt_misc/). Qemu dynamically translates the target architecture's instructions to the the host architecture's instruction set to enable binaries of a different architecture to run on a host system. [Binfmt_misc](https://lwn.net/Articles/679308/) comes in to enable the kernel to read the foreign architecture binary by ["directing"](https://lwn.net/Articles/679308/) the kernel to the correct qemu static binary to interpret the code.
 
-In order to set this up to work with Docker and its underlying linux kernel we first need:
+In order to set this up to work with Docker and its underlying linux kernel, we first need:
 
-1. binfmt_misc registers the corresponding qemu-static binary for each architecture that has a static qemu image available [of course other than the native one; s390x in this case].
+1. binfmt_misc to register the corresponding qemu-static binary for each architecture that has a static qemu image available [of course other than the native one; s390x in this case].
 
-2. provide these qemu-static binaries to the system for the host architecture to all of the target architectures.
+2. provide these qemu-static binaries to the system for the host architecture to all of the target architectures. *You can get these by building them from the qemu code or from a package of qemu for your os or on online source repositories for these packages such as [this one](https://packages.debian.org/sid/s390x/qemu-user-static/download)*
 
 3. Persist this setting for future kernel calls to be used with Docker for each container it creates in their new sets of namespaces
 
@@ -123,6 +132,8 @@ You should get an exec format error like so:
 Now, run the docker image to perform the aforementioned required 3 steps on either s390x of amd64:
 
 `docker run --rm --privileged gmoney23/multiarch-qemu-user-static --reset -p yes`
+
+`--privileged` let's gives the container the necessary permissions it requires. the register script within the containers has it register qemu static binaries that are found within the `gmoney23/multiarch-qemu-user-static` container with binfmt and  `-p` means it persists this so that the static binaries will be used for subsequent containers without needing to bind mount the qemu static binary in each container image. 
 
 Confirm the architecture with: `uname -m`
 
@@ -147,13 +158,13 @@ This works successfully (without configuration needed) for mac if you are using 
 
 ### Consequences of Cross-Architecture Docker
 
-This enables us to not only run images but now also build them for different architectures from a given host architecture. This makes it possible to build s390x (z), power (ppc64le), arm, and amd64 images all from the hosts you have available. This enables developers to support more images as they may have clusters with only specific architectures supported which can help braoden the ecosystem for everyone.
+This enables us to not only run images, but also build them for different architectures from a given host architecture. This makes it possible to build s390x (z), power (ppc64le), arm, and amd64 images all from the hosts you have available. This enables developers to support more images as they may have nodes with only specific architectures such as `amd64`. Using this technology, suddenly the ecosystem that can contribute is no longer constrained by this limitation, creating broader ecosystem for everyone.
 
 Next, we will use either your amd64 or s390x host to build images for both architectures and use them to make multi-arch images that support both architectures for each of the applications we have visited in parts 2 and 3 of this tutorial.
 
 ## Making multi-arch docker images
 
-In order to build all of the images for both amd64 (x86) and s390x (z) architectures we will use a simple script that I wrote to go through the steps of building each inidividual architecture image with both a versioned and latest tag. Then, it creates a manifest list for each image and pushes it up to form a multiarch image for each of the applications we have gone over. It is heavily commented so it should explain itself.
+In order to build all of the images for both amd64 (x86) and s390x (z) architectures, we will use a simple script that I wrote to go through the steps of building each individual architecture image with both a versioned and latest tag. Then, it creates a manifest list for each application and pushes it up to form a multiarch image for each of the applications we have gone over. It is heavily commented so it should explain itself.
 
 [Build and Push Images Script](Build_And_Push_Images.sh)
 
@@ -164,6 +175,7 @@ In order to build all of the images for both amd64 (x86) and s390x (z) architect
 Enter your username and password when prompted:
 
 ![Docker Login Before Script](../images/docker_login_before_script.png)
+
 ### Run Script to build and Push Images
 
 #### Without Proxy
