@@ -8,7 +8,7 @@ We will go over three apps and show how to optimize our go code for docker
 Here is the [Go download](https://golang.org/dl/) if you want to run it locally to familiarize yourslef with it/develop with it. For this section, you actually don't need golang installed on your computer because of the magic of docker.
 
 ## If Using Proxy
-If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your http_proxy, https_proxy, and no_proxy variables for your environment as specified there. Also note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
+If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
 ## Outyet
 Outyet is a go example program from [Go Outyet Example](https://github.com/golang/example/tree/master/outyet). This app checks if the version of Go specified (in our case 1.11 is out yet). Since we are using it, it better be! We will be dockerizing this app, shrinking our image down on the way over 3 iterations.
@@ -131,4 +131,4 @@ gmoney23/href       latest              df5ad8db9a46        4 days ago          
 
 For more go best practices and tips with docker see this [excellent article](https://blog.docker.com/2016/09/docker-golang/)
 
-##### [Part 4: Time to build some images!](4-Build-MultiArch.md)
+# [Part 4: Time to build some images!](4-Build-MultiArch.md)

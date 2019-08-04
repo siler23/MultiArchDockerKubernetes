@@ -5,7 +5,7 @@ First, we will go over the icp-node-js-sample app and Dockerfile. Then, we will 
 Here is the [Node.js download](https://nodejs.org/en/) if you want to run it locally to familiarize yourself with it/develop with it. For this guide, you actually don't need Node.js installed on your computer because of the magic of Docker ![Docker ryu](images/docker-ryu.png)
 
 ## If Using a Proxy
-If using a proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your http_proxy, https_proxy, and no_proxy variables for your environment as specified there. Additionally, note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
+If using a proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Additionally, note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
 
 ## ICP Node.js Sample
@@ -34,4 +34,4 @@ Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ co
 
 The above Dockerfile can be used as a template for creating best-practice nodejs Docker images in the future. For further help in crafting the best docker images possible for Node.js see [Node.js Docker Best Practices](https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md).
 
-##### [Part 3: Time to get go-ing](3-Best-Practice-go.md)
+# [Part 3: Time to get go-ing](3-Best-Practice-go.md)

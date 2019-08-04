@@ -109,5 +109,6 @@ IF USING PROXY: make sure your http_proxy, https_proxy, and no_proxy are set if 
 ##### Then push latest manifest for current versioned
 `manifest-tool --username gmoney23 --password *** push from-spec smallest-outyet/manifest.yaml`
 
+Having our hands dirty fills us with determination...
 
-##### [Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)
+# [Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)

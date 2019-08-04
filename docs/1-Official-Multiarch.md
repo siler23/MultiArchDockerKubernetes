@@ -3,7 +3,7 @@
 This section goes through the official docker repositories for building images and what multi-architecture images are and how to spot them.
 
 ## If Using Proxy
-If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your http_proxy, https_proxy, and no_proxy variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that 0-ProxyPSA document.
+If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
 ## Official Repositories
 [Docker Official Repositories](https://docs.docker.com/docker-hub/official_repos/) are a special set of Docker repositories on DockerHub that host images for operating systems and base software that follow Dockerfile best practices and undergo regular security scans to allow them to serve as building blocks for your applications. These repositories are where you get the images to build your applications on top of.
@@ -30,7 +30,6 @@ Many times you will want to find out if an image supports your architecture. If 
 1. If the image exists on your system use docker inspect.
 
 `docker inspect -f '{{.Architecture}}' busybox`
-
                     amd64
 
   **But what if the image isn't on your system?**
@@ -75,4 +74,4 @@ The mquery image is "A simple utility and backend for querying Docker v2 API-sup
 Note: You can also use the mainfest-tool itself and docker manifest inspect to do this but the manifest-tool needs to be installed first and gives more verbose output. The other alternative, the docker manifest inspect command doesn't work for all supported registries yet, ( it continues to be improved) and needs to be enabled (*it's currently experimental*). Thus, using the mquery image is generally better.
 
 Next up, we will build some Node.js docker images and learn some Node.js docker best practices.
-##### [Part 2: Node.js Docker Best Practices](2-Best-Practice-Nodejs.md)
+# [Part 2: Node.js Docker Best Practices](2-Best-Practice-Nodejs.md)

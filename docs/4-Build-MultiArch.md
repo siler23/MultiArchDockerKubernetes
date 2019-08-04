@@ -3,7 +3,7 @@
 This section goes through installing the manifest tool and building the multi-arch docker images.
 
 ## If Using Proxy
-If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your http_proxy, https_proxy, and no_proxy variables for your environment as specified there. Also note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
+If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the -e for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
 ## Enabling Docker Experimental Features
 We need to enable experimental features for both the docker client and server in order to use the `docker manifest` command and `--platform` tags respectively. In order to do this please follow the steps below for your operating system.
@@ -99,12 +99,12 @@ If it doesn't exist, make a new folder called `.docker` and create a new file ca
 
 ![End Result](images/Enabling-experimental.PNG)
 
-###### Check for Success
+## Check for Success
 In the end check your docker version to see that the change persisted. Specifically, look for client's experimental section being marked `Experimental: True`.
 
 ![Docker Version Final Mac](images/Docker_Version_Final_Mac.png)
 
-## Cross-Architecture Docker
+## Cross-Architecture Docker 
 
 Normally, one can only run docker images compiled for the host machine's architecture. This means that in order to run an s390x image, you would need an s390x server. Additionally, since building an s390x image in most cases requires running s390x binaries on your system, this also requires an s390x server. The same holds true for arm, x86 (amd64), power (ppc64le), etc. This limits the ability to build images that are available across all platforms. One way to overcome this limitation is by using [binfmt_misc](https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html) in conjunction with [qemu](https://www.qemu.org/) (quick emulation) running using [User-mode-emulation](https://ownyourbits.com/2018/06/13/transparently-running-binaries-from-any-architecture-in-linux-with-qemu-and-binfmt_misc/). Qemu dynamically translates the target architecture's instructions to the the host architecture's instruction set to enable binaries of a different architecture to run on a host system. [Binfmt_misc](https://lwn.net/Articles/679308/) comes in to enable the kernel to read the foreign architecture binary by ["directing"](https://lwn.net/Articles/679308/) the kernel to the correct qemu static binary to interpret the code.
 
@@ -116,11 +116,13 @@ In order to set this up to work with Docker and its underlying linux kernel, we 
 
 3. load the static immediately so it is in place to be used with Docker for each container it creates in their new sets of namespaces [read: use `F flag` for binfmt_misc setup]
 
+### Setting up Cross-Architecture support
+
 We are able to achieve these 3 things by using the [docker/binfmt](https://github.com/docker/binfmt) github project.
 
 The implementation they have works for an amd64 host so I have made a separate image with the qemu-static binaries compiled from the s390x host and posted that multi-arch image to `gmoney23/binfmt`
 
-You can test this out by first running an image that is from a different platform than yours.
+You can test this out by first running an image that is from a different platform than yours. 
 
 ##### Linux
 `docker pull --platform amd64 hello-world`
@@ -214,10 +216,14 @@ Sample Command with my docker repo of `gmoney23` please replace with your docker
 
 `DOCKER_REPO=gmoney23 VERSION=1.0 IMAGE_PREPEND=marchdockerlab LATEST=true http_proxy=http://myproxy:8080 https_proxy=http://myproxy:8080 no_proxy="localhost, 127.0.0.1" ./Build_And_Push_Images.sh`
 
-### OPTIONAL [Most users should try if they have docker 19.03 CE or later]: [Using the next generation build tool Buildx for seamless multi-arch builds](4-Multiarch-buildx-addendum.md)
+Hearing about qemu fills us with determination ...
 
-## [Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)
+## OPTIONAL SECTIONS
 
-### OPTIONAL [Most Users Should Skip]: [Overview of Process the Manual Way Building on Separate Machines](4-Multiarch-manual-addendum.md)
+### Recommended: [Most users should try if they have docker 19.03 CE or later]: [Using the next generation build tool Buildx for seamless multi-arch builds](4-Multiarch-buildx-addendum.md)
+
+### Extra Content: [Most Users Should Skip]: [Overview of Process the Manual Way Building on Separate Machines](4-Multiarch-manual-addendum.md)
 
 **This optional path is a Manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path.
+
+# [Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)

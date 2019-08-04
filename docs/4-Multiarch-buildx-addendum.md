@@ -53,10 +53,12 @@ We can use buildx to simplify the multi-arch process even further by bringing ou
 
 Now, it's time to use the multi-arch images in Kubernetes!
 
-Hearing `Kubernetes` fills us with determination...
-## [Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)
+## OPTIONAL SECTION
 
-
-### OPTIONAL [Most Users Should Skip]: [Overview of Process the Manual Way Building on Separate Machines](4-Multiarch-manual-addendum.md)
+### Extra Content: [Most Users Should Skip]: [Overview of Process the Manual Way Building on Separate Machines](4-Multiarch-manual-addendum.md)
 
 **This optional path is a Manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path.
+
+The ease of multiarch with buildx fills us with determination...
+
+# [Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)
