@@ -15,13 +15,13 @@ Outyet is a go example program from [Go Outyet Example](https://github.com/golan
 ### Iteration 1: Outyet
 In this first iteration we make the go app in a container and get it running. Since there is a large base image needed for compiling the application and a large os is used for that image, this will be a rather large container. From folder `MultiArchDockerICP` go to outyet and open its Dockerfile. Read the comments for details about the Dockerfile.
 
-![Outyet-Dockerfile](../images/outyet-Dockerfile.png)
+![Outyet-Dockerfile](images/outyet-Dockerfile.png)
 
 Run it with `docker run --rm -it -p 3000:8080 gmoney23/outyet` and go to `localhost:3000` in web browser to see it.
 
-Here's what it will look like in the browser ![outyet initial page](../images/outyet-page.png)
+Here's what it will look like in the browser ![outyet initial page](images/outyet-page.png)
 
-Here's the git page for go 1.11 when you click YES ![outyet secondary page](../images/outyet-link.PNG)
+Here's the git page for go 1.11 when you click YES ![outyet secondary page](images/outyet-link.PNG)
 
 Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
 
@@ -37,7 +37,7 @@ gmoney23/outyet     latest              1bfff6d47511        4 days ago          
 ### Iteration 2: Small-outyet
 In this second iteration, we attempt to improve upon our original endeavor using multi-stage builds. What is a multi-stage build? A build that happens in multiple stages. Mic drop...[docker multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/) What, we can do with this is build the golang application in a container with all the bells and whistles and then copy it to another container that is much smaller where we just run it. This works so well, since by turning CGO_ENABLED=0 everything is statically compiled. In this case, we're going to copy it into the Alpine base image which should cut down its size considerably.
 
-![Small-Outyet-Dockerfile](../images/small-outyet-Dockerfile.png)
+![Small-Outyet-Dockerfile](images/small-outyet-Dockerfile.png)
 
 Run it with `docker run --rm -it -p 3000:8080 gmoney23/small-outyet` and go to `localhost:3000` in web browser to see it.
 
@@ -57,7 +57,7 @@ From 786MB -> 13.9MB that's some serious shrinkage.
 
 ## Iteration 3: Smallest-Outyet
 How do we get smaller than starting with a 5MB alpine image? How about start with nothing. We are going to use the special [scratch image](https://hub.docker.com/_/scratch/) which starts fresh. Since everything can be set to statically compile in go with CGO_ENABLED=0, we can just package the binary in a container without even a shell. This lessons attack surface area and gives us a super light image. On top of that, we'll add some compiler flags for production to cut off the debug info space in go. Here's how it all looks in the smallest-outyet directory's Dockerfile.
-![Smallest-Outyet-Dockerfile](../images/smallest-outyet-Dockerfile.png)
+![Smallest-Outyet-Dockerfile](images/smallest-outyet-Dockerfile.png)
 
 Run it with `docker run --rm -it -p 3000:8080 gmoney23/smallest-outyet` and go to `localhost:3000` in web browser to see it.
 
@@ -76,13 +76,13 @@ gmoney23/smallest-outyet   latest              5a46896a4b2c        4 days ago   
 Using the techniques we just employed, let's so how small of a docker image we can make for a [basic go hello world app](https://gist.github.com/enricofoltran/10b4a980cd07cb02836f70a4ab3e72d7) from gist.
 In the example-go-server directory of the MultiArchDockerICP project we find the following Dockerfile I made.
 
-![example-go-server-Dockerfile](../images/example-go-server-Dockerfile.png)
+![example-go-server-Dockerfile](images/example-go-server-Dockerfile.png)
 
 Run it with `docker run --rm -it -p 3000:5000 gmoney23/example-go-server` and go to `localhost:3000` in web browser to see it.
 
-Here is what it will look like in the browser ![go-hello-web](../images/go_hello.PNG)
+Here is what it will look like in the browser ![go-hello-web](images/go_hello.PNG)
 
-Here's what it will look like in the cli ![go-hello-cli](../images/go-hello-cli.png)
+Here's what it will look like in the cli ![go-hello-cli](images/go-hello-cli.png)
 
 Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell
 
@@ -97,7 +97,7 @@ This gives us an image of 4.9MB, quite astounding!
 ## Href-Counter
 Finally, lets dockerize an app that prints output for us instead of a web app. [Href-counter](https://github.com/alexellis/href-counter) is an application that counts the number of internal and external-hrefs on a web-page to rate SEO. It is referenced in the multi-stage build manual for docker we looked at [before](https://docs.docker.com/develop/develop-images/multistage-build/) and fits the bill for us. Let's look at its Dockerfile at href-counter inside of MultiArchDockerICP.
 
-![href-counter-Dockerfile](../images/href-counter-Dockerfile.png)
+![href-counter-Dockerfile](images/href-counter-Dockerfile.png)
 We can try the tool out against different sites using `docker run --rm -e url=http://blog.alexellis.io/ gmoney23/href`
 
 ```

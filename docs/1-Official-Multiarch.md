@@ -11,7 +11,7 @@ If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set y
 [Check out the Docker Official Repositories here](https://hub.docker.com/explore/)
 
 We will specifically be looking at building Node.js and Go applications, so we will use the [Node.js Official Docker Repository](https://hub.docker.com/_/node/) and the [Golang Official Docker Repository](https://hub.docker.com/_/golang/). These images are multi-arch which means they support multiple architectures. All official images are [multi-arch](https://blog.docker.com/2017/09/docker-official-images-now-multi-platform/). However, we want to know if these images support both s390x and x86. How do we know? If we look at the supported architectures under Quick reference we can see both images support both the x86 [amd64] and LINUXONE/z [s390x] architectures. :) [Note: If not otherwise noted in documentation, containers are assumed to use Linux as the operating system]
-![docker golang architectures](../images/docker_golang.png)
+![docker golang architectures](images/docker_golang.png)
 **This means that if I run `docker pull node` on z, it will pull me the s390x image. Simalarly, if I run `docker pull node` on x86, it will pull me the x86 image.** Thus, once the image is built and set up as multi-arch the difference is abstracted away from applications using the image (such as a node application built using the Node.js official image as the base) **[i.e. `FROM node` works on both x86 and s390x].**
 
 ## How do Multi-Arch Images Work?

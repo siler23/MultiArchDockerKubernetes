@@ -1,0 +1,17 @@
+site_name: From Docker to Kubernetes - Multi-Arch with Go and Nodejs
+repo_url: https://github.com/siler23/MultiArchDockerICP
+edit_uri: ''
+nav:
+    - Home: index.md
+    - 0. Proxy PSA for Proxy Users: 0-ProxyPSA.md
+    - 1. Official Docker Repos and Multi-Arch Primer: 1-Official-Multiarch.md
+    - 2. Build best practice nodejs docker images: 2-Best-Practice-Nodejs.md
+    - 3. Build best practice go docker images: 3-Best-Practice-go.md
+    - 4. Build multi-arch docker images: 4-Build-MultiArch.md
+      - The future: The Buildx Way: 4-Multiarch-buildx-addendum.md
+      - The past: The Manual Way: 4-Multiarch-manual-addendum.md
+    - 5. Deploy these images to your kubernetes cluster: 5-Deploy-to-Kubernetes.md
+
+theme: material
+markdown_extensions:
+  - admonition

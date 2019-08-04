@@ -7,7 +7,7 @@ To setup docker proxies for docker pull and docker push, you will follow differe
 ###### Windows/mac
 Use the UI. Navigate to Docker Settings in Windows (Preferences in Mac) and fill in the proxy section with your manual proxy configuration like so:
 
-![Manual Proxy Configuration Docker](../images/Docker_Proxy_Settings.PNG)
+![Manual Proxy Configuration Docker](images/Docker_Proxy_Settings.PNG)
 For more information on setting proxies in Docker for Windows see [Setting Docker Proxies for Windows](https://mandie.net/2017/12/10/docker-for-windows-behind-a-corporate-web-proxy-tips-and-tricks/)
 
 ###### Linux
@@ -70,7 +70,7 @@ automatically lets you run the image. However, if you are giving an image to som
 who will use it outside of your proxy environment please use the next option for
 setting proxy so they don't have to worry about the app not working
 and then having to change the settings themselves when running the docker container.
- ![proxy_leaker](../images/leak_env.PNG)
+ ![proxy_leaker](images/leak_env.PNG)
 
 
 2. Use build args </br>
@@ -93,7 +93,7 @@ Here is an example:
  **Windows (Command Prompt)**
 
 `docker build -t href --build-arg http_proxy=%http_proxy% --build-arg https_proxy=%https_proxy% --build-arg no_proxy="%no_proxy%" .`</br>
-Now, our proxy environment variables don't show up to the end user. ![build args no leak](../images/no_leak_env.PNG)
+Now, our proxy environment variables don't show up to the end user. ![build args no leak](images/no_leak_env.PNG)
 3. What about if I have confidential information such as a username/password in my proxy? <br/>
 If you have this info in your proxy environment variables users will be able to see it
 in the running container's environment as well as by inspecting the container. If you used build args the

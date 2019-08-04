@@ -24,7 +24,7 @@ The commands listed are bash commands. In order to use bash on Windows 10 see [E
  Again, you'll notice the kubectl command is exactly the same. We are just changing the variable use reference in bash to command prompt style. Also that `$()` was a bash way to run the command its in own shell and feed the output to our command so I broke the command into two for windows instead.
 
 ## Helm ICP Node.js Sample
-If you have an icp instance, please go to the catalog and configure the nodejs-sample chart. ![nodejs-sample chart](../images/nodejs-sample.png)
+If you have an icp instance, please go to the catalog and configure the nodejs-sample chart. ![nodejs-sample chart](images/nodejs-sample.png)
 
 Whatever you named your deployment (i.e. name), open up the command line and type `deployment=name`(Mac/Linux) or `set deployment=name`(Windows) for whatever name you entered. You can think of the [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) as all of the parts of your running application.
 Then:
@@ -46,11 +46,11 @@ Depending on if it's currently running on x86 or s390x, we can force it to run o
 If it's running on x86 now, force z with:
 
  `kubectl patch deployment $deployment --patch "$(cat zNodeSelector.yaml)"` from main MultiArchDockerICP directory.
-The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![z-select](../images/select-z.png)
+The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![z-select](images/select-z.png)
 
 If it's running on z, force x86 with:
 
-`kubectl patch deployment $deployment --patch "$(cat zNodeSelector.yaml)"` from main MultiArchDockerICP directory. The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![x-select](../images/select-x.png)
+`kubectl patch deployment $deployment --patch "$(cat zNodeSelector.yaml)"` from main MultiArchDockerICP directory. The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![x-select](images/select-x.png)
 
 `peer_pod="$(kubectl get pods -l app=$deployment-selector -o jsonpath='{.items[*].metadata.name}')"`
 
@@ -113,7 +113,7 @@ I'll find the arch by looking at the nodeInfo on the node where the pod is sched
 
           amd64
 ## Deal with Proxies with a ConfigMap
-In our first deployment, our app was confined within our premises, not requiring any calls to the outside world. However, in many cases an app will need to make calls to the outside world for things like live updates and information from web sites. Soon, our `outyet` deployment will need to check the golang git page to see if version 1.11 of go has been released. Later, our `href` application will need to call out to websites to check their internal and external hrefs. Many applications require this functionality and many corporations have proxies that prevent apps running in containers from making these calls natively. In order to achieve this functionality, we will be using ConfigMaps. A [configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) enables us to specifiy our configuration values in one place where they can be referenced by an application. This way if a user needs different values for something such as a proxy they can be changed in one place instead of digging into the application. Here is our proxy ConfigMap: ![Proxy Configmap](../images/proxy-configmap.png)
+In our first deployment, our app was confined within our premises, not requiring any calls to the outside world. However, in many cases an app will need to make calls to the outside world for things like live updates and information from web sites. Soon, our `outyet` deployment will need to check the golang git page to see if version 1.11 of go has been released. Later, our `href` application will need to call out to websites to check their internal and external hrefs. Many applications require this functionality and many corporations have proxies that prevent apps running in containers from making these calls natively. In order to achieve this functionality, we will be using ConfigMaps. A [configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) enables us to specifiy our configuration values in one place where they can be referenced by an application. This way if a user needs different values for something such as a proxy they can be changed in one place instead of digging into the application. Here is our proxy ConfigMap: ![Proxy Configmap](images/proxy-configmap.png)
 
 ##### Regular Users
 If a user doesn't need a proxy they can just not apply this ConfigMap since we will make it `optional` in the deployment.
@@ -123,7 +123,7 @@ If a user doesn't need a proxy they can just not apply this ConfigMap since we w
 ## Create deployments and services from yaml
 Here we will write a sample deployment file to use in our cluster.
 
-![deployment](../images/small-outyet-deploy.png)
+![deployment](images/small-outyet-deploy.png)
 
 This deployment attaches a label of small-outyet to identify it and selects pods with that same label running the gmoney23/small-outyet:1.0 image. The port as we learned before with docker is 8080 for the outyet application. This references the configMap we previously created to deal with proxies. The `envFrom` means that all of the variables from the configMap will be deployed. The configMapRef marked as `optional: true` means that if you didn't have a proxy and thus didn't apply the referenced configMap, you are not affected at all. This allows us to make an application that works for both proxy and regular users. Finally, the imagePullPolicy marked as `Always` means that we will check for a new version of the image every time we run a container from it. The default is that this happens for an image marked latest/no tag becuase that image is frequently updated with new versions. The default for images tagged with a version number is to only pull the image `IfNotPresent` which means if its not on the machine. This is because usually a versioned release is updated with a new version rather than updating that same versioned image. If that's not the case we can specify a different imagePullPolicy for those images like we do here with `Always` which overrides the defualt. If your image lies in a private repository we can also add a secret to reference it without having to `docker login` to the repository first. See [Pulling an image from a private registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/). This can be important in Kubernetes when many times the user should  not have direct access to the host server and you want to be able to pull from a private registry with authentication. That was a mouthful ... Now, we can simply apply this file to create the deployment.
 
@@ -131,7 +131,7 @@ This deployment attaches a label of small-outyet to identify it and selects pods
 
           deployment.extensions/small-outyet created
 
-Now, to enable us to connect to this app we need to deploy a service. We will create a yaml file for this as well called ![service.yaml](../images/service-outyet.png)
+Now, to enable us to connect to this app we need to deploy a service. We will create a yaml file for this as well called ![service.yaml](images/service-outyet.png)
 
 This service again uses the NodePort type mapping port 8080 as the container port and internal port to connect to the external nodePort.
 We can apply this as well to create the service.
@@ -200,13 +200,13 @@ I can do similary for all of the outyets, example-go-server, and node-web-app si
 ## Using Jobs with a CronJob
 A [job](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/) runs a number of pods in order to achieve a given number of successful completions at which point it is done. a A [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) runs a job on a time-based schedule. In this example, we will use our trusty href-counter and run a cronjob which will run it repeatedly every minute. We will then change the environment values sent into href-counter to get it to switch to a different website and look at its logs to tell us the results. Instead of mounting the environment variables directly in the pod we will be using a new [configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) and the one for proxies we created before to map configuration values to a container instead of hardcoding them in.
 ### First, lets create our ConfigMap
-Our configmap.yaml is as follows: ![configmap.yaml](../images/configmap.png)
+Our configmap.yaml is as follows: ![configmap.yaml](images/configmap.png)
 It simply maps the http-url for us to hit with the href-tool to the site-url configmap with key http-url.
 We will be patching this when we want to update our container's environment value. Now, let's create our configmap.
 
 `kubectl apply -f configmap.yaml`
 
-Next, we have to make our CronJob. The following yaml will suffice: ![Cronjob](../images/cronjob.png)
+Next, we have to make our CronJob. The following yaml will suffice: ![Cronjob](images/cronjob.png)
 
 This CronJob schedules a job every minute using href-counter as our label and our image as gmoney23/href:1.0. We also use our new ConfigMap in the valueFrom field of the `env` field where we specify our configMapKeyRef to reference a specific key. Finally, we connect to our proxy ConfigMap again since this app makes calls to outside websites. We should be all set. Time to make the cronjob.
 
@@ -241,4 +241,4 @@ THAT'S ALL FOLKS!
 An additional topic to look at after finishing everything here is:
 [Building a Helm Chart from kubernetes yaml files](https://www.ibm.com/blogs/bluemix/2017/10/quick-example-helm-chart-for-kubernetes/)
 
-##### [MAIN MENU](../README.md)
+##### [MAIN MENU](index.md)
