@@ -3,7 +3,7 @@
 # Throw error if DOCKER_REPO not set
 if [ -z "${DOCKER_REPO}" ]
 then
-	echo -e "\nError: DOCKER_REPO is not set. Please set this to your Docker repo !!!\n"
+  echo -e "\nError: DOCKER_REPO is not set. Please set this to your Docker repo !!!\n"
   echo -e "Usage:\n\tDOCKER_REPO=<my_docker_repo> VERSION=<version_number> IMAGE_PREPEND=<prepend_to_make_unique_image> LATEST=<true_or_false> ./Build_And_Push_Images.sh"
   exit 1
 fi
