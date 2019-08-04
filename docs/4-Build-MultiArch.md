@@ -218,7 +218,7 @@ Sample Command with my docker repo of `gmoney23` please replace with your docker
 
 Buildx [https://github.com/docker/buildx] has become a part of stable Docker builds with `Docker CE 19.03` as an experimental feature. 
 
-Since we have already enabled experimental features if our docker version is 19.03 or greater, we are ready to use buildx.
+Since we have already enabled experimental features if our docker version is 19.03 or greater, we are ready to use buildx. We have already built are images above using a script. Let's see what the future holds...
 
 First, we will create a new builder:
 ```
