@@ -27,29 +27,40 @@ Other architectures such as [Power](https://hub.docker.com/u/ppc64le/) and [arm3
 
 ## Checking Image Architecture
 Many times you will want to find out if an image supports your architecture. If it doesn't and you try to run it, you can get a nasty little error `standard_init_linux.go:185: exec user process caused "exec format error"` that stops your container from working. In hopes to avoid that trouble once we've already spent the time to pull the image and try to run it, here are the best ways to check images for their architecture.
-1. If the image exists on your system use docker inspect.
+
+### I. If the image exists on your system use docker inspect.
 
 `docker inspect -f '{{.Architecture}}' busybox`
+
                     amd64
 
-  **But what if the image isn't on your system?**
+**But what if the image isn't on your system?**
 
-  `docker inspect -f '{{.Architecture}}' alpine`
+`docker inspect -f '{{.Architecture}}' alpine`
 
         Error: No such object: alpine
 
-  In order to fix this you would have to pull the image and then inspect it.
-  i.e. `docker pull alpine` and then `docker inspect -f '{{.Architecture}}' alpine`
+In order to fix this you would have to pull the image and then inspect it. 
+
+i.e. `docker pull alpine` and then `docker inspect -f '{{.Architecture}}' alpine`
 
                    amd64
 
-  The problem with this is that you would potentially have to download some large images just to check if they are for your architecture, which is time-consuming and a waste of space.
+The problem with this is that you would potentially have to download some large images just to check if they are for your architecture, which is time-consuming and a waste of space.
 
-2. If the image isn't on your system, use the mplatform/mquery docker image
+### II. If the image isn't on your system, use the mplatform/mquery docker image
 
-REGULAR: `docker run --rm mplatform/mquery ibmcom/icp-nodejs-sample`
+REGULAR: 
 
-PROXY: `docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" mplatform/mquery ibmcom/icp-nodejs-sample`
+```
+docker run --rm mplatform/mquery ibmcom/icp-nodejs-sample
+```
+
+PROXY: 
+
+```
+docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" mplatform/mquery ibmcom/icp-nodejs-sample
+```
 
 <sup>where %http_proxy%, etc. are environment variables previously set in windows to the value of the http_proxy with set http_proxy=yourproxyaddress:yourproxyport. For mac/linux you would set with http_proxy=yourproxyaddress:yourproxyport and reference with $http_proxy</sup>
 
@@ -63,15 +74,23 @@ PROXY: `docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% 
 
 The mquery image is "A simple utility and backend for querying Docker v2 API-supporting registry images and reporting on *manifest list* multi-platform image support" [mquery project github page](https://github.com/estesp/mquery) which tells us which architectures a given image supports by checking its manifest list. If it is an image with no manifest list, it will tell us that (and which arch it supports) instead.
 
-  REGULAR: `docker run --rm mplatform/mquery s390x/node`
+  REGULAR: 
+  
+```
+docker run --rm mplatform/mquery s390x/node
+```
 
-  PROXY: `docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" mplatform/mquery s390x/node`
+  PROXY: 
+  
+```
+docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" mplatform/mquery s390x/node
+```
 
         Image: s390x/node
          * Manifest List: No
          * Supports: s390x/linux
 
-Note: You can also use the mainfest-tool itself and docker manifest inspect to do this but the manifest-tool needs to be installed first and gives more verbose output. The other alternative, the docker manifest inspect command doesn't work for all supported registries yet, ( it continues to be improved) and needs to be enabled (*it's currently experimental*). Thus, using the mquery image is generally better.
+Note: You can also use the mainfest-tool itself to do this but the manifest-tool needs to be installed first and gives more verbose output. The other alternative, the docker manifest inspect command doesn't work for all supported registries yet, ( it continues to be improved) and needs to be enabled (*it's currently experimental*). Thus, using the mquery image is generally better for checking arch support quickly.
 
 Next up, we will build some Node.js docker images and learn some Node.js docker best practices.
 # [Part 2: Node.js Docker Best Practices](2-Best-Practice-Nodejs.md)
