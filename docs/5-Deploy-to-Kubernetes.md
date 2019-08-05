@@ -31,7 +31,7 @@ kubectl exec $peer_pod -- bash -c "uname -m"
 
 (bash)
 
-to windows:
+to Windows:
 
 ```
 kubectl exec %peer_pod% -- bash -c "uname -m"
@@ -44,11 +44,29 @@ Again, you'll notice the kubectl command is exactly the same. We are just changi
 ## Helm ICP Node.js Sample
 If you have an icp instance, please go to the catalog and configure the nodejs-sample chart. ![nodejs-sample chart](images/nodejs-sample.png)
 
-Whatever you named your deployment (i.e. name), open up the command line and type `deployment=name`(Mac/Linux) or `set deployment=name`(Windows) for whatever name you entered. You can think of the [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) as all of the parts of your running application.
+Whatever you named your helm release (i.e. name), open up the command line and type:
+
+```
+release=name
+```
+(Mac/Linux) 
+
+```
+set release=name
+```
+(Windows) 
+
+Then, we can get the `deployment` from the `release` with
+
+```
+deployment="$(kubectl get deployment -l release=$release -o jsonpath='{.items[*].metadata.name}')"
+```
+
+for whatever name you entered. You can think of the [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) as all of the parts of your running application.
 Then:
 
 ```
-peer_pod="$(kubectl get pods -l app=$deployment-selector -o jsonpath='{.items[*].metadata.name}')"
+peer_pod="$(kubectl get pods -l release=$release -o jsonpath='{.items[*].metadata.name}')"
 ```
 
 In this case, we are using a label to determine one pod that belongs to your deployment. A [pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/) is the smallest unit in Kubernetes and is made up of all the containers in a given deployment (application) that have to be scheduled on the same node.
@@ -59,9 +77,9 @@ You may have noticed the `-o jsonpath='{.items[*].metadata.name}')` in the previ
 
 Since icp-nodejs-sample has a base image with bash, we can run bash on this pod to find out the architecture of the node it's running on:
 
- ```
- kubectl exec $peer_pod -- bash -c "uname -m"
- ```
+```
+kubectl exec $peer_pod -- bash -c "uname -m"
+```
 
 Depending on if it's currently running on x86 or s390x, we can force it to run on the other with a [nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/). (We could also force it to stay on that arch, but that's no fun). A `nodeSelector` is a special label which needs to be satisfied for a pod to be assigned to a node. The `nodeSelector` beta.kubernetes.io/arch: is for deploying pods on a node with the specified architecture. (i.e. specify z with beta.kubernetes.io/arch: s390x)
 
@@ -77,13 +95,13 @@ The file itself just includes the necessary nodeSelector with the correct number
 If it's running on z, force x86 with:
 
 ```
-kubectl patch deployment $deployment --patch "$(cat zNodeSelector.yaml)"
+kubectl patch deployment $deployment --patch "$(cat xNodeSelector.yaml)"
 ```
 
 from main MultiArchDockerICP directory. The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![x-select](images/select-x.png)
 
 ```
-peer_pod="$(kubectl get pods -l app=$deployment-selector -o jsonpath='{.items[*].metadata.name}')"
+peer_pod="$(kubectl get pods -l release=$release -o jsonpath='{.items[*].metadata.name}')"
 ```
 
 confirm the architecture changed with:
@@ -94,10 +112,14 @@ kubectl exec $peer_pod -- bash -c "uname -m"
 
 The `nodeSelector` element can be very useful when working with multiple architectures because in certain cases you only want your workload to go on one architecture of your multi-architecture cluster. For example, you may want a database to run without the need for sharding on LinuxONE and a deep learning workload to run on x86. This is one of the ways you can tell your cluster to do that. To see all the ways to assign pods to nodes look at [Assigning Pods to Nodes](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/)
 
-Set environment variables:
-
+Admin can run this command or check the console for ips
 ```
-CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}"
+```
+
+Non-admin will need to get ip from Admin for icp
+```
+CLUSTERIP=<your_proxyip>
 ```
 
 ```
@@ -138,14 +160,14 @@ We'll use the example-go-server image
 kubectl run go-example --image=gmoney23/example-go-server --port 5000 --image-pull-policy=Always
 ```
 
-        deployment.apps/go-example created
+`deployment.apps/go-example created`
 
 ```
 kubectl get deploy go-example
 ```
 
-NAME         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-go-example   1         1         1            1           4m
+      NAME         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+      go-example   1         1         1            1           4m
 
 This deployment is available. However, I can't access it from nodes outside of my cluster which is no good for a web app, so lets expose it to external connections by adding a nodePort service
 
@@ -184,7 +206,7 @@ I'll find the arch by looking at the nodeInfo on the node where the pod is sched
 kubectl get node $(kubectl get pod $peer_pod -o jsonpath='{.spec.nodeName}') -o jsonpath='{.status.nodeInfo.architecture}'
 ```
 
-          amd64
+`amd64`
 
 ## Deal with Proxies with a ConfigMap
 In our first deployment, our app was confined within our premises, not requiring any calls to the outside world. However, in many cases an app will need to make calls to the outside world for things like live updates and information from web sites. Soon, our `outyet` deployment will need to check the golang git page to see if version 1.11 of go has been released. Later, our `href` application will need to call out to websites to check their internal and external hrefs. Many applications require this functionality and many corporations have proxies that prevent apps running in containers from making these calls natively. In order to achieve this functionality, we will be using ConfigMaps. A [configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) enables us to specifiy our configuration values in one place where they can be referenced by an application. This way if a user needs different values for something such as a proxy they can be changed in one place instead of digging into the application. Here is our proxy ConfigMap: 
@@ -204,7 +226,11 @@ kubectl apply -f proxy-configmap.yaml
 from the main github project directory of your clone.
 
 ## Create deployments and services from yaml
-Here we will write a sample deployment file to use in our cluster.
+Here we will write a sample deployment file to use in our cluster. Move to the small-outyet directory from the main directory of your clone with:
+
+```
+cd small-outyet
+```
 
 ![deployment](images/small-outyet-deploy.png)
 
@@ -214,14 +240,20 @@ This deployment attaches a label of small-outyet to identify it and selects pods
 kubectl apply -f deployment.yaml
 ```
 
-          deployment.extensions/small-outyet created
+`deployment.extensions/small-outyet created`
 
-Now, to enable us to connect to this app we need to deploy a service. We will create a yaml file for this as well called ![service.yaml](images/service-outyet.png)
+Now, to enable us to connect to this app we need to deploy a service. We will create a yaml file for this as well called `service.yaml`.
+
+![service.yaml](images/service-outyet.png)
 
 This service again uses the NodePort type mapping port 8080 as the container port and internal port to connect to the external nodePort.
 We can apply this as well to create the service.
+
+```
 kubectl apply -f service.yaml
-service/small-outyet created
+```
+
+`service/small-outyet created`
 
 We can look at how the service maps to the pod by looking at the endpoints.
 
@@ -254,8 +286,14 @@ Here, we can now see the two pods endpoints using the service instead of the one
 
 To access the application itself I can get the IP and NodePort using kubectl
 
+Admin can run this command or check the console for ips
 ```
-CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}"
+```
+
+Non-admin will need to get ip from Admin for icp
+```
+CLUSTERIP=<your_proxyip>
 ```
 
 ```
@@ -272,27 +310,33 @@ I can plug this address into my browser to view the app. To clean app I can dele
 kubectl delete -f deployment.yaml
 ```
 
-deployment.extensions "small-outyet" deleted
+`deployment.extensions "small-outyet" deleted`
 
 ```
 kubectl delete -f service.yaml
 ```
 
-service "small-outyet" deleted`
+`service "small-outyet" deleted`
 
 For a new app of the same type, I can follow similar steps to access it:
+
+Move to `smallest outyet`
+
+```
+cd ../smallest-outyet
+```
 
 ```
 kubectl apply -f deployment.yaml
 ```
 
-deployment.extensions/smallest-outyet created
+`deployment.extensions/smallest-outyet created`
 
 ```
 kubectl apply -f service.yaml
 ```
 
-service/smallest-outyet created
+`service/smallest-outyet created`
 
 ```
 deployment=smallest-outyet
@@ -302,9 +346,16 @@ deployment=smallest-outyet
 peer_pod="$(kubectl get pods -l app=$deployment -o jsonpath='{.items[*].metadata.name}')"
 ```
 
+Admin can run this command or check the console for ips
 ```
-CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}"
 ```
+
+Non-admin will need to get ip from Admin for icp
+```
+CLUSTERIP=<your_proxyip>
+```
+
 
 ```
 NODEPORT=$(kubectl get svc $deployment -o jsonpath='{.spec.ports[0].nodePort}')
@@ -314,13 +365,21 @@ NODEPORT=$(kubectl get svc $deployment -o jsonpath='{.spec.ports[0].nodePort}')
 echo $CLUSTERIP:$NODEPORT
 ```
 
-I can do similarly for all of the outyets, example-go-server, and node-web-app since they are all webapps with similar constraints.
+We can follow similar steps for all of the outyets, example-go-server, and node-web-app, since they are all webapps with similar constraints.
 
 ## Using Jobs with a CronJob
 A [job](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/) runs a number of pods in order to achieve a given number of successful completions at which point it is done. a A [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) runs a job on a time-based schedule. In this example, we will use our trusty href-counter and run a cronjob which will run it repeatedly every minute. We will then change the environment values sent into href-counter to get it to switch to a different website and look at its logs to tell us the results. Instead of mounting the environment variables directly in the pod we will be using a new [configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) and the one for proxies we created before to map configuration values to a container instead of hardcoding them in.
 
+Move to `href-counter` application directory.
+
+```
+cd ../href-counter
+```
 ### First, lets create our ConfigMap
-Our configmap.yaml is as follows: ![configmap.yaml](images/configmap.png)
+Our configmap.yaml is as follows: 
+
+![configmap.yaml](images/configmap.png)
+
 It simply maps the http-url for us to hit with the href-tool to the site-url configmap with key http-url.
 We will be patching this when we want to update our container's environment value. Now, let's create our configmap.
 
@@ -328,7 +387,9 @@ We will be patching this when we want to update our container's environment valu
 kubectl apply -f configmap.yaml
 ```
 
-Next, we have to make our CronJob. The following yaml will suffice: ![Cronjob](images/cronjob.png)
+Next, we have to make our CronJob. The following yaml will suffice: 
+
+![Cronjob](images/cronjob.png)
 
 This CronJob schedules a job every minute using href-counter as our label and our image as gmoney23/href:1.0. We also use our new ConfigMap in the valueFrom field of the `env` field where we specify our configMapKeyRef to reference a specific key. Finally, we connect to our proxy ConfigMap again since this app makes calls to outside websites. We should be all set. Time to make the cronjob.
 
@@ -342,15 +403,17 @@ After waiting a few minutes, time to patch the configmap and see the changes...
 kubectl patch configmap site-url -p '{"data": {"http-url": "http://google.com"}}'
 ```
 
-With the configmap patched we should be able to see the changes to the logs of the pods run by the jobs from the CronJob.
+With the configmap patched we should be able to see the changes to the logs of the pods run by the jobs from the CronJob:
 
 ```
 kubectl logs -l app=href-counter
 ```
 
-      {"internal":5,"external":89}
-      {"internal":5,"external":86}
-      {"internal":8,"external":11}
+`{"internal":5,"external":89}`
+
+`{"internal":5,"external":86}`
+
+`{"internal":8,"external":11}`
 
 Indeed, our values have changed. Our work is complete, time to clean up.
 
@@ -358,13 +421,13 @@ Indeed, our values have changed. Our work is complete, time to clean up.
 kubectl delete -f cronjob.yaml
 ```
 
-cronjob.batch "href-counter" deleted
+`cronjob.batch "href-counter" deleted`
 
 ```
 kubectl delete -f configmap.yaml
 ```
 
-      configmap "site-url" deleted
+`configmap "site-url" deleted`
 
 In reality, our CronJob could be used to do anything from running the logs at the end of a day, to sending emails to a list of participants weekly, to running health checks on an application every minute to other automated tasks that need to be done every period of time.
 
