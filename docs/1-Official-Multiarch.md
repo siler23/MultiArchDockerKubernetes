@@ -1,4 +1,4 @@
-# 1. Getting Official with MultiArch Images
+# 1. Getting Official with Multi-arch Images
 
 This section goes through the official docker repositories for building images and what multi-architecture images are and how to spot them.
 
@@ -93,4 +93,4 @@ docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_pr
 Note: You can also use the mainfest-tool itself to do this but the manifest-tool needs to be installed first and gives more verbose output. The other alternative, the docker manifest inspect command doesn't work for all supported registries yet, ( it continues to be improved) and needs to be enabled (*it's currently experimental*). Thus, using the mquery image is generally better for checking arch support quickly.
 
 Next up, we will build some Node.js docker images and learn some Node.js docker best practices.
-# [Part 2: Node.js Docker Best Practices](2-Best-Practice-Nodejs.md)
+# [Part 2: Building Best-practice Node.js Docker Images](2-Best-Practice-Nodejs.md)

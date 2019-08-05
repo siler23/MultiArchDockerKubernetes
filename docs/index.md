@@ -2,15 +2,15 @@
 
 Proxy Users here is your extra part to start with:
 
-[Proxy PSA for Proxy Users](0-ProxyPSA.md)
+[Hello Proxy Users](0-ProxyPSA.md)
 
 For everyone else this guide has 5 main parts:
 
-1. [Official Docker Repos and Multi-Arch Primer](1-Official-Multiarch.md)
-2. [Build best practice nodejs docker images](2-Best-Practice-Nodejs.md)
-3. [Build best practice go docker images](3-Best-Practice-go.md)
-4. [Build multi-arch docker images](4-Build-MultiArch.md)
-5. [Deploy these images to your kubernetes cluster](5-Deploy-to-Kubernetes.md)
+1. [Getting Official with Multi-arch Images](1-Official-Multiarch.md)
+2. [Building Best-practice Node.js Docker Images](2-Best-Practice-Nodejs.md)
+3. [Building Best-practice Go Docker Images](3-Best-Practice-go.md)
+4. [Building Multi-arch Docker Images](4-Build-MultiArch.md)
+5. [Kubernetes Time](5-Deploy-to-Kubernetes.md)
 
 ## Prerequisites
 * Have an up and running Kubernetes cluster

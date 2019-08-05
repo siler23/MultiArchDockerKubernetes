@@ -1,4 +1,4 @@
-# 4. Building your multi-arch images
+# 4. Bringing Multi-arch Images to a Computer Near You
 
 This section goes through installing the manifest tool and building the multi-arch docker images.
 
@@ -316,10 +316,10 @@ Hearing about qemu fills us with determination ...
 
 ## OPTIONAL SECTIONS
 
-### Recommended: [Most users should try if they have docker 19.03 CE or later]: [Using the next generation build tool Buildx for seamless multi-arch builds](4-Multiarch-buildx-addendum.md)
+### Recommended: [Most users should try if they have docker 19.03 CE or later]: [The future - Using Buildx to make Multi-arch a Way of Life](4-Multiarch-buildx-addendum.md)
 
-### Extra Content: [Most Users Should Skip]: [Overview of Process the Manual Way Building on Separate Machines](4-Multiarch-manual-addendum.md)
+### Extra Content: [Most Users Should Skip]: [The past - The Manual Way aka Herding Cats](4-Multiarch-manual-addendum.md)
 
 **This optional path is a manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path.**
 
-# [Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)
+# [Part 5: Kubernetes Time](5-Deploy-to-Kubernetes.md)

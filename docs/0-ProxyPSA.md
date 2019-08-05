@@ -1,4 +1,4 @@
-# Hello Proxy users
+# Hello Proxy Users
 We will show how to use a proxy for docker, how to use a proxy throughout this guide and give links to great proxy user articles.
 
 ## Docker proxy for push/pull
@@ -127,4 +127,4 @@ If you still have docker proxy needs see this article [Docker Behind a Corporate
 
 ## Onwards
 
-##### [1 - Official Docker Repos and Multi-Arch Primer](1-Official-Multiarch.md)
+##### [Part 1: Getting Official with Multi-arch Images](1-Official-Multiarch.md)

@@ -1,4 +1,4 @@
-# 3. Making go apps with Docker
+# 3. Building Best-practice Go Docker Images
 We will go over three apps and show how to optimize our go code for Docker
 
 1. Go example Outyet program
@@ -186,4 +186,4 @@ gmoney23/href       latest              df5ad8db9a46        4 days ago          
 
 For more go best practices and tips with Docker see this [excellent article](https://blog.docker.com/2016/09/docker-golang/)
 
-# [Part 4: Time to build some images!](4-Build-MultiArch.md)
+# [Part 4: Bringing Multi-arch Images to a Computer Near You!](4-Build-MultiArch.md)

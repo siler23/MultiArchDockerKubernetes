@@ -1,9 +1,9 @@
-# Overview of Process the Manual Way - Building on Separate Machines
+# The past - The Manual Way aka Herding Cats
 
 ## If Using Proxy
 If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
-## Good ole Manual Docker Buildin' fun
+## Overview of Process the Manual Way - Building on Separate Machines
 
 **Below is a manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path to follow the main path click to go to [part 5](5-Deploy-to-Kubernetes.md)**
 
@@ -163,4 +163,4 @@ manifest-tool --username gmoney23 --password *** push from-spec smallest-outyet/
 
 Having our hands dirty fills us with determination...
 
-# [Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)
+# [Part 5: Kubernetes Time](5-Deploy-to-Kubernetes.md)

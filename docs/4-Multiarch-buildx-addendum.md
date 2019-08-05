@@ -1,9 +1,9 @@
-# Buildx: Seamless multi-arch builds are in your future
+# The future - Using Buildx to make Multi-arch a Way of Life
 
 ## If Using Proxy
 If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
-## Using the next generation build tool Buildx for seamless multi-arch builds
+## Buildx: Seamless multi-arch builds are in your future
 
 Buildx [https://github.com/docker/buildx] has become a part of stable Docker builds with `Docker CE 19.03` as an experimental feature. 
 
@@ -82,10 +82,10 @@ Now, it's time to use the multi-arch images in Kubernetes!
 
 ## OPTIONAL SECTION
 
-### Extra Content: [Most Users Should Skip]: [Overview of Process the Manual Way Building on Separate Machines](4-Multiarch-manual-addendum.md)
+### Extra Content: [Most Users Should Skip]: [The past - The Manual Way aka Herding Cats](4-Multiarch-manual-addendum.md)
 
 **This optional path is a manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path.**
 
 The ease of multiarch with buildx fills us with determination...
 
-# [Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)
+# [Part 5: Kubernetes Time](5-Deploy-to-Kubernetes.md)

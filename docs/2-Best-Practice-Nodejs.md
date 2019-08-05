@@ -1,4 +1,4 @@
-# 2. Making Node.js apps with Docker
+# 2. Building Best-practice Node.js Docker Images
 First, we will go over the icp-node-js-sample app and Dockerfile. Then, we will see Dockerfile best practices for nodejs using the basic hello world app from the Node.js site.
 
 ### Node.js Download for Later
@@ -49,4 +49,5 @@ Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ co
 
 The above Dockerfile can be used as a template for creating best-practice nodejs Docker images in the future. For further help in crafting the best docker images possible for Node.js see [Node.js Docker Best Practices](https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md).
 
-# [Part 3: Time to get go-ing](3-Best-Practice-go.md)
+Knowing that it's **Time to get go-ing** fills us with determination...
+# [Part 3: Building Best-practice Go Docker Images](3-Best-Practice-go.md)
