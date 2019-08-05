@@ -376,4 +376,4 @@ THAT'S ALL FOLKS!
 An additional topic to look at after finishing everything here is:
 [Building a Helm Chart from Kubernetes yaml files](https://www.ibm.com/blogs/bluemix/2017/10/quick-example-helm-chart-for-kubernetes/)
 
-# [MAIN MENU](index.md)
+# [HOME](index.md)
