@@ -43,7 +43,10 @@ Search the docs for the content you want by using the search bar at the top of e
 **Non-Proxy Users** (Regular Users) Start Here:</br> [Official Docker Repos and Multi-Arch Primer](1-Official-Multiarch.md)
 
 **Proxy Users** Start Here:<br/> [Proxy PSA for Proxy Users](0-ProxyPSA.md)
-## Possible Next Step
+
+## Places to go and things to see in the Future
+
+### Possible Next Step
 [Building a Helm Chart from Kubernetes yaml files](https://www.ibm.com/blogs/bluemix/2017/10/quick-example-helm-chart-for-kubernetes/)
 
 ### IBM Guidance on Containers and ICP Multi-Arch Process
@@ -51,5 +54,5 @@ Search the docs for the content you want by using the search bar at the top of e
 
 - [IBM Cloud Private Enablement Guide for ISV](https://developer.ibm.com/linuxonpower/ibm-cloud-private-on-power/isv-guide/)
 
-### Shoutout to Mkdocs
+## Shoutout to Mkdocs
 I made this site with [mkdocs](https://www.mkdocs.org) using the [material](https://squidfunk.github.io/mkdocs-material/) theme.
