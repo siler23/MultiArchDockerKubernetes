@@ -121,7 +121,7 @@ docker images gmoney23/smallest-outyet
 
 ***From 13.9MB -> 6.89MB for a grand transformation of 786MB -> 6.89MB, a little over 114X smaller than the original image! That's a lot of room for dessert :)***
 
-## Why was our Container Transformation Worth it?
+## Why was our Go Container Transformation Worth it?
 
 ### Security
 

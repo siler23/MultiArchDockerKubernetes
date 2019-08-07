@@ -33,7 +33,7 @@ Here is what it will look like in the browser:
 
 **Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell**
 
-## Why Should I Optimize my images?
+## Why Should I Optimize my Nodejs Images?
 
 ### Security
 
