@@ -47,7 +47,7 @@ Here's the git page for go 1.11 when you click YES
 
 ![outyet secondary page](images/outyet-link.PNG)
 
-Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
+**Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.**
 
 To check it's size I ran:
 
@@ -78,7 +78,7 @@ If you're on a server instead of a desktop go to `http://serverip:3000` where se
 
 *Note: The cli hangs and the web page looks the same as for `outyet`, since it's the same app, so I've omitted images here.*
 
-Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
+**Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.**
 
 To check it's size I ran:
 
@@ -109,9 +109,9 @@ If you're on a server instead of a desktop go to `http://serverip:3000` where se
 
 *Note: You know the drill. The cli hangs and the web page looks the same as for `outyet` and `small-outyet`, since it's the same app, so I've omitted images here.*
 
-Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell
+**Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.**
 
-To check it's size I ran 
+To check it's size I ran: 
 
 ```
 docker images gmoney23/smallest-outyet
@@ -139,12 +139,11 @@ Click on <a href="http://localhost:3000/" target="_blank">example-go-server</a> 
 
 If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 
-Here is what it will look like in the browser 
+Here is what it will look like in the browser:
 
 ![go-hello-web](images/go_hello.PNG)
 
-Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell
-
+**Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.**
 
 Here's what it will look like in the cli after its been shut down.
 

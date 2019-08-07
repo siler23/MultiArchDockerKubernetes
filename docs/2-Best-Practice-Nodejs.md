@@ -27,9 +27,11 @@ Click on <a href="http://localhost:3000/" target="_blank">nodejs-sample</a> (whi
 
 If on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 
-Here is what it will look like in the browser ![node-web-output](images/icp-nodejs-sample.PNG)
+Here is what it will look like in the browser:
 
-Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell
+![node-web-output](images/icp-nodejs-sample.PNG)
+
+**Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell**
 
 ## Node.js Hello World Server
 
@@ -47,11 +49,11 @@ Click on <a href="http://localhost:3000/" target="_blank">node-web-app</a> (whil
 
 If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 
-Here is what it will look like in the browser: 
+Here is what it will look like in the browser:
 
 ![node-web-output](images/node-web-browser.png)
 
-Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
+**Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.**
 
 Here's what it will look like in the cli, once you've quit
 
