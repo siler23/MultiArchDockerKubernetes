@@ -160,13 +160,27 @@ You can test this out by first running an image that is from a different platfor
 
 ##### Linux
 
+Run the docker pull with --platform for the architecture different from yours.
+
+**amd64 host (most users)**
+
+```
+docker pull --platform s390x hello-world
+```
+
+**s390x host (a few potential users)**
+
 ```
 docker pull --platform amd64 hello-world
 ```
 
+**Then, run the pulled image**
+
 ```
 docker run hello-world
 ```
+
+*Note: while the pictures in this section are for an s390x host, if you are using an amd64 host you should be getting similar errors with the s390x image you pulled. No need to worry that some of the messages say `s390x` for you vs `amd64` in the pictures that follow in this section.*
 
 You should get an exec format error like so:
 ![Failure exec error](images/exec_error_amd64_s390x.png)
