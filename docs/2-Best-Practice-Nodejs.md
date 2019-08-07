@@ -33,6 +33,18 @@ Here is what it will look like in the browser:
 
 **Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell**
 
+## Why Should I Optimize my images?
+
+### Security
+
+Running the container as root can potentially leave open security vulnerabilities which can be curtailed by running the container as a regular user. We will see how to do this in the example below.
+
+Additionally, smaller base images such as the alpine image below have a smaller attack surface in terms of vulnerable software (more software / packages = more potential vulnerabilities) and thus, regularly perform magnitudes better (have many times less vulnerabilities) in container security scans than base images of more traditional operating systems such as Ubuntu.
+
+### Size
+
+By minimizing the size of images, we can prevent wasting resources for large base images and prevent using a ton of storage for all of our container images. Moreover, we can take better advantage of cache for our running containers.
+
 ## Node.js Hello World Server
 
 Here is the [node-web-app Dockerfile](https://github.com/siler23/MultiArchDockerICP/blob/master/node-web-app/Dockerfile) where we can see comments for how to write a best practice Node.js Dockerfile. The simple code we're dockerizing for the web app comes from this [Node.js guide](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/)

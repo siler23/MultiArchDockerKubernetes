@@ -121,6 +121,20 @@ docker images gmoney23/smallest-outyet
 
 ***From 13.9MB -> 6.89MB for a grand transformation of 786MB -> 6.89MB, a little over 114X smaller than the original image! That's a lot of room for dessert :)***
 
+## Why was our Container Transformation Worth it?
+
+### Security
+
+Running the container from scratch enables us to take away even a shell into our container. The only software we are adding to the container is the executable that needs to run. This dramatically reduces the attack surface and means you don't need to worry about the security patches for the libs/bins you are adding in your container (since you aren't adding any). You simply need to worry about the security of your application itself and the pieces it is made with.
+
+### Size
+
+By minimizing the size of images, we can prevent wasting resources for large base images and prevent using a ton of storage for all of our container images. Moreover, we can take better advantage of cache for our running containers.
+
+### Clarity
+
+It is easy to see exactly what we are doing in our container and we don't need to worry about potential problems when updating the bins/libs of our container because we don't have any.
+
 If the scratch image has piqued your interest, check out this article exploring ["Inside Docker's FROM scratch"](https://www.mgasch.com/post/scratch/)
 
 ## Go Hello world
