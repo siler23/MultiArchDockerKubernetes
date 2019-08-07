@@ -1,15 +1,16 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  labels: {app: outyet}
-  name: outyet
+  labels: {app: outyet, lab: multi-arch-docker}
+  name: multi-arch-docker-outyet
 spec:
   selector:
     matchLabels:
       app: outyet
+      lab: multi-arch-docker
   replicas: 1
   template:
-    metadata: {labels: {app: outyet}}
+    metadata: {labels: {app: outyet, lab: multi-arch-docker}}
     spec:
       containers:
       - name: outyet
@@ -18,5 +19,5 @@ spec:
           - containerPort: 8080
         envFrom:
         - configMapRef:
-            name: proxy-config
+            name: multi-arch-docker-proxy-config
             optional: true

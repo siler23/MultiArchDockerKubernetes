@@ -1,10 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata: 
-  name: outyet 
+  name: multi-arch-docker-outyet 
+  labels:
+    app: outyet
+    lab: multi-arch-docker    
 spec:
   selector:
     app: outyet
+    lab: multi-arch-docker
   ports:
   - protocol: TCP
     port: 8080

@@ -7,8 +7,8 @@ Proxy Users here is your extra part to start with:
 For everyone else this guide has 5 main parts:
 
 1. [Getting Official with Multi-arch Images](1-Official-Multiarch.md)
-2. [Building Best-practice Node.js Docker Images](2-Best-Practice-Nodejs.md)
-3. [Building Best-practice Go Docker Images](3-Best-Practice-go.md)
+2. [Learning How to Build Best-practice Node.js Docker Images](2-Best-Practice-Nodejs.md)
+3. [Guide to Building Best-practice Go Docker Images](3-Best-Practice-go.md)
 4. [Building Multi-arch Docker Images](4-Build-MultiArch.md)
 5. [Kubernetes Time](5-Deploy-to-Kubernetes.md)
 

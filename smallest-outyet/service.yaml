@@ -1,10 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata: 
-  name: smallest-outyet
+  name: multi-arch-docker-smallest-outyet
+  labels:
+    app: smallest-outyet 
+    lab: multi-arch-docker
 spec:
   selector:
     app: smallest-outyet
+    lab: multi-arch-docker
   ports:
   - protocol: TCP
     port: 8080

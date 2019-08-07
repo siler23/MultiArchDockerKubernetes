@@ -30,21 +30,36 @@ Many times you will want to find out if an image supports your architecture. If 
 
 ### I. If the image exists on your system use docker inspect.
 
-`docker inspect -f '{{.Architecture}}' busybox`
+Assume I ran previosly:
 
-                    amd64
+```
+docker pull busybox
+```
+
+Now, I can run:
+
+```
+docker inspect -f '{{.Architecture}}' busybox
+```
+
+![Inspect for Architecture Docker](images/inspect_for_arch_docker.png)
 
 **But what if the image isn't on your system?**
 
-`docker inspect -f '{{.Architecture}}' alpine`
+```
+docker inspect -f '{{.Architecture}}' alpine
+```
 
-        Error: No such object: alpine
+![Inspect Unsuccessful Alpine](images/alpine_docker_inspect_failure.png)
 
-In order to fix this you would have to pull the image and then inspect it. 
 
-i.e. `docker pull alpine` and then `docker inspect -f '{{.Architecture}}' alpine`
+In order to fix this you would have to pull the image and then inspect it:
 
-                   amd64
+```
+docker pull alpine && docker inspect -f '{{.Architecture}}' alpine
+```
+
+![Time-Consuming Docker Inspect](images/Docker_Inspect_Lots_of_Work.png)
 
 The problem with this is that you would potentially have to download some large images just to check if they are for your architecture, which is time-consuming and a waste of space.
 
@@ -64,13 +79,7 @@ docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_pr
 
 <sup>where %http_proxy%, etc. are environment variables previously set in windows to the value of the http_proxy with set http_proxy=yourproxyaddress:yourproxyport. For mac/linux you would set with http_proxy=yourproxyaddress:yourproxyport and reference with $http_proxy</sup>
 
-
-        Image: ibmcom/icp-nodejs-sample
-        * Manifest List: Yes
-        * Supported platforms:
-        - linux/amd64
-        - linux/ppc64le
-        - linux/s390x
+![Mquery Nodejs Sample](images/mplatform-mquery-icp-nodejs-sample.png)
 
 The mquery image is "A simple utility and backend for querying Docker v2 API-supporting registry images and reporting on *manifest list* multi-platform image support" [mquery project github page](https://github.com/estesp/mquery) which tells us which architectures a given image supports by checking its manifest list. If it is an image with no manifest list, it will tell us that (and which arch it supports) instead.
 
@@ -86,11 +95,9 @@ docker run --rm mplatform/mquery s390x/node
 docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" mplatform/mquery s390x/node
 ```
 
-        Image: s390x/node
-         * Manifest List: No
-         * Supports: s390x/linux
+![s390x Node mplatform Mquery](images/s390x-node-mplatform-mquery.png)
 
-Note: You can also use the mainfest-tool itself to do this but the manifest-tool needs to be installed first and gives more verbose output. The other alternative, the docker manifest inspect command doesn't work for all supported registries yet, ( it continues to be improved) and needs to be enabled (*it's currently experimental*). Thus, using the mquery image is generally better for checking arch support quickly.
+Note: You can also use the mainfest-tool itself to do this, but the manifest-tool needs to be installed first and gives more verbose output. The other alternative, the docker manifest inspect command doesn't work for all supported registries yet, ( it continues to be improved) and needs to be enabled (*it's currently experimental*). Thus, using the mquery image is generally better for checking arch support quickly.
 
 Next up, we will build some Node.js docker images and learn some Node.js docker best practices.
-# [Part 2: Building Best-practice Node.js Docker Images](2-Best-Practice-Nodejs.md)
+# [Part 2: Learning How to Build Best-practice Node.js Docker Images](2-Best-Practice-Nodejs.md)

@@ -3,14 +3,16 @@ kind: Deployment
 metadata:
   labels:
     app: smallest-outyet
-  name: smallest-outyet
+    lab: multi-arch-docker
+  name: multi-arch-docker-smallest-outyet
 spec:
   selector:
     matchLabels:
       app: smallest-outyet
+      lab: multi-arch-docker
   replicas: 1
   template:
-    metadata: {labels: {app: smallest-outyet}}
+    metadata: {labels: {app: smallest-outyet, lab: multi-arch-docker}}
     spec:
       containers:
       - name: smallest-outyet
@@ -19,7 +21,7 @@ spec:
           - containerPort: 8080
         envFrom:
         - configMapRef:
-            name: proxy-config
+            name: multi-arch-docker-proxy-config
 # If not specified will ignore=> works w/ proxy w/out affecting others.
             optional: true
 # If not specified default is always for :latest or image with

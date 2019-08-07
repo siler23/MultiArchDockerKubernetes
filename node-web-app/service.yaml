@@ -1,10 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata: 
-  name: node-web
+  name: multi-arch-docker-node-web
+  labels: 
+    app: node-web
+    lab: multi-arch-docker
 spec:
   selector:
     app: node-web
+    lab: multi-arch-docker
   ports:
   - protocol: TCP
     port: 8080

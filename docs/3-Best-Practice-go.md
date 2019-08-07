@@ -1,11 +1,15 @@
-# 3. Building Best-practice Go Docker Images
-We will go over three apps and show how to optimize our go code for Docker
+# 3. Guide to Building Best-practice Go Docker Images
+
+We will go over three apps and show how to optimize our Golang code for Docker.
 
 1. Go example Outyet program
 2. Go Hello world
 3. Go href-counter
 
-### But first...Download go for later
+*Note: We will build all of these images in Part 4. This is a guide explaining the ins and outs of making the files to do so [i.e. the foundation for success]*
+
+
+### But first...Download Go for later
 Here is the [Go download](https://golang.org/dl/) if you want to run it locally to familiarize yourself with it/develop with it. For this section, you actually don't need golang installed on your computer because of the power of Docker.
 
 ## If Using Proxy
@@ -25,11 +29,23 @@ Run it with:
 docker run --rm -it -p 3000:8080 gmoney23/outyet
 ```
 
-Go to `localhost:3000` in web browser to see it.
+*Note: This should just hang in the cli:*
 
-Here's what it will look like in the browser ![outyet initial page](images/outyet-page.png)
+![Hanging Cli](images/hanging_outyet_working.png)
 
-Here's the git page for go 1.11 when you click YES ![outyet secondary page](images/outyet-link.PNG)
+The real action is in the browser. 
+
+Click on <a href="http://localhost:3000/" target="_blank">outyet</a> (while it's running) to see it in your web browser.
+
+If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
+
+It should look like this:
+
+![outyet initial page](images/outyet-page.png)
+
+Here's the git page for go 1.11 when you click YES 
+
+![outyet secondary page](images/outyet-link.PNG)
 
 Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
 
@@ -41,9 +57,7 @@ docker images gmoney23/outyet
 
 I got a whopping 786 Mb, no room for dessert :(
 
-```
-gmoney23/outyet     latest              1bfff6d47511        4 days ago          ***786MB***
-```
+![Massive Outyet Image](images/big_outyet_image_size.png)
 
 *Seeing the room for improvement fills us with determination ...*
 
@@ -58,9 +72,11 @@ Run it with
 docker run --rm -it -p 3000:8080 gmoney23/small-outyet
 ```
 
-Go to `localhost:3000` in web browser to see it.
+Click on <a href="http://localhost:3000/" target="_blank">small-outyet</a> (while it's running) to see it in your web browser.
 
-*Note: The  web page looks the same as for outyet since it's the same app so I've omitted images here.*
+If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
+
+*Note: The cli hangs and the web page looks the same as for `outyet`, since it's the same app, so I've omitted images here.*
 
 Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
 
@@ -70,9 +86,7 @@ To check it's size I ran:
 docker images gmoney23/small-outyet
 ```
 
-```
-gmoney23/small-outyet   latest              aa8b746dc754        4 days ago          ***13.9MB***
-```
+![Getting smaller yet](images/getting_smaller_yet.png)
 
 From 786MB -> 13.9MB that's some serious shrinkage.
 
@@ -83,15 +97,17 @@ How do we get smaller than starting with a 5MB alpine image? How about start wit
 
 ![Smallest-Outyet-Dockerfile](images/smallest-outyet-Dockerfile.png)
 
-Run it with 
+Run it: 
 
 ```
 docker run --rm -it -p 3000:8080 gmoney23/smallest-outyet
 ```
 
-Go to `localhost:3000` in web browser to see it.
+Click on <a href="http://localhost:3000/" target="_blank">smallest-outyet</a> (while it's running) to see it in your web browser.
 
-*Note: The  web page looks the same as for outyet since it's the same app so I've omitted images here.*
+If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
+
+*Note: You know the drill. The cli hangs and the web page looks the same as for `outyet` and `small-outyet`, since it's the same app, so I've omitted images here.*
 
 Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell
 
@@ -101,16 +117,14 @@ To check it's size I ran
 docker images gmoney23/smallest-outyet
 ```
 
-```
-gmoney23/smallest-outyet   latest              5a46896a4b2c        4 days ago          ***6.89MB***
-```
+![Smallest Outyet Size](images/smallest_outyet_size.png)
 
 ***From 13.9MB -> 6.89MB for a grand transformation of 786MB -> 6.89MB, a little over 114X smaller than the original image! That's a lot of room for dessert :)***
 
 If the scratch image has piqued your interest, check out this article exploring ["Inside Docker's FROM scratch"](https://www.mgasch.com/post/scratch/)
 
 ## Go Hello world
-Using the techniques we just employed, let's so how small of a Docker image we can make for a [basic go hello world app](https://gist.github.com/enricofoltran/10b4a980cd07cb02836f70a4ab3e72d7) from gist.
+Using the techniques we just employed, let's see how small of a Docker image we can make for a [basic go hello world app](https://gist.github.com/enricofoltran/10b4a980cd07cb02836f70a4ab3e72d7) from gist.
 Say hello to the [example-go-server Dockerfile](https://github.com/siler23/MultiArchDockerICP/blob/master/example-go-server/Dockerfile).
 
 ![example-go-server-Dockerfile](images/example-go-server-Dockerfile.png)
@@ -121,13 +135,20 @@ Run it with:
 docker run --rm -it -p 3000:5000 gmoney23/example-go-server
 ```
 
-Go to `localhost:3000` in web browser to see it.
+Click on <a href="http://localhost:3000/" target="_blank">example-go-server</a> (while it's running) to see it in your web browser.
 
-Here is what it will look like in the browser ![go-hello-web](images/go_hello.PNG)
+If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 
-Here's what it will look like in the cli ![go-hello-cli](images/go-hello-cli.png)
+Here is what it will look like in the browser 
+
+![go-hello-web](images/go_hello.PNG)
 
 Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell
+
+
+Here's what it will look like in the cli after its been shut down.
+
+![go-hello-cli](images/go-hello-cli.png)
 
 To check its size I ran:
 
@@ -135,23 +156,24 @@ To check its size I ran:
 docker images gmoney23/example-go-server
 ```
 
-```
-gmoney23/example-go-server   latest              a4907d7afdda        4 days ago          4.9MB
-```
+![Small Go Web Server Image](images/go-web-server-small-image-size.png)
 
-This gives us an image of 4.9MB, quite astounding!
+This gives us an image size of 4.9MB, quite astounding!
 
 ## Href-Counter
 Finally, lets dockerize an app that prints output for us instead of a web app. [Href-counter](https://github.com/alexellis/href-counter) is an application that counts the number of internal and external-hrefs on a web-page to rate SEO. It is referenced in the multi-stage build manual for docker we looked at [before](https://docs.docker.com/develop/develop-images/multistage-build/) and fits the bill for us. Let's take a peak at the [href-counter Dockerfile](https://github.com/siler23/MultiArchDockerICP/blob/master/href-counter/Dockerfile) inside of MultiArchDockerICP.
 
 ![href-counter-Dockerfile](images/href-counter-Dockerfile.png)
-We can try the tool out against different sites using:
+
+*Note: This tool is operating on live websites so numbers will change as sites are updated, altering their internal and external hrefs*
+
+We can try the tool out against different sites (starting with this site) using:
 
 ```
-docker run --rm -e url=http://blog.alexellis.io/ gmoney23/href
+docker run --rm -e url=https://siler23.github.io/MultiArchDockerICP/ gmoney23/href
 ```
 
-`{"internal":51,"external":2}`
+`{"internal":35,"external":9}`
 
 **Note: For PROXY**: add your -e for http_proxy, etc.:
 
@@ -165,13 +187,13 @@ docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_pr
 docker run --rm -e url=http://yahoo.com gmoney23/href
 ```
 
-`{"internal":16,"external":74}`
+`{"internal":29,"external":82}`
 
 ```
-docker run --rm -e url=http://honolulu.gov gmoney23/href
+docker run --rm -e url=http://blog.alexellis.io/ gmoney23/href
 ```
 
-`{"internal":78,"external":31}`
+`{"internal":51,"external":2}`
 
 You'll be pleased to know our Dockerfile made this image small as well. We can see with:
 
@@ -179,10 +201,7 @@ You'll be pleased to know our Dockerfile made this image small as well. We can s
 docker images gmoney23/href
 ```
 
-```
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-gmoney23/href       latest              df5ad8db9a46        4 days ago          ***5MB***
-```
+![Small Href Image Size](images/href_image_size_small.png)
 
 For more go best practices and tips with Docker see this [excellent article](https://blog.docker.com/2016/09/docker-golang/)
 

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: proxy-config
+  name: multi-arch-docker-proxy-config
 # If want to target other namespace add namespace field
 # namespace: default
 #

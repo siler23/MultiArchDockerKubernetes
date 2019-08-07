@@ -1,5 +1,7 @@
-# 2. Building Best-practice Node.js Docker Images
+# 2. Learning How to Build Best-practice Node.js Docker Images
 First, we will go over the icp-node-js-sample app and Dockerfile. Then, we will see Dockerfile best practices for nodejs using the basic hello world app from the Node.js site.
+
+*Note: We will build all of these images in Part 4. This is a guide explaining the ins and outs of making the files to do so [i.e. the foundation for success]*
 
 ### Node.js Download for Later
 Here is the [Node.js download](https://nodejs.org/en/) if you want to run it locally to familiarize yourself with it/develop with it. For this guide, you actually don't need Node.js installed on your computer because of the magic of Docker. 
@@ -21,7 +23,9 @@ Run it with:
 docker run --rm -it -p 3000:3000 gmoney23/nodejs-sample
 ```
 
-Go to `localhost:3000` in web browser to see it. If on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address
+Click on <a href="http://localhost:3000/" target="_blank">nodejs-sample</a> (while it's running) to see it in your web browser.
+
+If on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 
 Here is what it will look like in the browser ![node-web-output](images/icp-nodejs-sample.PNG)
 
@@ -39,15 +43,21 @@ Run it with:
 docker run --rm -it -p 3000:8080 gmoney23/node-web-app
 ```
 
-Go to `localhost:3000` in a web browser to see it. If you're on a server instead of desktop go to `http://serverip:3000` where serverip is your server's ip address
+Click on <a href="http://localhost:3000/" target="_blank">node-web-app</a> (while it's running) to see it in your web browser.
 
-Here is what it will look like in the browser ![node-web-output](images/node-web-browser.png)
+If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 
-Here's what it will look like in the cli ![node-web-cli](images/node-web-cli.png)
+Here is what it will look like in the browser: 
 
-Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell
+![node-web-output](images/node-web-browser.png)
+
+Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
+
+Here's what it will look like in the cli, once you've quit
+
+![node-web-cli](images/node-web-cli.png)
 
 The above Dockerfile can be used as a template for creating best-practice nodejs Docker images in the future. For further help in crafting the best docker images possible for Node.js see [Node.js Docker Best Practices](https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md).
 
 Knowing that it's **Time to get go-ing** fills us with determination...
-# [Part 3: Building Best-practice Go Docker Images](3-Best-Practice-go.md)
+# [Part 3: Guide to Building Best-practice Go Docker Images](3-Best-Practice-go.md)

@@ -3,13 +3,14 @@ kind: CronJob
 metadata:
   labels:
     app: href-counter
-  name: href-counter
+    lab: multi-arch-docker
+  name: multi-arch-docker-href-counter
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
-        metadata: {labels: {app: href-counter}}
+        metadata: {labels: {app: href-counter, lab: multi-arch-docker}}
         spec:
           containers:
           - name: href-counter
@@ -18,10 +19,10 @@ spec:
             - name: url
               valueFrom:
                 configMapKeyRef:
-                  name: site-url
+                  name: multi-arch-docker-site-url
                   key: http-url
             envFrom:
             - configMapRef:
-                name: proxy-config
+                name: multi-arch-docker-proxy-config
                 optional: true
           restartPolicy: OnFailure

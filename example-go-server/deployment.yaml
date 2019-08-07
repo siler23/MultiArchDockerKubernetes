@@ -3,14 +3,16 @@ kind: Deployment
 metadata:
   labels: 
     app: go-example
-  name: go-example
+    lab: multi-arch-docker
+  name: multi-arch-docker-go-example
 spec:
   selector:
     matchLabels:
       app: go-example
+      lab: multi-arch-docker
   replicas: 1
   template:
-    metadata: {labels: {app: go-example}}
+    metadata: {labels: {app: go-example, lab: multi-arch-docker}}
     spec:
       containers:
       - name: go-example

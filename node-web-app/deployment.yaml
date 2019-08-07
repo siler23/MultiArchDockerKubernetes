@@ -1,15 +1,18 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  labels: {app: node-web}
-  name: node-web
+  labels: 
+    app: node-web
+    lab: multi-arch-docker
+  name: multi-arch-docker-node-web
 spec:
   selector:
     matchLabels:
       app: node-web
+      lab: multi-arch-docker
   replicas: 1
   template:
-    metadata: {labels: {app: node-web}}
+    metadata: {labels: {app: node-web, lab: multi-arch-docker}}
     spec:
       containers:
       - name: node-web

@@ -5,8 +5,8 @@ nav:
     - Home: index.md
     - 0. Hello Proxy Users: 0-ProxyPSA.md
     - 1. Getting Official with Multi-arch Images: 1-Official-Multiarch.md
-    - 2. Building Best-practice Node.js Docker Images: 2-Best-Practice-Nodejs.md
-    - 3. Building Best-practice Go Docker Images: 3-Best-Practice-go.md
+    - 2. Learning How to Build Best-practice Node.js Docker Images: 2-Best-Practice-Nodejs.md
+    - 3. Guide to Building Best-practice Go Docker Images: 3-Best-Practice-go.md
     - 4. Building Multi-arch Docker Images:
         - Bringing Multi-arch Images to a Computer Near You: 4-Build-MultiArch.md
         - The future - Using Buildx to make Multi-arch a Way of Life: 4-Multiarch-buildx-addendum.md
