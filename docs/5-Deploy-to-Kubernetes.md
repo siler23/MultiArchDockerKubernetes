@@ -189,15 +189,19 @@ service=$(kubectl get svc -l app=node-web,lab=multi-arch-docker -o jsonpath='{.i
 
 Now we can find the external address the service exposed for us.
 
-Admin can run this command or check the console for ips
+##### Admin can run this command or check the console for the Proxy IP
+
 ```
 CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}"
 ```
 
-Non-admin will need to get ip from Admin for icp
+##### Non-admin Needs to get the IP from Admin
+
 ```
 CLUSTERIP=<your_proxyip>
 ```
+
+#### Visit Node Web App
 
 ```
 NODEPORT=$(kubectl get svc $service -o jsonpath='{.spec.ports[0].nodePort}')
@@ -369,20 +373,21 @@ kubectl get ep -l app=smallest-outyet,lab=multi-arch-docker
 
 We can see the two pods' endpoints using the service instead of the one before.
 
-### Time to See if its Outyet
+### Get the Access Info for Outyet
 
 To access the application itself, I can get the IP and `NodePort` using kubectl
 
-Admin can run this command or check the console for ips
+#### Admin can run this command or check the console for the Proxy IP
 ```
 CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}"
 ```
 
-Non-admin will need to get ip from Admin for icp
+#### Non-admin Needs to get the IP from Admin
 ```
 CLUSTERIP=<your_proxyip>
 ```
 
+### Time to See if it's Outyet
 ```
 NODEPORT=$(kubectl get svc -l app=smallest-outyet,lab=multi-arch-docker -o jsonpath='{.items[0].spec.ports[0].nodePort}')
 ```
@@ -434,15 +439,19 @@ service=multi-arch-docker-small-outyet
 peer_pod="$(kubectl get pods -l app=small-outyet,lab=multi-arch-docker -o jsonpath='{.items[*].metadata.name}')"
 ```
 
-Admin can run this command or check the console for ips
+#### Admin can run this command or to find out the Proxy IP
+
 ```
 CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}"
 ```
 
-Non-admin will need to get ip from Admin for icp
+#### Non-admin Needs to get the IP from the Admin
+
 ```
 CLUSTERIP=<your_proxyip>
 ```
+
+### It's still out!
 
 ```
 NODEPORT=$(kubectl get svc $service -o jsonpath='{.spec.ports[0].nodePort}')
