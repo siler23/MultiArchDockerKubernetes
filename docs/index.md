@@ -13,11 +13,30 @@ For everyone else this guide has 5 main parts:
 5. [Kubernetes Time](5-Deploy-to-Kubernetes.md)
 
 ## Prerequisites
+
 * Have an up and running Kubernetes cluster
+
 * Setup access to that cluster using kubectl
-* Download docker on your workstation
+
+* Register for a DockerHub account following the process outlined on DockerHub <a href="https://success.docker.com/article/how-do-you-register-for-a-docker-id" target="_blank">here</a> 
+
+* Download Docker on your workstation from DockerHub using your newly created free account <a href="https://hub.docker.com/?overlay=onboarding" target="_blank">here</a> 
+
+## What will this Guide do for you?
 
 This guide will start by looking at what Official Repositories are and how to build from them. Then, it will shine light on how to tell if an app will run on your platform (architecture). Next, we will look at how best to build images for go and nodejs in docker with examples and then actually build these images with Multi-Architecture manifests. Finally, we will use these images or my pre-built images to deploy to a Kubernetes cluster.
+
+
+## What in the Tarnation is a Container?
+
+Application containers make use of linux kernel features to provide lightweight isolation by limiting what a process (running program) can see ([namespaces](http://man7.org/linux/man-pages/man7/namespaces.7.html)), what system resources a process can use ([cgroups](http://man7.org/linux/man-pages/man7/cgroups.7.html])), and what system calls a process can make ([seccomp](http://man7.org/linux/man-pages/man2/seccomp.2.html)) combined with other features such as enhanced access control ([SELinux](https://selinuxproject.org/page/Main_Page)). We use [container images](https://docs.docker.com/v17.09/engine/userguide/storagedriver/imagesandcontainers/#images-and-layers) (all the dependencies and files our application needs to run put together in layers), which we can bundle and store in image repositories to use to start containers (run a process using the files from the aforementioned container image (image) tar file in an environment with the isolation described above).
+
+
+If you just finished reading the above and want to get a little depper into some of the parts of containers I just name-dropped please have a look see at [What even is a container: namespaces and cgroups](https://jvns.ca/blog/2016/10/10/what-even-is-a-container/). 
+
+
+If you want a technical deep-dive into containers and container runtimes getting into the nitty-gritty, the fabulous 4 part series [Container Runtimes](https://www.ianlewis.org/en/container-runtimes-part-1-introduction-container-r) is the happy path for you.
+
 
 ## Get the Code
 The code for this guide is on the accompanying github at `https://github.com/siler23/MultiArchDockerICP`. You can also access this page by clicking on the github icon on the top right of every page.

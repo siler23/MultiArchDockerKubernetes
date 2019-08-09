@@ -1,6 +1,6 @@
 # 1. Getting Official with Multi-arch Images
 
-This section goes through the official docker repositories for building images and what multi-architecture images are and how to spot them.
+This section goes through the official Docker repositories for building images and what multi-architecture images are and how to spot them.
 
 ## If Using Proxy
 If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that 0-ProxyPSA document.

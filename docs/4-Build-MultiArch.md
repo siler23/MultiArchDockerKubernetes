@@ -26,46 +26,47 @@ docker version
 
 *Under Server:* If `Experimental: false` like in the above picture, you need to do the *Server* steps. If `Experimental: true` then you can skip the *Server* steps.
 
-###### Linux
-*Client*
+### Linux
+
+#### Client
 
 ```
-ls ~/.docker
+ls "$HOME/.docker"
 ```
 
-If `~/.docker/config.json` exists:
+If `$HOME/.docker/config.json` exists:
 
 (Open config.json with your favorite text editor)
 
 ```
-vim ~/.docker/config.json
+vim $HOME/.docker/config.json
 ```
 
 Add `"experimental": "enabled"` to config.json file
 
 ![End Result](images/Linux_add_experimental.png)
 
-If `~/.docker/config.json` doesn’t exist:
+If `$HOME/.docker/config.json` doesn’t exist:
 
 ```
-mkdir .docker
+mkdir "$HOME/.docker"
 ```
 
 ```
-echo $'{\n    "experimental": "enabled"\n}' | tee ~/.docker/config.json
+echo $'{\n    "experimental": "enabled"\n}' | tee $HOME/.docker/config.json
 ```
 
 Add `"experimental": "enabled"` to `config.json` file
 
 ![Client Enabled Result](images/Linux_add_client_fresh.png)
 
-*Server*
+#### Server
 
 ```
 sudo ls /etc/docker
 ```
 
-If `/etc/docker/daemon.json` exists:
+##### If /etc/docker/daemon.json exists:
 
 (Open daemon.json with your favorite text editor)
 
@@ -75,7 +76,7 @@ sudo vim /etc/docker/daemon.json
 
 Add `"experimental": true` to `daemon.json` file
 
-If `/etc/docker/daemon.json` doesn't exist:
+##### If /etc/docker/daemon.json doesn't exist:
 
 ```
 echo $'{\n    "experimental": true\n}' | sudo tee /etc/docker/daemon.json
@@ -83,11 +84,13 @@ echo $'{\n    "experimental": true\n}' | sudo tee /etc/docker/daemon.json
 
 ![Server Enabled Result](images/Linux_add_server_experimental.png)
 
-*Restart Docker to Pick Up Changes*
+#### Restart Docker to Pick Up Changes
 
 ```
 sudo service docker restart
 ```
+
+#### Check for Success
 
 Once docker is started, check `docker version` again to see experimental set to true for both client and server:
 
@@ -97,40 +100,26 @@ docker version
 
 ![Docker Version Final Linux](images/Docker_Version_Final_Mac.png)
 
-###### Mac
+### Mac / Windows
 Open the Preferences from the menu
 
 ![Open Settings](images/open_preferences_docker_mac.png)
 
-*Client*
+#### Client
 
 Go to `Command Line` and click to Enable experimental features. Then, click `Apply and Restart`.
 
 ![Command Line Mac](images/Command_Line_Mac.png)
 
-*Server*
+#### Server
 
 Go to `Docker Engine` and change false to true for experimental. Then, click`Apply & Restart`.
 
 ![Docker Engine Mac](images/Docker_Engine_Mac.png)
 
+#### Check for Success
+
 Once docker is started check `docker version` again to see experimental set to true for both client and server:
-
-```
-docker version
-```
-
-![Docker Version Final Mac](images/Docker_Version_Final_Mac.png)
-
-###### Windows
-In the Windows file explorer go to your users directory and see if `.docker` exists if so open that directory and edit it with your favorite text editor. Add `"experimental": "enabled"` to the `config.json` file
-
-If it doesn't exist, make a new folder called `.docker` and create a new file called `config.json`. Add "experimental: enabled" inside of brackets.
-
-![End Result](images/Enabling-experimental.PNG)
-
-## Check for Success
-In the end check your docker version to see that the change persisted. Specifically, look for client's experimental section being marked `Experimental: True`.
 
 ```
 docker version
@@ -158,7 +147,7 @@ Their implementation works for an amd64 host, so I made a separate image with th
 
 You can test this out by first running an image that is from a different platform than yours. 
 
-##### Linux
+#### Linux
 
 Run the docker pull with --platform for the architecture different from yours.
 
@@ -215,7 +204,7 @@ docker run hello-world
 
 We can also see in the `hello-world` output the `amd64` architecture mentioned. Thus we have achieved our goal of running amd64 (x86) images on `s390x`.
 
-##### Mac / Windows
+#### Mac / Windows
 Docker for Mac and Docker for Windows have this capability built-in out of the box so we don't even have to set it up with an image run. However, don't just take my word for it, demonstrate it to yourself by trying the `s390x` (z) image for `hello-world` on your `amd64` (x86) mac:
 
 ```
@@ -266,9 +255,9 @@ In order to build all of the images for both amd64 (x86) and s390x (z) architect
 
 ![Build and Push Images Script Overview](images/build_and_push_script.png)
 
-If you want to visit the script itself you can open in it a new tab by right-clicking on: 
+If you want to visit the script itself to see it up close and in a bigger font, please click on:
 
-[Build and Push Images Script](https://github.com/siler23/MultiArchDockerICP/blob/master/Build_And_Push_Images.sh)
+<a href="https://github.com/siler23/MultiArchDockerICP/blob/master/Build_And_Push_Images.sh" target="_blank">Build and Push Images Script</a> 
 
 ### Login to your Docker Repo [Account]
 
@@ -289,6 +278,16 @@ Enter your password when prompted:
 ![Docker Login Before Script](images/docker_login_before_script.png)
 
 ### Run Script to build and Push Images
+
+Change into the main directory where you cloned or downloaded the github repository.
+
+If for example you git cloned the repository from your current directory with default options use:
+
+```
+cd MultiArchDockerICP/
+```
+
+If not `cd` to the proper directory based on where you put this github repository.
 
 #### Without Proxy
 

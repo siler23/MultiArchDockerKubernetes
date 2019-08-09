@@ -269,7 +269,7 @@ kubectl get svc go-example -o yaml --export > go-example-svc.yaml
 
 ### Find the Node Hosting my Pod
 
-Since this pod doesn't have a bash shell since it was made from scratch I'll use kubectl get pods -o wide to figure out which node it is running on. We should now which architecture each host node is or could get that from our cluster admin.
+Since this pod doesn't have a bash shell since it was made from scratch I'll use kubectl get pods -o wide to figure out which node it is running on. We should know which architecture each host node is or could get that from our cluster admin.
 
 ```
 kubectl get pods -l run=go-example -o wide
@@ -466,7 +466,7 @@ kubectl delete -f small-outyet/service.yaml
 `service "multi-arch-docker-small-outyet" deleted`
 
 ## Using Jobs with a CronJob
-A [job](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/) runs a number of pods in order to achieve a given number of successful completions at which point it is done. a A [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) runs a job on a time-based schedule. In this example, we will use our trusty `href-counter`, running a cronjob to will launch it every minute. We will then change the environment values sent into href-counter, to get it to switch to a different website and look at its logs to tell us the results. Instead of mounting the environment variables directly in the pod we will be using a new [configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) and the one for proxies we created before to map configuration values to a container instead of hardcoding them in (if applicable)
+A [job](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/) runs a number of pods in order to achieve a given number of successful completions at which point it is done. A [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) runs a job on a time-based schedule. In this example, we will use a cronjob to launch our trusty `href-counter`, every minute. We will then change the environment values sent into href-counter, to get it to switch to a different website and look at its logs to show us the results. Instead of mounting the environment variables directly in the pod we will be using a new [configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) and the one for proxies we created before to map configuration values to a container instead of hardcoding them in (if applicable)
 
 ### First, lets create our ConfigMap
 Our configmap.yaml is as follows: 

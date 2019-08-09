@@ -93,7 +93,7 @@ From 786MB -> 13.9MB that's some serious shrinkage.
 *The amount the container has shrunk fills us with determination...*
 
 ### Iteration 3: Smallest-Outyet
-How do we get smaller than starting with a 5MB alpine image? How about start with nothing. We are going to use the special [scratch image](https://hub.docker.com/_/scratch/) which starts fresh. Since everything can be set to statically compile in go with `CGO_ENABLED=0`, we can just package the binary in a container without even a shell. This lessons attack surface area and gives us a super light image. On top of that, we'll add some compiler flags for production to cut off the debug info space in go. Here's how it all looks in the [smallest-outyet Dockerfile](https://github.com/siler23/MultiArchDockerICP/blob/master/smallest-outyet/Dockerfile)
+How do we get smaller than starting with a 5MB alpine image? How about start with nothing. We are going to use the special [scratch image](https://hub.docker.com/_/scratch/) which starts fresh. Since everything can be set to statically compile in go with `CGO_ENABLED=0`, we can just package the binary in a container without even a shell. This lessons attack surface and gives us a super light image. On top of that, we'll add some compiler flags for production to cut off the debug info space in go. Here's how it all looks in the [smallest-outyet Dockerfile](https://github.com/siler23/MultiArchDockerICP/blob/master/smallest-outyet/Dockerfile)
 
 ![Smallest-Outyet-Dockerfile](images/smallest-outyet-Dockerfile.png)
 
