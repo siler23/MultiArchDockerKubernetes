@@ -86,6 +86,6 @@ Now, it's time to use the multi-arch images in Kubernetes!
 
 **This optional path is a manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path.**
 
-The ease of multiarch with buildx fills us with determination...
+The knowledge that you can build and push multiarch images with one command is splendid, it fills you with [determination](https://undertale.fandom.com/wiki/Determination)
 
 # [Part 5: Kubernetes Time](5-Deploy-to-Kubernetes.md)

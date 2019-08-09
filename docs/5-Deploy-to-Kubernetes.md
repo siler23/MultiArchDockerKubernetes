@@ -1,6 +1,11 @@
 # 5. Kubernetes Time
 We will use the multi-arch docker images we have created to make deployments that will run across s390x and amd64 nodes as well as force pods to go to either s390x or amd64 nodes. We will cover the use of deployments, services, configmaps, jobs, and cronjobs including how to easily declare a proxy to your application.
 
+## If you are starting to lose your determination
+
+![Undertale](images/Undertale.jpg)
+The inspiring picture fills you with [determination](https://undertale.fandom.com/wiki/Determination).
+
 ## If Using Proxy
 If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
@@ -542,7 +547,17 @@ In reality, our `CronJob` could be used to do anything from running the logs at 
 
 If you need more `Kubernetes` skills, cover your bases with [Kubernetes basics](https://kubernetes.io/docs/guides/kubernetes-basics/). Additionally, if you have a hard time figuring out which api to use for a given type look no [further](https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html)
 
-THAT'S ALL FOLKS!
+## Closing Note
+
+**THAT'S ALL FOLKS!**
+
+*Note to Self: Oops that was off message. I meant to say:*
+
+**Knowing you have a guide as a template for future success fills you with [determination](https://undertale.fandom.com/wiki/Determination).**
+
+*Note to Self: My ability to stay on message and reminisce about [Undertale](https://store.steampowered.com/app/391540/Undertale/) fills me with [determination](https://undertale.fandom.com/wiki/Determination).*
+
+*Note to Self: What will I ever do [next](https://studybreaks.com/tvfilm/deltarune-is-the-sequel-undertale-needs/)*
 
 ## Additional Topic
 An additional topic to look at after finishing everything here is:

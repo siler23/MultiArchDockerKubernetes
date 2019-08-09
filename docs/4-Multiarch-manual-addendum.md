@@ -161,6 +161,6 @@ manifest-tool --username gmoney23 --password *** push from-spec smallest-outyet/
 manifest-tool --username gmoney23 --password *** push from-spec smallest-outyet/manifest.yaml
 ```
 
-Having our hands dirty fills us with determination...
+Having your hands dirty fills you with [determination](https://undertale.fandom.com/wiki/Determination).
 
 # [Part 5: Kubernetes Time](5-Deploy-to-Kubernetes.md)

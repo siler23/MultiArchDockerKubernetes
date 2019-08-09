@@ -237,7 +237,7 @@ This works successfully (without additional configuration needed)
 
 Docker for Mac and Docker for Windows run containers in a vm (either a hypervisor of hyperkit on mac [a derivative of xhyve] or hyper-v on windows) which it uses to run a linux kernel that in this case is set up with binfmt_misc which is used to emulate the other architectures by setting up a file system with a static arch interpreter (a qemu linux-user static file for the given arch). The setup we did for linux, the Docker install does for us on mac/windows as part of the setup for that environment. Meanwhile, since we already have a linux kernel with docker for linux, we get the privilege of making our own changes to it for now. If this brief talk about Docker for Mac internals piqued your interest, I highly encourage [Under the Hood: Demystifying Docker For Mac CE Edition](http://collabnix.com/how-docker-for-mac-works-under-the-hood/)
 
-The ease of running and building multi-arch on mac and windows fills us with determination ...
+The ease of running and building multi-arch on mac and windows fills you with [determination](https://undertale.fandom.com/wiki/Determination).
 
 ### Consequences of Cross-Architecture Docker
 
@@ -325,7 +325,7 @@ DOCKER_REPO=gmoney23
 DOCKER_REPO=${DOCKER_REPO} VERSION=1.0 IMAGE_PREPEND=marchdockerlab LATEST=true http_proxy=http://myproxy:8080 https_proxy=http://myproxy:8080 no_proxy="localhost, 127.0.0.1" ./Build_And_Push_Images.sh
 ```
 
-Hearing about qemu fills us with determination ...
+Knowing that qemu builds a bridge from x to z for free fills you with [determination](https://undertale.fandom.com/wiki/Determination).
 
 ## OPTIONAL SECTIONS
 

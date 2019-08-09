@@ -59,7 +59,7 @@ I got a whopping 786 Mb, no room for dessert :(
 
 ![Massive Outyet Image](images/big_outyet_image_size.png)
 
-*Seeing the room for improvement fills us with determination ...*
+*Seeing the room for improvement fills you with [determination](https://undertale.fandom.com/wiki/Determination).*
 
 ### Iteration 2: Small-outyet
 In this second iteration, we attempt to improve upon our original endeavor using multi-stage builds. What is a multi-stage build? A build that happens in multiple stages. Mic drop...[Docker multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/). Employing multi-stage builds we can build the golang application in a container with all the bells and whistles and then copy it to another container that is much smaller. Here, we just run it. This works well with golang because when we set `CGO_ENABLED=0` everything is statically compiled. In this case, we're going to copy it into the Alpine base image which should cut down its size considerably. Without further ado, the [small-outyet Dockerfile](https://github.com/siler23/MultiArchDockerICP/blob/master/small-outyet/Dockerfile) below:
@@ -90,7 +90,7 @@ docker images gmoney23/small-outyet
 
 From 786MB -> 13.9MB that's some serious shrinkage.
 
-*The amount the container has shrunk fills us with determination...*
+*The amount the container has shrunk fills you with [determination](https://undertale.fandom.com/wiki/Determination).*
 
 ### Iteration 3: Smallest-Outyet
 How do we get smaller than starting with a 5MB alpine image? How about start with nothing. We are going to use the special [scratch image](https://hub.docker.com/_/scratch/) which starts fresh. Since everything can be set to statically compile in go with `CGO_ENABLED=0`, we can just package the binary in a container without even a shell. This lessons attack surface and gives us a super light image. On top of that, we'll add some compiler flags for production to cut off the debug info space in go. Here's how it all looks in the [smallest-outyet Dockerfile](https://github.com/siler23/MultiArchDockerICP/blob/master/smallest-outyet/Dockerfile)

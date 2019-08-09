@@ -120,6 +120,8 @@ use -e with the proxy variables:
 
 This passes the environment variables to the docker container.
 
+The fact that somebody thought of you and your proxy situation, fills you with [determination](https://undertale.fandom.com/wiki/Determination).
+
 ##### To use a proxy with Kubernetes see [5-Deploy-to-Kubernetes](5-Deploy-to-Kubernetes.md)
 
 #### Reference

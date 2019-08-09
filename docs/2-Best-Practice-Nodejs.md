@@ -73,5 +73,5 @@ Here's what it will look like in the cli, once you've quit
 
 The above Dockerfile can be used as a template for creating best-practice nodejs Docker images in the future. For further help in crafting the best docker images possible for Node.js see [Node.js Docker Best Practices](https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md).
 
-Knowing that it's **Time to get go-ing** fills us with determination...
+Knowing that it's **Time to get go-ing** fills you with [determination](https://undertale.fandom.com/wiki/Determination).
 # [Part 3: Guide to Building Best-practice Go Docker Images](3-Best-Practice-go.md)

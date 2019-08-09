@@ -99,5 +99,7 @@ docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_pr
 
 Note: You can also use the mainfest-tool itself to do this, but the manifest-tool needs to be installed first and gives more verbose output. The other alternative, the docker manifest inspect command doesn't work for all supported registries yet, ( it continues to be improved) and needs to be enabled (*it's currently experimental*). Thus, using the mquery image is generally better for checking arch support quickly.
 
+Knowing that the `exec format error` can be a thing of the past fills you with [determination](https://undertale.fandom.com/wiki/Determination).
+
 Next up, we will build some Node.js docker images and learn some Node.js docker best practices.
 # [Part 2: Learning How to Build Best-practice Node.js Docker Images](2-Best-Practice-Nodejs.md)
