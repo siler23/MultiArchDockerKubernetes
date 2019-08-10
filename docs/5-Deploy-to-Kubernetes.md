@@ -192,13 +192,13 @@ Now we can find the external address the service exposed for us.
 ##### Admin can run this command or check the console for the Proxy IP
 
 ```
-CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}"
+EXTERNAL_IP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 ```
 
 ##### Non-admin Needs to get the IP from Admin
 
 ```
-CLUSTERIP=<your_proxyip>
+EXTERNAL_IP=<your_proxy_node_ip>
 ```
 
 #### Visit Node Web App
@@ -207,10 +207,10 @@ CLUSTERIP=<your_proxyip>
 NODEPORT=$(kubectl get svc $service -o jsonpath='{.spec.ports[0].nodePort}')
 ```
 
-Then, we can visit the app at
+Now, visit the app at the url you get from the following command:
 
 ```
-echo $CLUSTERIP:$NODEPORT
+echo $EXTERNAL_IP:$NODEPORT
 ```
 
 in our browser
@@ -264,7 +264,17 @@ kubectl get svc go-example
 
 ![Get Service Go Example](images/Get_svc_go_example.png)
 
-Now if I go to my `$CLUSTERIP:32532` as specified in port I can see my app running. You will probably see a different one for yours, so go to that one.
+Now if I go to my `$EXTERNAL_IP:32532` as specified in port I can see my app running. To print out this as a url to go to like before run the following commands:
+
+```
+NODEPORT=$(kubectl get svc go-example -o jsonpath='{.spec.ports[0].nodePort}')
+```
+
+```
+echo $EXTERNAL_IP:$NODEPORT
+```
+
+*Note: Notice that this parsed the NodePort that was visible in the earlier output using jsonpath in order to easily print it for us with echo like before.*
 
 Now I can save the deployment and service I created to a file with --export.
 
@@ -278,7 +288,7 @@ kubectl get svc go-example -o yaml --export > go-example-svc.yaml
 
 ### Find the Node Hosting my Pod
 
-Since this pod doesn't have a bash shell since it was made from scratch I'll use kubectl get pods -o wide to figure out which node it is running on. We should know which architecture each host node is or could get that from our cluster admin.
+Since this pod doesn't have a bash shell, since it was made from scratch, I'll use `kubectl get pods -o wide` to figure out which node it is running on. (We should know which architecture each host node is or could get that from our cluster admin.)
 
 ```
 kubectl get pods -l run=go-example -o wide
@@ -379,12 +389,12 @@ To access the application itself, I can get the IP and `NodePort` using kubectl
 
 #### Admin can run this command or check the console for the Proxy IP
 ```
-CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}"
+EXTERNAL_IP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 ```
 
 #### Non-admin Needs to get the IP from Admin
 ```
-CLUSTERIP=<your_proxyip>
+EXTERNAL_IP=<your_proxy_node_ip>
 ```
 
 ### Time to See if it's Outyet
@@ -393,7 +403,7 @@ NODEPORT=$(kubectl get svc -l app=smallest-outyet,lab=multi-arch-docker -o jsonp
 ```
 
 ```
-echo $CLUSTERIP:$NODEPORT
+echo $EXTERNAL_IP:$NODEPORT
 ```
 
 I can plug this address into my browser to view the app.
@@ -442,13 +452,13 @@ peer_pod="$(kubectl get pods -l app=small-outyet,lab=multi-arch-docker -o jsonpa
 #### Admin can run this command or to find out the Proxy IP
 
 ```
-CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}"
+EXTERNAL_IP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 ```
 
 #### Non-admin Needs to get the IP from the Admin
 
 ```
-CLUSTERIP=<your_proxyip>
+EXTERNAL_IP=<your_proxy_node_ip>
 ```
 
 ### It's still out!
@@ -458,7 +468,7 @@ NODEPORT=$(kubectl get svc $service -o jsonpath='{.spec.ports[0].nodePort}')
 ```
 
 ```
-echo $CLUSTERIP:$NODEPORT
+echo $EXTERNAL_IP:$NODEPORT
 ```
 
 We can visit this address, to visit our `small-outyet` app.
