@@ -210,7 +210,7 @@ NODEPORT=$(kubectl get svc $service -o jsonpath='{.spec.ports[0].nodePort}')
 Now, visit the app at the url you get from the following command:
 
 ```
-echo $EXTERNAL_IP:$NODEPORT
+echo "http://${EXTERNAL_IP}:${NODEPORT}"
 ```
 
 in our browser
@@ -271,7 +271,7 @@ NODEPORT=$(kubectl get svc go-example -o jsonpath='{.spec.ports[0].nodePort}')
 ```
 
 ```
-echo $EXTERNAL_IP:$NODEPORT
+echo "http://${EXTERNAL_IP}:${NODEPORT}"
 ```
 
 *Note: Notice that this parsed the NodePort that was visible in the earlier output using jsonpath in order to easily print it for us with echo like before.*
@@ -403,7 +403,7 @@ NODEPORT=$(kubectl get svc -l app=smallest-outyet,lab=multi-arch-docker -o jsonp
 ```
 
 ```
-echo $EXTERNAL_IP:$NODEPORT
+echo "http://${EXTERNAL_IP}:${NODEPORT}"
 ```
 
 I can plug this address into my browser to view the app.
@@ -468,7 +468,7 @@ NODEPORT=$(kubectl get svc $service -o jsonpath='{.spec.ports[0].nodePort}')
 ```
 
 ```
-echo $EXTERNAL_IP:$NODEPORT
+echo "http://${EXTERNAL_IP}:${NODEPORT}"
 ```
 
 We can visit this address, to visit our `small-outyet` app.

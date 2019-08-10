@@ -35,7 +35,7 @@ docker run --rm -it -p 3000:8080 gmoney23/outyet
 
 The real action is in the browser. 
 
-Click on <a href="http://localhost:3000/" target="_blank">outyet</a> (while it's running) to see it in your web browser.
+Click on <a href="http://localhost:3000/" target="_blank" rel="noopener" rel="noreferrer">outyet</a> (while it's running) to see it in your web browser.
 
 If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 
@@ -72,7 +72,7 @@ Run it with
 docker run --rm -it -p 3000:8080 gmoney23/small-outyet
 ```
 
-Click on <a href="http://localhost:3000/" target="_blank">small-outyet</a> (while it's running) to see it in your web browser.
+Click on <a href="http://localhost:3000/" target="_blank" rel="noopener" rel="noreferrer">small-outyet</a> (while it's running) to see it in your web browser.
 
 If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 
@@ -103,7 +103,7 @@ Run it:
 docker run --rm -it -p 3000:8080 gmoney23/smallest-outyet
 ```
 
-Click on <a href="http://localhost:3000/" target="_blank">smallest-outyet</a> (while it's running) to see it in your web browser.
+Click on <a href="http://localhost:3000/" target="_blank" rel="noopener" rel="noreferrer">smallest-outyet</a> (while it's running) to see it in your web browser.
 
 If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 
@@ -149,7 +149,7 @@ Run it with:
 docker run --rm -it -p 3000:5000 gmoney23/example-go-server
 ```
 
-Click on <a href="http://localhost:3000/" target="_blank">example-go-server</a> (while it's running) to see it in your web browser.
+Click on <a href="http://localhost:3000/" target="_blank" rel="noopener" rel="noreferrer">example-go-server</a> (while it's running) to see it in your web browser.
 
 If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 

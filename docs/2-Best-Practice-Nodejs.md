@@ -23,7 +23,7 @@ Run it with:
 docker run --rm -it -p 3000:3000 gmoney23/nodejs-sample
 ```
 
-Click on <a href="http://localhost:3000/" target="_blank">nodejs-sample</a> (while it's running) to see it in your web browser.
+Click on <a href="http://localhost:3000/" target="_blank" rel="noopener" rel="noreferrer">nodejs-sample</a> (while it's running) to see it in your web browser.
 
 If on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 
@@ -57,7 +57,7 @@ Run it with:
 docker run --rm -it -p 3000:8080 gmoney23/node-web-app
 ```
 
-Click on <a href="http://localhost:3000/" target="_blank">node-web-app</a> (while it's running) to see it in your web browser.
+Click on <a href="http://localhost:3000/" target="_blank" rel="noopener" rel="noreferrer">node-web-app</a> (while it's running) to see it in your web browser.
 
 If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 

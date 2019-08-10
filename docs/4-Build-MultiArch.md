@@ -257,7 +257,7 @@ In order to build all of the images for both amd64 (x86) and s390x (z) architect
 
 If you want to visit the script itself to see it up close and in a bigger font, please click on:
 
-<a href="https://github.com/siler23/MultiArchDockerICP/blob/master/Build_And_Push_Images.sh" target="_blank">Build and Push Images Script</a> 
+<a href="https://github.com/siler23/MultiArchDockerICP/blob/master/Build_And_Push_Images.sh" target="_blank" rel="noopener" rel="noreferrer">Build and Push Images Script</a> 
 
 ### Login to your Docker Repo [Account]
 
