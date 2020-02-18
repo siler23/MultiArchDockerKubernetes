@@ -195,14 +195,12 @@ Now we can find the external address the service exposed for us.
 ##### Admin can run this command or check the console for the Proxy IP
 
 ```
-CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+[ -z "$CLUSTERIP" ] && CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 ```
 
 ##### Non-admin Needs to get the IP from Admin
 
-```
-CLUSTERIP=<your_proxy_node_ip>
-```
+`CLUSTERIP=<your_proxy_node_ip>`
 
 #### Visit Node Web App
 
@@ -391,13 +389,12 @@ To access the application itself, I can get the IP and `NodePort` using kubectl
 
 #### Admin can run this command or check the console for the Proxy IP
 ```
-CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+[ -z "$CLUSTERIP" ] && CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 ```
 
 #### Non-admin Needs to get the IP from Admin
-```
-CLUSTERIP=<your_proxy_node_ip>
-```
+
+`CLUSTERIP=<your_proxy_node_ip>`
 
 ### Time to See if it's Outyet
 ```
@@ -454,14 +451,12 @@ peer_pod="$(kubectl get pods -l app=small-outyet,lab=multi-arch-docker -o jsonpa
 #### Admin can run this command or to find out the Proxy IP
 
 ```
-CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+[ -z "$CLUSTERIP" ] && CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 ```
 
 #### Non-admin Needs to get the IP from the Admin
 
-```
-CLUSTERIP=<your_proxy_node_ip>
-```
+`CLUSTERIP=<your_proxy_node_ip>`
 
 ### It's still out!
 
