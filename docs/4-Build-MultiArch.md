@@ -255,7 +255,9 @@ Next, we will use an amd64 host to build images for both architectures and use t
 
 ## Making multi-arch docker images
 
-In order to build all of the images for both amd64 (x86) and s390x (z) architectures, we will use a simple script that I wrote to go through the steps of building each individual architecture image with both a versioned and latest tag. Then, it creates a manifest list for each application and pushes it up to form a multiarch image for each of the applications we have gone over. It is heavily commented so it should explain itself.
+In order to build all of the images for amd64 (x86), s390x (z) architectures, and power (ppc64le) architectures we will use a simple script that I wrote to go through the steps of building each individual architecture image with both a versioned and latest tag. Then, it creates a manifest list for each application and pushes it up to form a multiarch image for each of the applications we have gone over. It is heavily commented so it should explain itself. 
+
+*Note: It has been updated to just create one `smallest-outyet` image currently by adding a new line `IMAGES=("smallest-outyet")` to override the full images list. You can simply uncomment this line to build all images but that will take a long time so this is a time save as the actual building is trivial (it is the repeatable process [which could easily be applied to all images as in this scenario] that is important).*
 
 ![Build and Push Images Script Overview](images/build_and_push_script.png)
 
