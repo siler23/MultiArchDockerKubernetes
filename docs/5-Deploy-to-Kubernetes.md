@@ -90,7 +90,7 @@ You may have noticed the `-o jsonpath='{.items[*].metadata.name}')` in the previ
 We used a [selector](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors) to select a pod with a specific set of labels. We can also do this with other objects that have labels such as deployments with:
 
 ```
-kubectl get deploy -l app=node-web,lab=multi-arch-docker -o jsonpath={.items}
+kubectl get deploy -l app=node-web,lab=multi-arch-docker
 ```
 
 ![Deploy Selector](images/deploy_selector_image.png)
@@ -129,9 +129,10 @@ deployment=$(kubectl get deploy -l app=node-web,lab=multi-arch-docker -o jsonpat
 
 The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![z-select](images/select-z.png)
 
-Now, a new pod will be created on the target architecture. Thus, first we will get our pod name and then check it's architecture again.
+Now, a new pod will be created on the target architecture. Thus, first we will get our pod name and then check it's architecture again after waiting ten seconds first with sleep to give the new pod time to be created.
+
 ```
-peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[0].metadata.name}')"
+sleep 10 && peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[0].metadata.name}')"
 ```
 
 confirm the architecture changed with:
@@ -152,9 +153,10 @@ kubectl patch deployment $deployment --patch "$(cat xNodeSelector.yaml)"
 
 from main MultiArchDockerICP directory. The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![x-select](images/select-x.png)
 
-Now, a new pod will be created on the target architecture. Thus, first we will get our pod name and then check it's architecture again.
+Now, a new pod will be created on the target architecture. Thus, first we will get our pod name and then check it's architecture again after waiting ten seconds first with sleep to give the new pod time to be created.
+
 ```
-peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[0].metadata.name}')"
+sleep 10 && peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[0].metadata.name}')"
 ```
 
 confirm the architecture changed with:
@@ -192,13 +194,13 @@ Now we can find the external address the service exposed for us.
 ##### Admin can run this command or check the console for the Proxy IP
 
 ```
-EXTERNAL_IP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 ```
 
 ##### Non-admin Needs to get the IP from Admin
 
 ```
-EXTERNAL_IP=<your_proxy_node_ip>
+CLUSTERIP=<your_proxy_node_ip>
 ```
 
 #### Visit Node Web App
@@ -210,7 +212,7 @@ NODEPORT=$(kubectl get svc $service -o jsonpath='{.spec.ports[0].nodePort}')
 Now, visit the app at the url you get from the following command:
 
 ```
-echo "http://${EXTERNAL_IP}:${NODEPORT}"
+echo "http://${CLUSTERIP}:${NODEPORT}"
 ```
 
 in our browser
@@ -234,10 +236,10 @@ kubectl delete -f node-web-app/service.yaml
 ## Let's create our first Go Deployment
 We'll use the example-go-server image and some quick kubectl one-line commands to spin things up. The advantage of these is that it is easy to get things running. However, your configuration isn't automatically saved and configured, which is why managing with `.yaml` files in production is preferred.
 
-### Make a Quick Deployment
+### Make a Quick Deployment and force on z
 
 ```
-kubectl run go-example --image=gmoney23/example-go-server --port 5000 --image-pull-policy=Always
+kubectl run go-example --image=gmoney23/example-go-server --port 5000 --image-pull-policy=Always && kubectl patch deployment go-example --patch "$(cat zNodeSelector.yaml)"
 ```
 
 `kubectl run --generator=deployment/apps.v1beta1 is DEPRECATED and will be removed in a future version. Use kubectl create instead.`
@@ -264,14 +266,14 @@ kubectl get svc go-example
 
 ![Get Service Go Example](images/Get_svc_go_example.png)
 
-Now if I go to my `$EXTERNAL_IP:32532` as specified in port I can see my app running. To print out this as a url to go to like before run the following commands:
+Now if I go to my `$CLUSTERIP:32532` as specified in port I can see my app running. To print out this as a url to go to like before run the following commands:
 
 ```
 NODEPORT=$(kubectl get svc go-example -o jsonpath='{.spec.ports[0].nodePort}')
 ```
 
 ```
-echo "http://${EXTERNAL_IP}:${NODEPORT}"
+echo "http://${CLUSTERIP}:${NODEPORT}"
 ```
 
 *Note: Notice that this parsed the NodePort that was visible in the earlier output using jsonpath in order to easily print it for us with echo like before.*
@@ -389,12 +391,12 @@ To access the application itself, I can get the IP and `NodePort` using kubectl
 
 #### Admin can run this command or check the console for the Proxy IP
 ```
-EXTERNAL_IP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 ```
 
 #### Non-admin Needs to get the IP from Admin
 ```
-EXTERNAL_IP=<your_proxy_node_ip>
+CLUSTERIP=<your_proxy_node_ip>
 ```
 
 ### Time to See if it's Outyet
@@ -403,7 +405,7 @@ NODEPORT=$(kubectl get svc -l app=smallest-outyet,lab=multi-arch-docker -o jsonp
 ```
 
 ```
-echo "http://${EXTERNAL_IP}:${NODEPORT}"
+echo "http://${CLUSTERIP}:${NODEPORT}"
 ```
 
 I can plug this address into my browser to view the app.
@@ -452,13 +454,13 @@ peer_pod="$(kubectl get pods -l app=small-outyet,lab=multi-arch-docker -o jsonpa
 #### Admin can run this command or to find out the Proxy IP
 
 ```
-EXTERNAL_IP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 ```
 
 #### Non-admin Needs to get the IP from the Admin
 
 ```
-EXTERNAL_IP=<your_proxy_node_ip>
+CLUSTERIP=<your_proxy_node_ip>
 ```
 
 ### It's still out!
@@ -468,7 +470,7 @@ NODEPORT=$(kubectl get svc $service -o jsonpath='{.spec.ports[0].nodePort}')
 ```
 
 ```
-echo "http://${EXTERNAL_IP}:${NODEPORT}"
+echo "http://${CLUSTERIP}:${NODEPORT}"
 ```
 
 We can visit this address, to visit our `small-outyet` app.
@@ -518,7 +520,7 @@ kubectl apply -f href-counter/cronjob.yaml
 
 `cronjob.batch/multi-arch-docker-href-counter created`
 
-After waiting a few minutes, run the logs to see the results:
+**After waiting a few minutes**, run the logs to see the results:
 
 ```
 kubectl logs -l app=href-counter,lab=multi-arch-docker
@@ -564,7 +566,7 @@ kubectl delete -f href-counter/configmap.yaml
 
 In reality, our `CronJob` could be used to do anything from running the logs at the end of a day, to sending emails to a list of participants weekly, to running health checks on an application every minute to other automated tasks that need to be done every period of time.
 
-If you need more `Kubernetes` skills, cover your bases with [Kubernetes basics](https://kubernetes.io/docs/guides/kubernetes-basics/). Additionally, if you have a hard time figuring out which api to use for a given type look no [further](https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html)
+If you need more `Kubernetes` skills, cover your bases with [Kubernetes basics](https://kubernetes.io/docs/tutorials/kubernetes-basics/). Additionally, if you have a hard time figuring out which api to use for a given type look no [further](https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html)
 
 ## Closing Note
 
@@ -576,7 +578,7 @@ If you need more `Kubernetes` skills, cover your bases with [Kubernetes basics](
 
 *Note to Self: My ability to stay on message and reminisce about [Undertale](https://store.steampowered.com/app/391540/Undertale/) fills me with [determination](https://undertale.fandom.com/wiki/Determination).*
 
-*Note to Self: What will I ever do [next](https://studybreaks.com/tvfilm/deltarune-is-the-sequel-undertale-needs/)*
+*Note to Self: What ever will I do [next](https://studybreaks.com/tvfilm/deltarune-is-the-sequel-undertale-needs/)*
 
 ## Additional Topic
 An additional topic to look at after finishing everything here is:

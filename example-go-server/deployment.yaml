@@ -19,3 +19,8 @@ spec:
         image: gmoney23/example-go-server:1.0
         ports:
           - containerPort: 5000
+      tolerations: 
+      - key: "arch"
+        operator: "Equal"
+        value: "amd64
+        effect: "NoSchedule"

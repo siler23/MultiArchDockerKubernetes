@@ -25,4 +25,9 @@ spec:
             - configMapRef:
                 name: multi-arch-docker-proxy-config
                 optional: true
+          tolerations: 
+          - key: "arch"
+            operator: "Equal"
+            value: "amd64"
+            effect: "NoSchedule"
           restartPolicy: OnFailure

@@ -19,3 +19,8 @@ spec:
         image: gmoney23/node-web-app:1.0
         ports:
           - containerPort: 8080
+      tolerations: 
+      - key: "arch"
+        operator: "Equal"
+        value: "amd64"
+        effect: "NoSchedule"

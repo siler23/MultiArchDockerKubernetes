@@ -31,3 +31,8 @@ spec:
 # secrets used for authenticated to image registries not currently logged into
        #imagePullSecrets:
        # - name: myregistrykey
+      tolerations: 
+      - key: "arch"
+        operator: "Equal"
+        value: "amd64"
+        effect: "NoSchedule"
