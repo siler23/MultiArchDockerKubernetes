@@ -63,7 +63,7 @@ docker buildx build --platform linux/amd64,linux/s390x,linux/ppc64le -t ${DOCKER
 We can look at our newly pushed image to verify with:
 
 ```
-docker run mplatform/mquery ${DOCKER_REPO}/buildx-hello-node:1.0`
+docker run mplatform/mquery ${DOCKER_REPO}/buildx-hello-node:1.0
 ```
 ![mplatform buildx hello node](images/mplatform-buildx-hello-node.png)
 
