@@ -36,7 +36,7 @@ fi
 IMAGES=("icp-nodejs-sample" "node-web-app" "outyet" "small-outyet" "smallest-outyet" "example-go-server" "href-counter")
 
 # Set the architectures to build images for
-ARCHES=("s390x" "amd64")
+ARCHES=("s390x" "amd64" "ppc64le")
 
 # Function to build an image by passing in image name and architecture
 function buildImage {
