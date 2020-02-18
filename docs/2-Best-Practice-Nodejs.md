@@ -54,12 +54,12 @@ Here is the [node-web-app Dockerfile](https://github.com/siler23/MultiArchDocker
 Run it with:
 
 ```
-docker run --rm -it -p 3000:8080 gmoney23/node-web-app
+docker run --rm -it -p 8080:8080 gmoney23/node-web-app
 ```
 
-Click on <a href="http://localhost:3000/" target="_blank" rel="noopener" rel="noreferrer">node-web-app</a> (while it's running) to see it in your web browser.
+Click on <a href="http://localhost:8080/" target="_blank" rel="noopener" rel="noreferrer">node-web-app</a> (while it's running) to see it in your web browser.
 
-If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
+If you're on a server instead of a desktop go to `http://serverip:8080` where serverip is your server's ip address.
 
 Here is what it will look like in the browser:
 

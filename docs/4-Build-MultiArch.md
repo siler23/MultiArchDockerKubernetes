@@ -2,6 +2,10 @@
 
 This section goes through installing the manifest tool and building the multi-arch docker images.
 
+## Don't forget to set the multi-arch lab home directory
+
+export MULTIARCH_HOME=`full path to directory of multiarch repo`
+
 ## If Using Proxy
 If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
@@ -279,15 +283,11 @@ Enter your password when prompted:
 
 ### Run Script to build and Push Images
 
-Change into the main directory where you cloned or downloaded the github repository.
-
-If for example you git cloned the repository from your current directory with default options use:
+Change into the main directory where you cloned or downloaded the github repository with the variable `MULTIARCH_HOME` you set at the start of this section to be the full path to the github project's directory on your computer.
 
 ```
-cd MultiArchDockerICP/
+cd "${MULTIARCH_HOME}"/
 ```
-
-If not `cd` to the proper directory based on where you put this github repository.
 
 #### Without Proxy
 

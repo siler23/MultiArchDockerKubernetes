@@ -178,7 +178,7 @@ Finally, lets dockerize an app that prints output for us instead of a web app. [
 
 ![href-counter-Dockerfile](images/href-counter-Dockerfile.png)
 
-*Note: This tool is operating on live websites so numbers will change as sites are updated, altering their internal and external hrefs*
+### **Note: This tool is operating on live websites so numbers will change as sites are updated, altering their internal and external hrefs**
 
 We can try the tool out against different sites (starting with this site) using:
 

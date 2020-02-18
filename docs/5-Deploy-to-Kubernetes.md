@@ -6,6 +6,10 @@ We will use the multi-arch docker images we have created to make deployments tha
 ![Undertale](images/Undertale.jpg)
 The inspiring picture fills you with [determination](https://undertale.fandom.com/wiki/Determination).
 
+## Don't forget to set the multi-arch lab home directory
+
+export MULTIARCH_HOME=`full path to directory of multiarch repo`
+
 ## If Using Proxy
 If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
@@ -66,12 +70,10 @@ If you pulled all the images yourself, you could also use these instead, you wou
 
 ## Let's create our first Deployment using our node-web-app
 
-Make sure you are in the main directory of the github project.
-
 Create the deployment with:
 
 ```
-kubectl apply -f node-web-app/deployment.yaml
+kubectl apply -f "${MULTIARCH_HOME}"/node-web-app/deployment.yaml
 ```
 
 You can think of the [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) as deploying all of the parts needed to manage your running application. The deployment itself manages updates and configuration of your application. It creates a [ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/) that manages the number of replicas [pods] that are up at a time for a given application with a control loop. A [pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/) is the smallest unit in Kubernetes and is made up of all the containers in a given deployment (application) that have to be scheduled on the same node. Now, let's use a label to determine one pod that belongs to your deployment.
@@ -115,7 +117,6 @@ kubectl exec $peer_pod -- ash -c "uname -m"
 
 Depending on if it's currently running on x86 or s390x, we can force it to run on the other with a [nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/). (We could also force it to stay on that arch, but that's no fun). A `nodeSelector` is a special label which needs to be satisfied for a pod to be assigned to a node. The `nodeSelector` `beta.kubernetes.io/arch:` is for deploying pods on a node with the specified architecture. (i.e. specify z with `beta.kubernetes.io/arch: s390x`)
 
-Hopefully, you are still in the main github directory.
 
 #### If it's running on x86 now, force z
 
@@ -124,7 +125,7 @@ deployment=$(kubectl get deploy -l app=node-web,lab=multi-arch-docker -o jsonpat
 ```
 
 ```
- kubectl patch deployment $deployment --patch "$(cat zNodeSelector.yaml)"
+ kubectl patch deployment $deployment --patch "$(cat "${MULTIARCH_HOME}"/zNodeSelector.yaml)"
 ```
 
 The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![z-select](images/select-z.png)
@@ -148,10 +149,10 @@ deployment=$(kubectl get deploy -l app=node-web,lab=multi-arch-docker -o jsonpat
 ```
 
 ```
-kubectl patch deployment $deployment --patch "$(cat xNodeSelector.yaml)"
+kubectl patch deployment $deployment --patch "$(cat "${MULTIARCH_HOME}"/xNodeSelector.yaml)"
 ```
-
-from main MultiArchDockerICP directory. The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![x-select](images/select-x.png)
+ 
+ The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![x-select](images/select-x.png)
 
 Now, a new pod will be created on the target architecture. Thus, first we will get our pod name and then check it's architecture again after waiting ten seconds first with sleep to give the new pod time to be created.
 
@@ -178,7 +179,7 @@ A [service](https://kubernetes.io/docs/concepts/services-networking/service/) ex
 In order to create the service for our node-web-app we will apply the yaml files as before using:
 
 ```
-kubectl apply -f node-web-app/service.yaml
+kubectl apply -f "${MULTIARCH_HOME}"/node-web-app/service.yaml
 ```
 
 `service/multi-arch-docker-node-web created`
@@ -222,13 +223,13 @@ A NodePort opens up all externally accessible nodes in the cluster at a fixed po
 After visiting our app, we can delete it and our service with:
 
 ```
-kubectl delete -f node-web-app/deployment.yaml
+kubectl delete -f "${MULTIARCH_HOME}"/node-web-app/deployment.yaml
 ```
 
 `deployment.extensions "multi-arch-docker-node-web" deleted`
 
 ```
-kubectl delete -f node-web-app/service.yaml
+kubectl delete -f "${MULTIARCH_HOME}"/node-web-app/service.yaml
 ```
 
 `service "multi-arch-docker-node-web" deleted`
@@ -239,7 +240,7 @@ We'll use the example-go-server image and some quick kubectl one-line commands t
 ### Make a Quick Deployment and force on z
 
 ```
-kubectl run go-example --image=gmoney23/example-go-server --port 5000 --image-pull-policy=Always && kubectl patch deployment go-example --patch "$(cat zNodeSelector.yaml)"
+kubectl run go-example --image=gmoney23/example-go-server --port 5000 --image-pull-policy=Always && kubectl patch deployment go-example --patch "$(cat "${MULTIARCH_HOME}"/zNodeSelector.yaml)"
 ```
 
 `kubectl run --generator=deployment/apps.v1beta1 is DEPRECATED and will be removed in a future version. Use kubectl create instead.`
@@ -322,10 +323,9 @@ If a user doesn't need a proxy they can just not apply this ConfigMap since we w
 ***Only if you use a proxy***, please put your proxy values here and apply this ConfigMap with:
 
 ```
-kubectl apply -f proxy-configmap.yaml
+kubectl apply -f "${MULTIARCH_HOME}"/proxy-configmap.yaml
 ```
 
-from the main github project directory of your clone.
 
 ## Explore how to create deployments and services from yaml
 Here we will explore a sample deployment file to use in our cluster.
@@ -339,7 +339,7 @@ This deployment attaches a label of small-outyet to identify it and selects pods
 ### Time to Service YAML
 
 ```
-kubectl apply -f smallest-outyet/deployment.yaml
+kubectl apply -f "${MULTIARCH_HOME}"/smallest-outyet/deployment.yaml
 ```
 
 `deployment.extensions/multi-arch-docker-smallest-outyet created`
@@ -352,7 +352,7 @@ This service again uses the `NodePort` type mapping port `8080` as the container
 We can apply this to create the service.
 
 ```
-kubectl apply -f smallest-outyet/service.yaml
+kubectl apply -f "${MULTIARCH_HOME}"/smallest-outyet/service.yaml
 ```
 
 `service/multi-arch-docker-smallest-outyet created`
@@ -416,13 +416,13 @@ I can plug this address into my browser to view the app.
 To clean app I can delete the deployment using the yaml I created it with. The same goes for the service.
 
 ```
-kubectl delete -f smallest-outyet/deployment.yaml
+kubectl delete -f "${MULTIARCH_HOME}"/smallest-outyet/deployment.yaml
 ```
 
 `deployment.extensions "multi-arch-docker-smallest-outyet" deleted`
 
 ```
-kubectl delete -f smallest-outyet/service.yaml
+kubectl delete -f "${MULTIARCH_HOME}"/smallest-outyet/service.yaml
 ```
 
 `service "multi-arch-docker-smallest-outyet" deleted`
@@ -432,13 +432,13 @@ kubectl delete -f smallest-outyet/service.yaml
 ### Small-Outyet Deserves a Chance to Run
 
 ```
-kubectl apply -f small-outyet/deployment.yaml
+kubectl apply -f "${MULTIARCH_HOME}"/small-outyet/deployment.yaml
 ```
 
 `deployment.extensions/multi-arch-docker-small-outyet created`
 
 ```
-kubectl apply -f small-outyet/service.yaml
+kubectl apply -f "${MULTIARCH_HOME}"/small-outyet/service.yaml
 ```
 
 `service/multi-arch-docker-small-outyet created`
@@ -480,13 +480,13 @@ We can follow similar steps for all of the outyets and example-go-server since t
 ### Clean up Small-Outyet
 
 ```
-kubectl delete -f small-outyet/deployment.yaml
+kubectl delete -f "${MULTIARCH_HOME}"/small-outyet/deployment.yaml
 ```
 
 `deployment.extensions "multi-arch-docker-small-outyet" deleted`
 
 ```
-kubectl delete -f small-outyet/service.yaml
+kubectl delete -f "${MULTIARCH_HOME}"/small-outyet/service.yaml
 ```
 
 `service "multi-arch-docker-small-outyet" deleted`
@@ -500,10 +500,10 @@ Our configmap.yaml is as follows:
 ![configmap.yaml](images/configmap.png)
 
 It simply maps the http-url for us to hit with the href-tool to the site-url configmap with key http-url.
-We will be patching this when we want to update our container's environment value. From the main directory of the git repository for this lab let's create our configmap:
+We will be patching this when we want to update our container's environment value. Let's create our configmap:
 
 ```
-kubectl apply -f href-counter/configmap.yaml
+kubectl apply -f "${MULTIARCH_HOME}"/href-counter/configmap.yaml
 ```
 
 `configmap/multi-arch-docker-site-url created`
@@ -515,7 +515,7 @@ Next, we have to make our CronJob. The following yaml will suffice:
 This CronJob schedules a job every minute using href-counter as our label and our image as `gmoney23/href:1.0`. We also use our new `ConfigMap` in the valueFrom field of the `env` field where we specify our `configMapKeyRef` to reference a specific key. Finally, we connect to our proxy `ConfigMap` again since this app makes calls to outside websites. We should be all set. Time to make the cronjob.
 
 ```
-kubectl apply -f href-counter/cronjob.yaml
+kubectl apply -f "${MULTIARCH_HOME}"/href-counter/cronjob.yaml
 ```
 
 `cronjob.batch/multi-arch-docker-href-counter created`
@@ -553,13 +553,13 @@ kubectl logs -l app=href-counter,lab=multi-arch-docker
 Indeed, our values have changed. Our work is complete, time to clean up.
 
 ```
-kubectl delete -f href-counter/cronjob.yaml
+kubectl delete -f "${MULTIARCH_HOME}"/href-counter/cronjob.yaml
 ```
 
 `cronjob.batch "multi-arch-docker-href-counter" deleted`
 
 ```
-kubectl delete -f href-counter/configmap.yaml
+kubectl delete -f "${MULTIARCH_HOME}"/href-counter/configmap.yaml
 ```
 
 `configmap "multi-arch-docker-site-url" deleted`

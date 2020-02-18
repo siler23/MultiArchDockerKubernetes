@@ -53,7 +53,7 @@ docker login -u ${DOCKER_REPO}
 Now, we can create a multi-architecture image for the two architectures (and more if desired) in one command:
 
 ```
-docker buildx build --platform linux/amd64,linux/s390x -t ${DOCKER_REPO}/buildx-hello-node:1.0 node-web-app --push
+docker buildx build --platform linux/amd64,linux/s390x -t ${DOCKER_REPO}/buildx-hello-node:1.0 "${MULTIARCH_HOME}"/node-web-app --push
 ```
 
 *Note: We are using the DOCKER_REPO we just logged in to with the environment variable we just set above*
