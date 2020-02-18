@@ -161,13 +161,19 @@ Run the docker pull with --platform for the architecture different from yours.
 docker pull --platform s390x hello-world
 ```
 
+Then, run the pulled image
+
+```
+docker run hello-world
+```
+
 **s390x host (a few potential users)**
 
 ```
 docker pull --platform amd64 hello-world
 ```
 
-**Then, run the pulled image**
+Then, run the pulled image
 
 ```
 docker run hello-world
