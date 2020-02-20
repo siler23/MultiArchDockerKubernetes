@@ -13,6 +13,14 @@ export MULTIARCH_HOME=`full path to directory of multiarch repo`
 ## If Using Proxy
 If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that 0-ProxyPSA document.
 
+## If you don't have a Kubernetes Environment you can use Docker
+
+To set up Kubernetes on Docker for Mac follow [these Mac instructions](https://docs.docker.com/docker-for-mac/#kubernetes)
+
+To set up Kubernetes on Docker for Windows follow [these Windows instructions](https://docs.docker.com/docker-for-windows/#kubernetes)
+
+***Note: If you follow this path you will have a single architecture cluster. Thus, when you try to force things to run on a different architecture node, you should expect to get a pending pod. This demonstrates that the multiarch capability is working and checking to ensure image and node architectures match. If you run on a multiarch cluster, you can tell things are working in an "arguably cooler" way (pods move to a node of the specified architecture). Nevertheless, both methods demonstrate the multiarch selection capabilities. Moreover, Docker is seemingly ubiquitous, so I have included pointers to the docs above to set up Kubernetes with Docker just in case you don't have access to a multiarch cluster at the moment.***
+
 ## Running on windows [Mac/Linux Users Skip This]
 The commands listed are bash commands. In order to use bash on Windows 10 see [Enabling Bash on PC](https://www.lifewire.com/how-to-run-the-bash-command-line-in-windows-10-4072207). If you do that, all of the commands below will work in a bash script for you. If you don't want to do that you can also use the command prompt. Just replace the `$var` with `%var%` and `var=x` with `set var=x`. The kubectl commands themselves are the same across operating systems. An example is changing the bash command:
 
@@ -142,6 +150,8 @@ confirm the architecture changed with:
 kubectl exec $peer_pod -- ash -c "uname -m"
 ```
 
+***Note: if you are using Docker, you will get an error here due to the inability to reschedule the pod to a node of a different architecture***
+
 #### If it's running on z, force x86
 
 ```
@@ -165,6 +175,8 @@ confirm the architecture changed with:
 ```
 kubectl exec $peer_pod -- ash -c "uname -m"
 ```
+
+***Note: if you are using Docker, you will get an error here due to the inability to reschedule the pod to a node of a different architecture***
 
 #### Overview of NodeSelector (What did we just do?)
 
@@ -248,6 +260,8 @@ kubectl run go-example --image=gmoney23/example-go-server --port 5000 --image-pu
 ```
 kubectl get deploy go-example
 ```
+
+***Note: If you are using Docker on a non-z architecture, you will get a pending pod here along with the original running pod due to the inability to reschedule the pod to a node with the z (s390x) architecture. You can proceed as the original pod is still up and running so the workload faces no downtime.***
 
 ![Get Deploy Go Example](images/Get_Deploy_go_example.png)
 
