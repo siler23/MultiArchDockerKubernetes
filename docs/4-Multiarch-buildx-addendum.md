@@ -5,7 +5,7 @@ If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set y
 
 ## Buildx: Seamless multi-arch builds are in your future
 
-Buildx [https://github.com/docker/buildx] has become a part of stable Docker builds with `Docker CE 19.03` as an experimental feature. 
+[Buildx](https://docs.docker.com/buildx/working-with-buildx/) has become a part of stable Docker builds with `Docker CE 19.03` as an experimental feature. 
 
 Since we have already enabled experimental features (if our docker version is 19.03 or greater) [if you don't remember run `docker version`], we are ready to use buildx. We have already built our images above using a script. Let's see what the future holds...
 
@@ -74,7 +74,7 @@ docker manifest inspect ${DOCKER_REPO}/buildx-hello-node:1.0
 
 ![manifest buildx hello node](images/manifest-buildx-hello-node.png)
 
-Buildx isn't just limited to multi-arch builds with statics, it can also register remote builders to build images on those machines. Again, if you want to check it out see the [buildx github](https://github.com/docker/buildx). Also, if you want to see a walk-through on buildx with arm see [Building Multi-Arch Images for Arm and x86 with Docker Desktop](https://engineering.docker.com/2019/04/multi-arch-images/).
+Buildx isn't just limited to multi-arch builds with statics, it can also register remote builders to build images on those machines. To do this you will want to define multiple [docker contexts](https://docs.docker.com/engine/context/working-with-contexts/) which you can use to [define multiple machines as detailed here](https://newsletter.bretfisher.com/issues/new-docker-feature-change-your-context-203100). Then you can target these with your buildx builders. Again, if you want to check it out see the [buildx github](https://github.com/docker/buildx). Also, if you want to see a walk-through on buildx with arm see [Building Multi-Arch Images for Arm and x86 with Docker Desktop](https://engineering.docker.com/2019/04/multi-arch-images/). Additionally, in 2020 [a wild walkthrough on buildx appeared](https://dev.to/arturklauser/building-multi-architecture-docker-images-with-buildx-1mii). It is worth checking out if you need a little more detail.
 
 We can use buildx to simplify the multi-arch process even further by bringing our build pipeline together in one place and allowing us to concurrently construct images for all arches that we can use in our manifest lists to "create" multi-arch images in one command.
 
