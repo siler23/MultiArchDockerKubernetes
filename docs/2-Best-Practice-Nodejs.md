@@ -3,7 +3,7 @@
 First, we will go over the icp-node-js-sample app and Dockerfile. Then, we will see Dockerfile best practices for nodejs using the basic hello world app from the Node.js site.
 
 !!! note
-    We will build all of these images in Part 4. This is a guide explaining the ins and outs of making the files to do so [i.e. the foundation for success]*
+    We will build all of these images in Part 4. This is a guide explaining the ins and outs of making the files to do so [i.e. the foundation for success]
 
 ## Node.js Download for Later
 
@@ -12,6 +12,7 @@ Here is the [Node.js download](https://nodejs.org/en/){target=_blank} if you wan
 ![Docker ryu](images/docker-ryu.png)
 
 !!! caution "If Using Proxy"
+
     **If using proxy**, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that [0-ProxyPSA](0-ProxyPSA.md) document.
 
 ## ICP Node.js Sample
@@ -34,7 +35,8 @@ Here is what it will look like in the browser:
 
 ![node-web-output](images/icp-nodejs-sample.PNG)
 
-!!! info
+!!! Tip
+
     Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
 
 ## Why Should I Optimize my Nodejs Images?
@@ -69,7 +71,9 @@ Here is what it will look like in the browser:
 
 ![node-web-output](images/node-web-browser.png)
 
-**Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.**
+!!! Tip
+
+    Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
 
 Here's what it will look like in the cli, once you've quit
 

@@ -95,7 +95,11 @@ Now, it's time to use the multi-arch images in Kubernetes!
 
 ### Extra Content: [Most Users Should Skip]: [The past - The Manual Way aka Herding Cats](4-Multiarch-manual-addendum.md)
 
-**This optional path is a manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path.**
+!!! note
+
+    This optional path is a manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path.
+
+## Summary
 
 The knowledge that you can build and push multiarch images with one command is splendid, it fills you with [determination](https://undertale.fandom.com/wiki/Determination){target=_blank}
 

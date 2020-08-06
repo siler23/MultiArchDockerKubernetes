@@ -50,8 +50,9 @@ If you're on a server instead of a desktop go to `http://serverip:3000` where se
 
     ![outyet secondary page](images/outyet-link.PNG)
 
-!!! info
-    Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.**
+!!! Tip
+
+    Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
 
 To check it's size I ran:
 
@@ -83,7 +84,9 @@ If you're on a server instead of a desktop go to `http://serverip:3000` where se
 
 *Note: The cli hangs and the web page looks the same as for `outyet`, since it's the same app, so I've omitted images here.*
 
-**Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.**
+!!! Tip
+
+    Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
 
 To check it's size I ran:
 
@@ -109,13 +112,15 @@ Run it:
 docker run --rm -it -p 3000:8080 gmoney23/smallest-outyet
 ```
 
-Click on [smallest-outyet](localhost:3000/){target=_blank} (while it's running) to see it in your web browser.
+Click on [smallest-outyet](http://localhost:3000/){target=_blank} (while it's running) to see it in your web browser.
 
 If you're on a server instead of a desktop go to `http://serverip:3000` where serverip is your server's ip address.
 
 *Note: You know the drill. The cli hangs and the web page looks the same as for `outyet` and `small-outyet`, since it's the same app, so I've omitted images here.*
 
-**Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.**
+!!! Tip
+
+    Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
 
 To check it's size I ran:
 
@@ -164,7 +169,9 @@ Here is what it will look like in the browser:
 
 ![go-hello-web](images/go_hello.PNG)
 
-**Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.**
+!!! Tip
+
+    Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.
 
 Here's what it will look like in the cli after its been shut down.
 
@@ -200,7 +207,7 @@ docker run --rm -e url=https://siler23.github.io/MultiArchDockerKubernetes/ gmon
 
     For PROXY**: add your -e for http_proxy, etc.:
 
-    ``` bash
+    ``` batch
     docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" -e url=http://google.com href
     ```
 

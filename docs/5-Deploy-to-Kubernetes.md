@@ -20,7 +20,9 @@ To set up Kubernetes on Docker for Mac follow [these Mac instructions](https://d
 
 To set up Kubernetes on Docker for Windows follow [these Windows instructions](https://docs.docker.com/docker-for-windows/#kubernetes){target=_blank}
 
-***Note: If you follow this path you will have a single architecture cluster. Thus, when you try to force things to run on a different architecture node, you should expect to get a pending pod. This demonstrates that the multiarch capability is working and checking to ensure image and node architectures match. If you run on a multiarch cluster, you can tell things are working in an "arguably cooler" way (pods move to a node of the specified architecture). Nevertheless, both methods demonstrate the multiarch selection capabilities. Moreover, Docker is seemingly ubiquitous, so I have included pointers to the docs above to set up Kubernetes with Docker just in case you don't have access to a multiarch cluster at the moment.***
+!!! info
+
+    If you follow this path you will have a single architecture cluster. Thus, when you try to force things to run on a different architecture node, you should expect to get a pending pod. This demonstrates that the multiarch capability is working and checking to ensure image and node architectures match. If you run on a multiarch cluster, you can tell things are working in an "arguably cooler" way (pods move to a node of the specified architecture). Nevertheless, both methods demonstrate the multiarch selection capabilities. Moreover, Docker is seemingly ubiquitous, so I have included pointers to the docs above to set up Kubernetes with Docker just in case you don't have access to a multiarch cluster at the moment.
 
 !!! Tip "Running on windows [Mac/Linux Users Skip This]"
 
@@ -32,11 +34,11 @@ To set up Kubernetes on Docker for Windows follow [these Windows instructions](h
 
     to the Windows command:
 
-    ```
+    ``` bash
     kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[*].metadata.name}'
     ```
 
-    ```
+    ``` batch
     set peer_pod=result
     ``` 
 
@@ -44,7 +46,7 @@ To set up Kubernetes on Docker for Windows follow [these Windows instructions](h
 
     and when referencing it change bash:
 
-    ```
+    ``` bash
     kubectl exec $peer_pod -- ash -c "uname -m"
     ```
 
@@ -52,7 +54,7 @@ To set up Kubernetes on Docker for Windows follow [these Windows instructions](h
 
     to Windows:
 
-    ```
+    ``` batch
     kubectl exec %peer_pod% -- ash -c "uname -m"
     ```
 
@@ -72,7 +74,7 @@ You can think of the [deployment](https://kubernetes.io/docs/concepts/workloads/
 
 Then:
 
-```
+``` bash
 peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[*].metadata.name}')"
 ```
 
@@ -84,7 +86,7 @@ You may have noticed the `-o jsonpath='{.items[*].metadata.name}')` in the previ
 
 We used a [selector](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors){target=_blank} to select a pod with a specific set of labels. We can also do this with other objects that have labels such as deployments with:
 
-```
+``` bash
 kubectl get deploy -l app=node-web,lab=multi-arch-docker
 ```
 
@@ -94,7 +96,7 @@ kubectl get deploy -l app=node-web,lab=multi-arch-docker
 
 In order to see all the labels on a specific object we can use the `--show-labels` option such as:
 
-```
+``` bash
 kubectl get pod ${peer_pod} --show-labels
 ```
 
@@ -104,7 +106,7 @@ kubectl get pod ${peer_pod} --show-labels
 
 Since the node-web-app has a base image with ash, we can run ash on this pod to find out the architecture of the node it's running on:
 
-```
+``` bash
 kubectl exec $peer_pod -- ash -c "uname -m"
 ```
 
@@ -112,11 +114,11 @@ Depending on if it's currently running on x86 or s390x, we can force it to run o
 
 #### If it's running on x86 now, force z
 
-```
+``` bash
 deployment=$(kubectl get deploy -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[*].metadata.name}')
 ```
 
-```
+``` bash
  kubectl patch deployment $deployment --patch "$(cat "${MULTIARCH_HOME}"/zNodeSelector.yaml)"
 ```
 
@@ -124,7 +126,7 @@ The file itself just includes the necessary nodeSelector with the correct number
 
 Now, a new pod will be created on the target architecture. Thus, first we will get our pod name and then check it's architecture again after waiting ten seconds first with sleep to give the new pod time to be created.
 
-```
+``` bash
 sleep 10 && peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[0].metadata.name}')"
 ```
 
@@ -134,15 +136,17 @@ confirm the architecture changed with:
 kubectl exec $peer_pod -- ash -c "uname -m"
 ```
 
-***Note: if you are using Docker, you will get an error here due to the inability to reschedule the pod to a node of a different architecture***
+!!! Warning
 
-#### If it's running on z, force x86
+    If you are using Docker, you will get an error here due to the inability to reschedule the pod to a node of a different architecture.
 
-```
+#### If it's running on IBM Z, force x86
+
+``` bash
 deployment=$(kubectl get deploy -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[*].metadata.name}')
 ```
 
-```
+``` bash
 kubectl patch deployment $deployment --patch "$(cat "${MULTIARCH_HOME}"/xNodeSelector.yaml)"
 ```
 
@@ -150,7 +154,7 @@ The file itself just includes the necessary nodeSelector with the correct number
 
 Now, a new pod will be created on the target architecture. Thus, first we will get our pod name and then check it's architecture again after waiting ten seconds first with sleep to give the new pod time to be created.
 
-```
+``` bash
 sleep 10 && peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[0].metadata.name}')"
 ```
 
@@ -160,7 +164,9 @@ confirm the architecture changed with:
 kubectl exec $peer_pod -- ash -c "uname -m"
 ```
 
-***Note: if you are using Docker, you will get an error here due to the inability to reschedule the pod to a node of a different architecture***
+!!! Warning
+
+    If you are using Docker, you will get an error here due to the inability to reschedule the pod to a node of a different architecture***
 
 #### Overview of NodeSelector (What did we just do?)
 
@@ -174,7 +180,7 @@ A [service](https://kubernetes.io/docs/concepts/services-networking/service/){ta
 
 In order to create the service for our node-web-app we will apply the yaml files as before using:
 
-```
+``` bash
 kubectl apply -f "${MULTIARCH_HOME}"/node-web-app/service.yaml
 ```
 
@@ -182,7 +188,7 @@ kubectl apply -f "${MULTIARCH_HOME}"/node-web-app/service.yaml
 
 Then, we can get the address our service exposed by first finding our service using label selectors again with the command:
 
-```
+``` bash
 service=$(kubectl get svc -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[0].metadata.name}')
 ```
 
@@ -190,7 +196,7 @@ Now we can find the external address the service exposed for us.
 
 ##### Admin can run this command or check the console for the Proxy IP
 
-```
+``` bash
 [ -z "$CLUSTERIP" ] && CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 ```
 
@@ -206,7 +212,7 @@ NODEPORT=$(kubectl get svc $service -o jsonpath='{.spec.ports[0].nodePort}')
 
 Now, visit the app at the url you get from the following command:
 
-```
+``` bash
 echo "http://${CLUSTERIP}:${NODEPORT}"
 ```
 
@@ -216,13 +222,13 @@ A NodePort opens up all externally accessible nodes in the cluster at a fixed po
 
 After visiting our app, we can delete it and our service with:
 
-```
+``` bash
 kubectl delete -f "${MULTIARCH_HOME}"/node-web-app/deployment.yaml
 ```
 
 `deployment.extensions "multi-arch-docker-node-web" deleted`
 
-```
+``` bash
 kubectl delete -f "${MULTIARCH_HOME}"/node-web-app/service.yaml
 ```
 
@@ -234,7 +240,7 @@ We'll use the example-go-server image and some quick kubectl one-line commands t
 
 ### Make a Quick Deployment and force on z
 
-```
+``` bash
 kubectl run go-example --image=gmoney23/example-go-server --port 5000 --image-pull-policy=Always && kubectl patch deployment go-example --patch "$(cat "${MULTIARCH_HOME}"/zNodeSelector.yaml)"
 ```
 
@@ -242,11 +248,13 @@ kubectl run go-example --image=gmoney23/example-go-server --port 5000 --image-pu
 
 `deployment.apps/go-example created`
 
-```
+``` bash
 kubectl get deploy go-example
 ```
 
-***Note: If you are using Docker on a non-z architecture, you will get a pending pod here along with the original running pod due to the inability to reschedule the pod to a node with the z (s390x) architecture. You can proceed as the original pod is still up and running so the workload faces no downtime.***
+!!! Warning
+
+    If you are using Docker on a non-z architecture, you will get a pending pod here along with the original running pod due to the inability to reschedule the pod to a node with the z (s390x) architecture. You can proceed as the original pod is still up and running so the workload faces no downtime.
 
 ![Get Deploy Go Example](images/Get_Deploy_go_example.png)
 
@@ -254,11 +262,11 @@ kubectl get deploy go-example
 
 This deployment is available. However, I can't access it from nodes outside of my cluster which is no good for a web app, so lets expose it to external connections by adding a nodePort service
 
-```
+``` bash
 kubectl expose deployment go-example --type=NodePort
 ```
 
-```
+``` bash
 kubectl get svc go-example
 ```
 
@@ -274,15 +282,17 @@ NODEPORT=$(kubectl get svc go-example -o jsonpath='{.spec.ports[0].nodePort}')
 echo "http://${CLUSTERIP}:${NODEPORT}"
 ```
 
-*Note: Notice that this parsed the NodePort that was visible in the earlier output using jsonpath in order to easily print it for us with echo like before.*
+!!! note
+
+    Notice that this parsed the *NodePort* that was visible in the earlier output using jsonpath in order to easily print it for us with echo like before.
 
 Now I can save the deployment and service I created to a file with --export.
 
-```
+``` bash
 kubectl get deployment go-example -o yaml --export > go-example-deployment.yaml
 ```
 
-```
+``` bash
 kubectl get svc go-example -o yaml --export > go-example-svc.yaml
 ```
 
@@ -290,7 +300,7 @@ kubectl get svc go-example -o yaml --export > go-example-svc.yaml
 
 Since this pod doesn't have a bash shell, since it was made from scratch, I'll use `kubectl get pods -o wide` to figure out which node it is running on. (We should know which architecture each host node is or could get that from our cluster admin.)
 
-```
+``` bash
 kubectl get pods -l run=go-example -o wide
 ```
 
@@ -300,11 +310,11 @@ kubectl get pods -l run=go-example -o wide
 
 We can delete the deployment and service by using `kubectl delete resource name` such as `kubectl delete deployment deployment_name`. For our sample go deployment this means:
 
-```
+``` bash
 kubectl delete deployment go-example
 ```
 
-```
+``` bash
 kubectl delete service go-example
 ```
 
@@ -340,7 +350,7 @@ This deployment attaches a label of small-outyet to identify it and selects pods
 
 ### Time to Service YAML
 
-```
+``` bash
 kubectl apply -f "${MULTIARCH_HOME}"/smallest-outyet/deployment.yaml
 ```
 
@@ -353,7 +363,7 @@ Now, to enable us to connect to this app, we need to deploy a service. We will c
 This service again uses the `NodePort` type mapping port `8080` as the container port and internal port to connect to the external `NodePort`.
 We can apply this to create the service.
 
-```
+``` bash
 kubectl apply -f "${MULTIARCH_HOME}"/smallest-outyet/service.yaml
 ```
 
@@ -361,7 +371,7 @@ kubectl apply -f "${MULTIARCH_HOME}"/smallest-outyet/service.yaml
 
 We can look at how the service maps to the pod by looking at the endpoints of the service.
 
-```
+``` bash
 kubectl get ep -l app=smallest-outyet,lab=multi-arch-docker
 ```
 
@@ -373,13 +383,13 @@ Now, I can scale the deployment to having 2 replicas instead of 1.
 deployment=multi-arch-docker-smallest-outyet
 ```
 
-```
+``` bash
 kubectl patch deployment $deployment -p '{"spec": {"replicas": 2}}'
 ```
 
 Let's look at the endpoints for the service again.
 
-```
+``` bash
 kubectl get ep -l app=smallest-outyet,lab=multi-arch-docker
 ```
 
@@ -413,7 +423,7 @@ To access the application itself, I can get the IP and `NodePort` using kubectl
 NODEPORT=$(kubectl get svc -l app=smallest-outyet,lab=multi-arch-docker -o jsonpath='{.items[0].spec.ports[0].nodePort}')
 ```
 
-```
+``` bash
 echo "http://${CLUSTERIP}:${NODEPORT}"
 ```
 
@@ -423,13 +433,13 @@ I can plug this address into my browser to view the app.
 
 To clean app I can delete the deployment using the yaml I created it with. The same goes for the service.
 
-```
+``` bash
 kubectl delete -f "${MULTIARCH_HOME}"/smallest-outyet/deployment.yaml
 ```
 
 `deployment.extensions "multi-arch-docker-smallest-outyet" deleted`
 
-```
+``` bash
 kubectl delete -f "${MULTIARCH_HOME}"/smallest-outyet/service.yaml
 ```
 
@@ -439,29 +449,29 @@ kubectl delete -f "${MULTIARCH_HOME}"/smallest-outyet/service.yaml
 
 ### Small-Outyet Deserves a Chance to Run
 
-```
+``` bash
 kubectl apply -f "${MULTIARCH_HOME}"/small-outyet/deployment.yaml
 ```
 
 `deployment.extensions/multi-arch-docker-small-outyet created`
 
-```
+``` bash
 kubectl apply -f "${MULTIARCH_HOME}"/small-outyet/service.yaml
 ```
 
 `service/multi-arch-docker-small-outyet created`
 
-```
+``` bash
 service=multi-arch-docker-small-outyet
 ```
 
-```
+``` bash
 peer_pod="$(kubectl get pods -l app=small-outyet,lab=multi-arch-docker -o jsonpath='{.items[*].metadata.name}')"
 ```
 
 #### Admin can run this command or to find out the Proxy IP
 
-```
+``` bash
 [ -z "$CLUSTERIP" ] && CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
 ```
 
@@ -471,11 +481,11 @@ peer_pod="$(kubectl get pods -l app=small-outyet,lab=multi-arch-docker -o jsonpa
 
 ### It's still out!
 
-```
+``` bash
 NODEPORT=$(kubectl get svc $service -o jsonpath='{.spec.ports[0].nodePort}')
 ```
 
-```
+``` bash
 echo "http://${CLUSTERIP}:${NODEPORT}"
 ```
 
@@ -485,13 +495,13 @@ We can follow similar steps for all of the outyets and example-go-server since t
 
 ### Clean up Small-Outyet
 
-```
+``` bash
 kubectl delete -f "${MULTIARCH_HOME}"/small-outyet/deployment.yaml
 ```
 
 `deployment.extensions "multi-arch-docker-small-outyet" deleted`
 
-```
+``` bash
 kubectl delete -f "${MULTIARCH_HOME}"/small-outyet/service.yaml
 ```
 
@@ -510,7 +520,7 @@ Our configmap.yaml is as follows:
 It simply maps the http-url for us to hit with the href-tool to the site-url configmap with key http-url.
 We will be patching this when we want to update our container's environment value. Let's create our configmap:
 
-```
+``` bash
 kubectl apply -f "${MULTIARCH_HOME}"/href-counter/configmap.yaml
 ```
 
@@ -522,7 +532,7 @@ Next, we have to make our CronJob. The following yaml will suffice:
 
 This CronJob schedules a job every minute using href-counter as our label and our image as `gmoney23/href:1.0`. We also use our new `ConfigMap` in the valueFrom field of the `env` field where we specify our `configMapKeyRef` to reference a specific key. Finally, we connect to our proxy `ConfigMap` again since this app makes calls to outside websites. We should be all set. Time to make the cronjob.
 
-```
+``` bash
 kubectl apply -f "${MULTIARCH_HOME}"/href-counter/cronjob.yaml
 ```
 
@@ -560,7 +570,7 @@ kubectl logs -l app=href-counter,lab=multi-arch-docker
 
 Indeed, our values have changed. Our work is complete, time to clean up.
 
-```
+``` bash
 kubectl delete -f "${MULTIARCH_HOME}"/href-counter/cronjob.yaml
 ```
 

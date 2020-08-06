@@ -113,7 +113,7 @@ to download files or downloading a git repository during the install itself.
 
     === "Windows (Command Prompt)"
 
-        ``` bash
+        ``` batch
         docker build -t href --build-arg http_proxy=%http_proxy% --build-arg https_proxy=%https_proxy% --build-arg no_proxy="%no_proxy%" .
         ```
 
@@ -140,7 +140,7 @@ use -e with the proxy variables:
 
 === "Windows (Command Prompt)"
 
-    ``` bash
+    ``` batch
     docker run --rm -e http_proxy=%http_proxy% -e https_proxy=%https_proxy% -e no_proxy="%no_proxy%" mplatform/mquery gmoney23/outyet
     ```
 
