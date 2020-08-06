@@ -14,6 +14,9 @@ nav:
     - 0. Hello Proxy Users: 0-ProxyPSA.md
 
 theme: material
+google_analytics:
+  - G-WEC526G3XY
+  - auto
 markdown_extensions:
   - admonition
   - codehilite
