@@ -8,10 +8,12 @@
 !!! info
     Below is a manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path to follow the main path click to go to [part 5](5-Deploy-to-Kubernetes.md)**
 
-### 1.	Build image for all architectures and push to docker registry.
+### 1. Build image for all architectures and push to docker registry.
+
 First is the list of basic steps, then a pattern you can use with both the mac and command  prompt commands.
 
 #### Basic Steps
+
   a. Build and push image for s390x (Go onto an s390x linux instance, ssh in)
 
     i. Get your code onto the instance (i.e. download git files onto the machine or git clone https://github.com/siler23/MultiArchMultiArchDockerKubernetes.git)
@@ -40,15 +42,23 @@ First is the list of basic steps, then a pattern you can use with both the mac a
 
     v. Docker push image (docker push myrepo/outyet-x86)
 
-### 2.	Make manifest list
-***You only need to do this from one computer which for ease of access should probably be your workstation computer rather than a server***
+### 2. Make manifest list
 
-Make a manifest list (a multi-architecture image reference) out of that individual images your pushed. Basically, you are mapping both images to the same tag so that when someone asks for the image via `docker pull gmoney23/outyet` it will have a pointer to the correct image for your architecture automatically (i.e. if you are on s390x it will point to layers from gmoney23/outyet-s390x or if you are on x86 it will point to layers from gmoney23/outyet-x86) while using the same label (i.e. gmoney23/outyet). This makes it so users of the image don’t have to worry about using different tags for different archs so the Dockerfiles can be the same for different applications across architectures (i.e. the same Dockerfile can be used for a node application on z and x86 or a go application on z and x86).
+!!! Tip
+
+    You only need to do this from one computer which for ease of access should probably be your workstation computer rather than a server.
+
+Make a manifest list (a multi-architecture image reference) out of that individual images your pushed. Basically, you are mapping both images to the same tag so that when someone asks for the image via `docker pull gmoney23/outyet` it will have a pointer to the correct image for your architecture automatically (i.e. if you are on s390x it will point to layers from gmoney23/outyet-s390x or if you are on x86 it will point to layers from gmoney23/outyet-x86) while using the same label (i.e. gmoney23/outyet). This makes it so users of the image don’t have to worry about using different tags for different architectures so the Dockerfiles can be the same for different applications across architectures (i.e. the same Dockerfile can be used for a node application on z and x86 or a go application on z and x86).
 
 ### Docker Manifest: An experimental feature
 
-#### Recommended Option: Unless need added features, use this built-in command and skip the optional section. If need added features, do the OPTIONAL section marked OPTIONAL below.
-***You only need to do this from one computer which for ease of access should probably be your workstation computer rather than a server***
+!!! recommended "Recommended Option"
+
+    Unless need added features, use this built-in command and skip the optional section. If need added features, do the OPTIONAL section marked OPTIONAL below.
+
+!!! Tip
+
+    You only need to do this from one computer which for ease of access should probably be your workstation computer rather than a server.
 
 #### Login to your Docker Repo [Account]
 
@@ -68,10 +78,15 @@ Enter your password when prompted:
 
 ![Docker Login Before Script](images/docker_login_before_script.png)
 
-IF USING PROXY: make sure your http_proxy, https_proxy, and no_proxy our set ***if pushing to a repo outside of your internal network***.
+!!! Warning "IF USING PROXY"
+
+    Make sure your http_proxy, https_proxy, and no_proxy our set ***if pushing to a repo outside of your internal network.
+
 #### Push versioned first
 
-**Replace gmoney23 with your registry in the commands below**
+!!! Tip
+
+    Replace `gmoney23` with your registry in the commands below
 
 ```
 docker manifest create gmoney23/outyet:1.0 gmoney23/outyet-s390x:1.0 gmoney23/outyet-x86:1.0
@@ -91,13 +106,15 @@ docker manifest inspect gmoney23/outyet:1.0
 
 #### Then push latest for current versioned
 
-**Replace gmoney23 with your registry in the commands below**
+!!! Tip
 
-```
+    Replace `gmoney23` with your registry in the commands below
+
+``` bash
 docker manifest create gmoney23/outyet gmoney23/outyet-s390x gmoney23/outyet-x86
 ```
 
-```
+``` bash
 docker manifest push -p gmoney23/outyet
 ```
 
@@ -106,7 +123,7 @@ docker manifest push -p gmoney23/outyet
 
 If you want to inspect your manifest, use:
 
-```
+``` bash
 docker manifest inspect gmoney23/outyet
 ```
 
@@ -114,7 +131,7 @@ docker manifest inspect gmoney23/outyet
 
 For example, you just pushed version 2.0 of your app, you can update the existing manifest by using:
 
-```
+``` bash
 docker manifest create --amend gmoney23/outyet gmoney23/outyet-s390x gmoney23/outyet-x86
 ```
 
@@ -127,9 +144,12 @@ Time to go to the last stage, unless you need that pesky manifest-tool.
 ### [Part 5: Now, it's time to get these images into Kubernetes](5-Deploy-to-Kubernetes.md)
 
 ### OPTIONAL [Most Users Should Skip]: Install Manifest tool if need added features
+
 The docker manifest command is experimental because while it does create manifests and push it doesn't have other features yet such as pushing manifest from files. If you want these extra features you can install the manifest tool here. If not, I would suggest just using the docker manifest command as its generally integrated better with docker. For example, once you docker login you don't need to enter username/password like you do with manifest-tool.
 
-***You only need to do this from one computer which for ease of access should probably be your workstation computer rather than a server***
+!!! Tip
+
+    You only need to do this from one computer which for ease of access should probably be your workstation computer rather than a server.
 
 If golang not yet installed, install here with package for your os/arch [here](https://golang.org/dl/){target=_blank}
 
@@ -140,14 +160,18 @@ If git not yet installed, see instructions here for how to install for your os [
 ```
 git config --global http.proxy http://proxyUsername:proxyPassword@proxy.server.com:port
 ```
- 
+
 replacing with your proxy values. For more different git proxy configurations for your specific needs so [this gist on using git with proxies](https://gist.github.com/evantoli/f8c23a37eb3558ab8765){target=_blank}
 
 Install manifest-tool here with package for your os/arch [here](https://github.com/estesp/manifest-tool/releases){target=_blank}
 
 #### After all s390x and amd64 images are pushed (Only do the do following if you haven't done with the docker manifest command)
-***You only need to do this from one computer which for ease of access should probably be your workstation computer rather than a server***
+
+!!! Tip
+    You only need to do this from one computer which for ease of access should probably be your workstation computer rather than a server.
+
 ##### Push versioned manifest first
+
 First, you will update the yaml files in the given directory of the image you are trying to push (in this case outyet) as well as change into the directory. Then, switch my username/password in the following command for yours for the image repository you are pushing to and:
 
 IF USING PROXY: make sure your `http_proxy`, `https_proxy`, and `no_proxy` are set if pushing to a repo outside of your internal network.
@@ -164,4 +188,4 @@ manifest-tool --username gmoney23 --password *** push from-spec smallest-outyet/
 
 Having your hands dirty fills you with [determination](https://undertale.fandom.com/wiki/Determination){target=_blank}.
 
-# [Part 5: Kubernetes Time](5-Deploy-to-Kubernetes.md)
+## [Part 5: Kubernetes Time](5-Deploy-to-Kubernetes.md)

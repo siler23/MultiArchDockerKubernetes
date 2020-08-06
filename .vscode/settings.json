@@ -1,0 +1,20 @@
+{
+    "cSpell.enabled": true,
+    "cSpell.ignoreWords": [
+        "clusterip",
+        "docker's",
+        "marchdockerlab",
+        "myrepo",
+        "outyets",
+        "proxied",
+        "serverip",
+        "vmanifest",
+        "yourproxyaddress",
+        "yourproxyport"
+    ],
+    "markdownlint.config": {
+        "MD046": false,
+        "MD040": false,
+        "MD026": false
+    }
+}

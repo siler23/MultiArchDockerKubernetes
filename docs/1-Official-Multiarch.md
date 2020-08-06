@@ -6,6 +6,7 @@ This section goes through the official Docker repositories for building images a
     **If using proxy**, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that [0-ProxyPSA](0-ProxyPSA.md) document.
 
 ## Official Repositories
+
 [Docker Official Images](https://docs.docker.com/docker-hub/official_images/){target=_blank} are a special set of Docker repositories on DockerHub that host images for operating systems and base software that follow Dockerfile best practices and undergo regular security scans to allow them to serve as building blocks for your applications. These repositories are where you get the images to build your applications on top of.
 
 [Check out the Docker Official Images here](https://hub.docker.com/search?q=&type=image&image_filter=official){target=_blank}
@@ -21,7 +22,8 @@ We will specifically be looking at building Node.js and Go applications, so we w
 ![docker golang architectures](images/docker_golang.png)
 **This means that if I run `docker pull node` on linux on Z, it will pull me the s390x image. Similarly, if I run `docker pull node` on x86, it will pull me the x86 image.** Thus, once the image is built and set up as multi-arch, the difference is abstracted away from applications using the image (such as a node application built using the Node.js official image as the base) **[i.e. `FROM node` works on both x86 and s390x].**
 
-## How do Multi-Arch Images Work?
+## How do Multi-Arch Images Work
+
 A Multi-Arch image consists of a [manifest list](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list){target=_blank}. This manifest list links its image (i.e. each Node.js image on the [Node.js Official Docker Repository](https://hub.docker.com/_/node/){target=_blank}) to the image manifests of the docker images for the different architectures at [s390x node image](https://hub.docker.com/r/s390x/node/){target=_blank}, [amd64 node image](https://hub.docker.com/r/amd64/node/){target=_blank}, etc. This is how the magic happens, so instead of having to call the image for each architecture, I can just `docker pull node` and it gives me the correct architecture image. Nevertheless, there are official repositories that hold the official images for each architecture. This is where you can find the specific images linked to in the official image as in the example above.
 
 For IBM Z, we have:
@@ -33,26 +35,27 @@ For x86, we have official [amd64 images](https://hub.docker.com/u/amd64/){target
 Other architectures such as [Power](https://hub.docker.com/u/ppc64le/){target=_blank} and [arm32](https://hub.docker.com/u/arm32v7/){target=_blank} have their own repositories as well.
 
 ## Checking Image Architecture
+
 Many times you will want to find out if an image supports your architecture. If it doesn't and you try to run it, you can get a nasty little error.
 
 !!! error
-    ``` bash
+    ```bash
     standard_init_linux.go:185: exec user process caused "exec format error"
     ```
 
 This stops your container from working. In hopes to avoid that trouble once we've already spent the time to pull the image and try to run it, here are the best ways to check images for their architecture.
 
-### I. If the image exists on your system use docker inspect.
+### I. If the image exists on your system use docker inspect
 
-Assume I ran previosly:
+Assume I ran previously:
 
-```
+``` bash
 docker pull busybox
 ```
 
 Now, I can run:
 
-```
+``` bash
 docker inspect -f '{{.Architecture}}' busybox
 ```
 
@@ -79,7 +82,7 @@ docker inspect -f '{{.Architecture}}' busybox
 
 ### II. If the image isn't on your system, use the mplatform/mquery docker image
 
-=== "REGULAR" 
+=== "REGULAR"
 
     ```
     docker run --rm mplatform/mquery ibmcom/icp-nodejs-sample
@@ -120,4 +123,5 @@ The mquery image is "A simple utility and backend for querying Docker v2 API-sup
 Knowing that the `exec format error` can be a thing of the past fills you with [determination](https://undertale.fandom.com/wiki/Determination){target=_blank}.
 
 Next up, we will build some Node.js docker images and learn some Node.js docker best practices.
-# [Part 2: Learning How to Build Best-practice Node.js Docker Images](2-Best-Practice-Nodejs.md)
+
+## [Part 2: Learning How to Build Best-practice Node.js Docker Images](2-Best-Practice-Nodejs.md)

@@ -13,7 +13,20 @@ nav:
     - 5. Kubernetes Time: 5-Deploy-to-Kubernetes.md
     - 0. Hello Proxy Users: 0-ProxyPSA.md
 
-theme: material
+theme: 
+  name: material
+  palette:
+    scheme: preference
+# Links to different sites on bottom of page
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/siler23
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/u/gmoney23
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/garrett-woodworth-9a9895142/
+
 google_analytics:
   - UA-174658170-1
   - auto

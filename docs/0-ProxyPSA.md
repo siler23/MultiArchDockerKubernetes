@@ -1,4 +1,5 @@
 # Hello Proxy Users
+
 We will show how to use a proxy for Docker, how to use a proxy throughout this guide and give links to great proxy user articles.
 
 ## Docker proxy for push/pull
@@ -39,7 +40,7 @@ To setup Docker proxies for `docker pull` and `docker push`, you will follow dif
 
 ## Setup your terminal/command prompt for Proxy
 
-If using a proxy, declare your environment variables to reference in commands. Here is an example with a proxy of http://myproxy:8080 and no proxy of localhost and 127.0.0.1.
+If using a proxy, declare your environment variables to reference in commands. Here is an example with a proxy of `http://myproxy:8080` and no proxy of localhost and 127.0.0.1.
 
 !!! Caution "PSA"
     Proxy must have either http:// or https:// at the beginning to be used. Otherwise it will be ignored.
@@ -75,6 +76,7 @@ If using a proxy, declare your environment variables to reference in commands. H
     ```
 
 ## Building Docker images behind Proxy
+
 There are two main options for building Docker images behind a proxy so that
 your build can do things like use apt-get to install packages for the image, wget or curl
 to download files or downloading a git repository during the install itself.
@@ -91,7 +93,6 @@ to download files or downloading a git repository during the install itself.
   
     This means that your settings persist to the Docker image itself. This is in many cases not what you want because this means your users by default will have your proxy settings. If you are using an image internally only then this automatically lets you run the image. However, if you are giving an image to someone who will use it outside of your proxy environment please use the next option for setting proxy so they don't have to worry about the app not working and then having to change the settings themselves when running the Docker container. ![proxy_leaker](images/leak_env.PNG)
 
-
 2. Use build args
 
     Build args allow you to provide variables for use during building an image. When the container itself gets used these build args are not present in the container environment. This allows us to build an image using our proxy to do our apt-get installs and curls and then remove this variable so that the user can use their own web environment (proxy or no proxy) instead of by default trying to contact our proxy which they won't be able to reach.
@@ -101,7 +102,7 @@ to download files or downloading a git repository during the install itself.
         ``` bash
         docker build -t href --build-arg http_proxy=http://docker.for.win.localhost:8888 --build-arg https_proxy=http://docker.for.win.localhost:8888 --build-arg no_proxy=localhost .
         ```
- 
+  
     Using our environment variables defined previously this becomes
 
     === "BASH (Mac/Linux)"
@@ -124,6 +125,7 @@ to download files or downloading a git repository during the install itself.
     in the running container's environment as well as by inspecting the container. If you used build args the user will be able to see it by inspecting the container with `docker inspect` as well. So what do we do. Well, we can use multi-stage builds which I go over in [3-Best-Practice-go](3-Best-Practice-go.md) of this guide to accomplish the task since our final container will only have copies of the files built using the proxy in a previous container. To see how to actually do this look at [Accessing Private Repository](https://vsupalov.com/build-docker-image-clone-private-repo-ssh-key/){target=_blank}. You can follow the steps outlined in the article for your proxy with username/password declaration for security.
 
 ## Running Docker containers behind a proxy
+
 Some Docker container don't reach out to the outside world, so they don't need to worry
 about using a proxy. However, a lot of Docker containers need to reach out to do things
 such as checking information or sending notifications to websites. In order to do so behind a
@@ -146,11 +148,12 @@ This passes the environment variables to the Docker container.
 
 The fact that somebody thought of you and your proxy situation, fills you with [determination](https://undertale.fandom.com/wiki/Determination){target=_blank}.
 
-##### To use a proxy with Kubernetes see [5-Deploy-to-Kubernetes](5-Deploy-to-Kubernetes.md)
+### To use a proxy with Kubernetes see [5-Deploy-to-Kubernetes](5-Deploy-to-Kubernetes.md)
 
-#### Reference
+### Reference
+
 If you still have Docker proxy needs see this article [Docker Behind a Corporate Firewall](https://elegantinfrastructure.com/docker/ultimate-guide-to-docker-http-proxy-configuration/){target=_blank}
 
 ## Onwards
 
-##### [Part 1: Getting Official with Multi-arch Images](1-Official-Multiarch.md)
+### [Part 1: Getting Official with Multi-arch Images](1-Official-Multiarch.md)

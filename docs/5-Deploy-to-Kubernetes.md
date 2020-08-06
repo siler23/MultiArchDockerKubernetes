@@ -1,4 +1,5 @@
 # 5. Kubernetes Time
+
 We will use the multi-arch docker images we have created to make deployments that will run across s390x and amd64 nodes as well as force pods to go to either s390x or amd64 nodes. We will cover the use of deployments, services, configmaps, jobs, and cronjobs including how to easily declare a proxy to your application.
 
 ## If you are starting to lose your determination
@@ -21,66 +22,49 @@ To set up Kubernetes on Docker for Windows follow [these Windows instructions](h
 
 ***Note: If you follow this path you will have a single architecture cluster. Thus, when you try to force things to run on a different architecture node, you should expect to get a pending pod. This demonstrates that the multiarch capability is working and checking to ensure image and node architectures match. If you run on a multiarch cluster, you can tell things are working in an "arguably cooler" way (pods move to a node of the specified architecture). Nevertheless, both methods demonstrate the multiarch selection capabilities. Moreover, Docker is seemingly ubiquitous, so I have included pointers to the docs above to set up Kubernetes with Docker just in case you don't have access to a multiarch cluster at the moment.***
 
-## Running on windows [Mac/Linux Users Skip This]
-The commands listed are bash commands. In order to use bash on Windows 10 see [Enabling Bash on PC](https://www.lifewire.com/how-to-run-the-bash-command-line-in-windows-10-4072207){target=_blank}. If you do that, all of the commands below will work in a bash script for you. If you don't want to do that you can also use the command prompt. Just replace the `$var` with `%var%` and `var=x` with `set var=x`. The kubectl commands themselves are the same across operating systems. An example is changing the bash command:
+!!! Tip "Running on windows [Mac/Linux Users Skip This]"
 
-```
-peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[*].metadata.name}')"
-```
+    The commands listed are bash commands. In order to use bash on Windows 10 see [Enabling Bash on PC](https://www.lifewire.com/how-to-run-the-bash-command-line-in-windows-10-4072207){target=_blank}. If you do that, all of the commands below will work in a bash script for you. If you don't want to do that you can also use the command prompt. Just replace the `$var` with `%var%` and `var=x` with `set var=x`. The kubectl commands themselves are the same across operating systems. An example is changing the bash command:
 
- to the Windows command:
+    ```
+    peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[*].metadata.name}')"
+    ```
 
-```
-kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[*].metadata.name}'
-```
+    to the Windows command:
 
-```
-set peer_pod=result
-``` 
+    ```
+    kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[*].metadata.name}'
+    ```
 
-where result is the output of the previous command
+    ```
+    set peer_pod=result
+    ``` 
 
-and when referencing it change bash:
+    where result is the output of the previous command
 
-```
-kubectl exec $peer_pod -- ash -c "uname -m"
-```
+    and when referencing it change bash:
 
-(bash)
+    ```
+    kubectl exec $peer_pod -- ash -c "uname -m"
+    ```
 
-to Windows:
+    (bash)
 
-```
-kubectl exec %peer_pod% -- ash -c "uname -m"
-```
+    to Windows:
 
-(Windows)
+    ```
+    kubectl exec %peer_pod% -- ash -c "uname -m"
+    ```
 
-Again, you'll notice the kubectl command is exactly the same. We are just changing the variable use reference in bash to command prompt style. Also that `$()` was a bash way to run the command its in own shell and feed the output to our command so I broke the command into two for windows instead.
+    (Windows)
 
-## Before we begin, allow Images from my repo to the cluster [Admin Only]
-
-let's edit the [clusterimagepolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.0/manage_images/image_security.html){target=_blank} to allow pulls from the `gmoney23` directory for this guide. This policy prevents users from pulling images from any repository for security since some repositories could potentially hold dangerous images.
-
-### [Skip if not admin]
-
-```
-kubectl edit clusterimagepolicy public-docker-image-policy
-```
-
-add the following line:
-
-```
-- name: docker.io/gmoney23/*
-```
-
-If you pulled all the images yourself, you could also use these instead, you would just need to update the yaml files to reference the name images from your repository and add that image to your cluster instead.
+    Again, you'll notice the kubectl command is exactly the same. We are just changing the variable use reference in bash to command prompt style. Also that `$()` was a bash way to run the command its in own shell and feed the output to our command so I broke the command into two for windows instead.
 
 ## Let's create our first Deployment using our node-web-app
 
 Create the deployment with:
 
-```
+``` bash
 kubectl apply -f "${MULTIARCH_HOME}"/node-web-app/deployment.yaml
 ```
 
@@ -91,6 +75,7 @@ Then:
 ```
 peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath='{.items[*].metadata.name}')"
 ```
+
 ### A note about jsonpath
 
 You may have noticed the `-o jsonpath='{.items[*].metadata.name}')` in the previous example. Kubernetes has [jsonpath](https://restfulapi.net/json-jsonpath/){target=_blank} capability built-in. Jsonpath is a query language that lets us extract the bits of a json document, in this case the bits of the Kubernetes json document (found with `kubectl get pods $peer_pod -o json`), to get the information we need. This enables us to easily find up to date information about the objects in our cluster and allows us to use this information to make automation scripts among other things. In this example, we are finding the name of our pod in an automated way.
@@ -125,7 +110,6 @@ kubectl exec $peer_pod -- ash -c "uname -m"
 
 Depending on if it's currently running on x86 or s390x, we can force it to run on the other with a [nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/){target=_blank}. (We could also force it to stay on that arch, but that's no fun). A `nodeSelector` is a special label which needs to be satisfied for a pod to be assigned to a node. The `nodeSelector` `beta.kubernetes.io/arch:` is for deploying pods on a node with the specified architecture. (i.e. specify z with `beta.kubernetes.io/arch: s390x`)
 
-
 #### If it's running on x86 now, force z
 
 ```
@@ -145,8 +129,8 @@ sleep 10 && peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -
 ```
 
 confirm the architecture changed with:
- 
-```
+
+``` bash
 kubectl exec $peer_pod -- ash -c "uname -m"
 ```
 
@@ -161,8 +145,8 @@ deployment=$(kubectl get deploy -l app=node-web,lab=multi-arch-docker -o jsonpat
 ```
 kubectl patch deployment $deployment --patch "$(cat "${MULTIARCH_HOME}"/xNodeSelector.yaml)"
 ```
- 
- The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![x-select](images/select-x.png)
+
+The file itself just includes the necessary nodeSelector with the correct number of {} for json placement ![x-select](images/select-x.png)
 
 Now, a new pod will be created on the target architecture. Thus, first we will get our pod name and then check it's architecture again after waiting ten seconds first with sleep to give the new pod time to be created.
 
@@ -171,8 +155,8 @@ sleep 10 && peer_pod="$(kubectl get pods -l app=node-web,lab=multi-arch-docker -
 ```
 
 confirm the architecture changed with:
- 
-```
+
+``` bash
 kubectl exec $peer_pod -- ash -c "uname -m"
 ```
 
@@ -245,6 +229,7 @@ kubectl delete -f "${MULTIARCH_HOME}"/node-web-app/service.yaml
 `service "multi-arch-docker-node-web" deleted`
 
 ## Let's create our first Go Deployment
+
 We'll use the example-go-server image and some quick kubectl one-line commands to spin things up. The advantage of these is that it is easy to get things running. However, your configuration isn't automatically saved and configured, which is why managing with `.yaml` files in production is preferred.
 
 ### Make a Quick Deployment and force on z
@@ -324,22 +309,27 @@ kubectl delete service go-example
 ```
 
 ## Deal with Proxies with a ConfigMap
-In our first 2 deployments, our apps were confined within our own premises, not requiring any calls to the outside world. However, in many cases, an app will need to make calls to the outside world for things like live updates and information from web sites. Soon, our `outyet` deployment will need to check the golang git page to see if version 1.11 of go has been released. Later, our `href` application will need to call out to websites to check their internal and external hrefs. Many applications require this functionality and many corporations have proxies that prevent apps running in containers from making these calls natively. In order to achieve this functionality, we will be using ConfigMaps. A [configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){target=_blank} enables us to specify our configuration values in one place, where they can be referenced by an application. This way if a user needs different values for something such as a proxy, they can be changed in one place instead of digging into the application. Here is our proxy ConfigMap: 
+
+In our first 2 deployments, our apps were confined within our own premises, not requiring any calls to the outside world. However, in many cases, an app will need to make calls to the outside world for things like live updates and information from web sites. Soon, our `outyet` deployment will need to check the golang git page to see if version 1.11 of go has been released. Later, our `href` application will need to call out to websites to check their internal and external hrefs. Many applications require this functionality and many corporations have proxies that prevent apps running in containers from making these calls natively. In order to achieve this functionality, we will be using ConfigMaps. A [configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){target=_blank} enables us to specify our configuration values in one place, where they can be referenced by an application. This way if a user needs different values for something such as a proxy, they can be changed in one place instead of digging into the application. Here is our proxy ConfigMap:
 
 ![Proxy Configmap](images/proxy-configmap.png)
 
-##### Regular Users
-If a user doesn't need a proxy they can just not apply this ConfigMap since we will make it `optional` in the deployment.
+=== "Regular Users"
 
-##### Proxy users
-***Only if you use a proxy***, please put your proxy values here and apply this ConfigMap with:
+    If a user doesn't need a proxy they can just not apply this ConfigMap since we will make it `optional` in the deployment.
 
-```
-kubectl apply -f "${MULTIARCH_HOME}"/proxy-configmap.yaml
-```
+=== "Proxy users"
 
+    !!! info "Only if you use a proxy"
+
+        Please put your proxy values here and apply this ConfigMap with:
+
+        ``` bash
+        kubectl apply -f "${MULTIARCH_HOME}"/proxy-configmap.yaml
+        ```
 
 ## Explore how to create deployments and services from yaml
+
 Here we will explore a sample deployment file to use in our cluster.
 
 ### Time to Deploy YAML
@@ -401,16 +391,24 @@ We can see the two pods' endpoints using the service instead of the one before.
 
 To access the application itself, I can get the IP and `NodePort` using kubectl
 
-#### Admin can run this command or check the console for the Proxy IP
-```
-[ -z "$CLUSTERIP" ] && CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
-```
+=== "Admin"
 
-#### Non-admin Needs to get the IP from Admin
+    Can run this command or check the console for the Proxy IP
 
-`CLUSTERIP=<your_proxy_node_ip>`
+    ``` bash
+    [ -z "$CLUSTERIP" ] && CLUSTERIP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+    ```
+
+=== "Non-admin"
+
+    Needs to get the IP from Admin
+    
+    ``` bash
+    CLUSTERIP=<your_proxy_node_ip>
+    ```
 
 ### Time to See if it's Outyet
+
 ```
 NODEPORT=$(kubectl get svc -l app=smallest-outyet,lab=multi-arch-docker -o jsonpath='{.items[0].spec.ports[0].nodePort}')
 ```
@@ -420,7 +418,6 @@ echo "http://${CLUSTERIP}:${NODEPORT}"
 ```
 
 I can plug this address into my browser to view the app.
-
 
 ### Clean Up
 
@@ -484,7 +481,7 @@ echo "http://${CLUSTERIP}:${NODEPORT}"
 
 We can visit this address, to visit our `small-outyet` app.
 
-We can follow similar steps for all of the outyets and example-go-server since they are all webapps with similar constraints.
+We can follow similar steps for all of the outyets and example-go-server since they are all web applications with similar constraints.
 
 ### Clean up Small-Outyet
 
@@ -501,10 +498,12 @@ kubectl delete -f "${MULTIARCH_HOME}"/small-outyet/service.yaml
 `service "multi-arch-docker-small-outyet" deleted`
 
 ## Using Jobs with a CronJob
-A [job](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/){target=_blank} runs a number of pods in order to achieve a given number of successful completions at which point it is done. A [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/){target=_blank} runs a job on a time-based schedule. In this example, we will use a cronjob to launch our trusty `href-counter`, every minute. We will then change the environment values sent into href-counter, to get it to switch to a different website and look at its logs to show us the results. Instead of mounting the environment variables directly in the pod we will be using a new [configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){target=_blank} and the one for proxies we created before to map configuration values to a container instead of hardcoding them in (if applicable)
+
+A [job](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/){target=_blank} runs a number of pods in order to achieve a given number of successful completions at which point it is done. A [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/){target=_blank} runs a job on a time-based schedule. In this example, we will use a cronjob to launch our trusty `href-counter`, every minute. We will then change the environment values sent into href-counter, to get it to switch to a different website and look at its logs to show us the results. Instead of mounting the environment variables directly in the pod we will be using a new [configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){target=_blank} and the one for proxies we created before to map configuration values to a container instead of hard coding them in (if applicable)
 
 ### First, lets create our ConfigMap
-Our configmap.yaml is as follows: 
+
+Our configmap.yaml is as follows:
 
 ![configmap.yaml](images/configmap.png)
 
@@ -517,7 +516,7 @@ kubectl apply -f "${MULTIARCH_HOME}"/href-counter/configmap.yaml
 
 `configmap/multi-arch-docker-site-url created`
 
-Next, we have to make our CronJob. The following yaml will suffice: 
+Next, we have to make our CronJob. The following yaml will suffice:
 
 ![Cronjob](images/cronjob.png)
 
@@ -531,7 +530,7 @@ kubectl apply -f "${MULTIARCH_HOME}"/href-counter/cronjob.yaml
 
 **After waiting a few minutes**, run the logs to see the results:
 
-```
+``` bash
 kubectl logs -l app=href-counter,lab=multi-arch-docker
 ```
 
@@ -543,13 +542,13 @@ kubectl logs -l app=href-counter,lab=multi-arch-docker
 
 Finally, it's time to patch the configmap and see the changes...
 
-```
+``` bash
 kubectl patch configmap multi-arch-docker-site-url -p '{"data": {"http-url": "http://google.com"}}'
 ```
 
 With the configmap patched we should be able to see the changes to the logs of the pods run by the jobs from the CronJob though you might have to wait up to a minute to see a change (*Note: usually only the 3 most recent pods at a given time are available for log reading*):
 
-```
+``` bash
 kubectl logs -l app=href-counter,lab=multi-arch-docker
 ```
 
@@ -567,7 +566,7 @@ kubectl delete -f "${MULTIARCH_HOME}"/href-counter/cronjob.yaml
 
 `cronjob.batch "multi-arch-docker-href-counter" deleted`
 
-```
+``` bash
 kubectl delete -f "${MULTIARCH_HOME}"/href-counter/configmap.yaml
 ```
 
@@ -581,16 +580,26 @@ If you need more `Kubernetes` skills, cover your bases with [Kubernetes basics](
 
 **THAT'S ALL FOLKS!**
 
-*Note to Self: Oops that was off message. I meant to say:*
+!!! note "Note to Self"
 
-**Knowing you have a guide as a template for future success fills you with [determination](https://undertale.fandom.com/wiki/Determination){target=_blank}.**
+    *Oops that was off message. I meant to say:*
+    
+    **Knowing you have a guide as a template for future success fills you with [determination](https://undertale.fandom.com/wiki/Determination){target=_blank}.**
 
-*Note to Self: My ability to stay on message and reminisce about [Undertale](https://store.steampowered.com/app/391540/Undertale/){target=_blank} fills me with [determination](https://undertale.fandom.com/wiki/Determination){target=_blank}.*
+!!! note "P.S."
 
-*Note to Self: What ever will I do [next](https://studybreaks.com/tvfilm/deltarune-is-the-sequel-undertale-needs/){target=_blank}*
+    My ability to stay on message and reminisce about [Undertale](https://store.steampowered.com/app/391540/Undertale/){target=_blank} fills me with [determination](https://undertale.fandom.com/wiki/Determination){target=_blank}.*
 
-## Additional Topic
-An additional topic to look at after finishing everything here is:
-[Building a Helm Chart from Kubernetes yaml files](https://www.ibm.com/blogs/bluemix/2017/10/quick-example-helm-chart-for-kubernetes/){target=_blank}
+!!! note "P.P.S"
 
-# [HOME](index.md)
+    What ever will I do [next](https://studybreaks.com/tvfilm/deltarune-is-the-sequel-undertale-needs/){target=_blank}*
+
+## Additional Topics
+
+After finishing everything here, check out:
+
+* [Packaging Applications and Services with Kubernetes Operators](https://developers.redhat.com/topics/kubernetes/operators){target=_blank}
+
+* [Red Hat OpenShift Free Interactive Online Learning](https://learn.openshift.com){target=_blank}
+
+## [HOME](index.md)

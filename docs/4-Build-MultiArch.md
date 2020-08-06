@@ -10,11 +10,11 @@ export MULTIARCH_HOME=`full path to directory of multiarch repo`
     **If using proxy**, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that [0-ProxyPSA](0-ProxyPSA.md) document.
 
 ## Enabling Docker Experimental Features
+
 We need to enable experimental features for both the docker client and server in order to use the `docker manifest` command and `--platform` tags respectively. In order to do this please follow the steps below for your operating system. `docker manifest` enables us to push and pull manifest lists while `--platform` gives us the ability to pull images of a specific platform (i.e. operating system/architecture). This lets us pull s390x images even if we are on an amd64 platform which is needed to get the base images for our cross-builds later.
 
-**IMPORTANT: PLEASE USE DOCKER 18.06 or later**
-
-*If you don't have at least this version, please upgrade*
+!!! Attention
+    **PLEASE USE DOCKER 18.06 or later. If you don't have at least this version, please upgrade**
 
 ![Upgrade Docker](images/DockerUpdate.png)
 
@@ -30,108 +30,109 @@ docker version
 
 *Under Server:* If `Experimental: false` like in the above picture, you need to do the *Server* steps. If `Experimental: true` then you can skip the *Server* steps.
 
-### Linux
+=== "Linux"
 
-#### Client
+    #### Client
 
-```
-ls "$HOME/.docker"
-```
+    ```
+    ls "$HOME/.docker"
+    ```
 
-If `$HOME/.docker/config.json` exists:
+    If `$HOME/.docker/config.json` exists:
 
-(Open config.json with your favorite text editor)
+    (Open config.json with your favorite text editor)
 
-```
-vim $HOME/.docker/config.json
-```
+    ```
+    vim $HOME/.docker/config.json
+    ```
 
-Add `"experimental": "enabled"` to config.json file
+    Add `"experimental": "enabled"` to config.json file
 
-![End Result](images/Linux_add_experimental.png)
+    ![End Result](images/Linux_add_experimental.png)
 
-If `$HOME/.docker/config.json` doesn’t exist:
+    If `$HOME/.docker/config.json` doesn’t exist:
 
-```
-mkdir "$HOME/.docker"
-```
+    ```
+    mkdir "$HOME/.docker"
+    ```
 
-```
-echo $'{\n    "experimental": "enabled"\n}' | tee $HOME/.docker/config.json
-```
+    ```
+    echo $'{\n    "experimental": "enabled"\n}' | tee $HOME/.docker/config.json
+    ```
 
-Add `"experimental": "enabled"` to `config.json` file
+    Add `"experimental": "enabled"` to `config.json` file
 
-![Client Enabled Result](images/Linux_add_client_fresh.png)
+    ![Client Enabled Result](images/Linux_add_client_fresh.png)
 
-#### Server
+    #### Server
 
-```
-sudo ls /etc/docker
-```
+    ```
+    sudo ls /etc/docker
+    ```
 
-##### If /etc/docker/daemon.json exists:
+    ##### If /etc/docker/daemon.json exists:
 
-(Open daemon.json with your favorite text editor)
+    (Open daemon.json with your favorite text editor)
 
-```
-sudo vim /etc/docker/daemon.json
-```
+    ```
+    sudo vim /etc/docker/daemon.json
+    ```
 
-Add `"experimental": true` to `daemon.json` file
+    Add `"experimental": true` to `daemon.json` file
 
-##### If /etc/docker/daemon.json doesn't exist:
+    ##### If /etc/docker/daemon.json doesn't exist:
 
-```
-echo $'{\n    "experimental": true\n}' | sudo tee /etc/docker/daemon.json
-```
+    ```
+    echo $'{\n    "experimental": true\n}' | sudo tee /etc/docker/daemon.json
+    ```
 
-![Server Enabled Result](images/Linux_add_server_experimental.png)
+    ![Server Enabled Result](images/Linux_add_server_experimental.png)
 
-#### Restart Docker to Pick Up Changes
+    #### Restart Docker to Pick Up Changes
 
-```
-sudo service docker restart
-```
+    ```
+    sudo service docker restart
+    ```
 
-#### Check for Success
+    #### Check for Success
 
-Once docker is started, check `docker version` again to see experimental set to true for both client and server:
+    Once docker is started, check `docker version` again to see experimental set to true for both client and server:
 
-```
-docker version
-```
+    ```
+    docker version
+    ```
 
-![Docker Version Final Linux](images/Docker_Version_Final_Mac.png)
+    ![Docker Version Final Linux](images/Docker_Version_Final_Mac.png)
 
-### Mac / Windows
-Open the Preferences from the menu
+=== "Mac / Windows"
 
-![Open Settings](images/open_preferences_docker_mac.png)
+    Open the Preferences from the menu
 
-#### Client
+    ![Open Settings](images/open_preferences_docker_mac.png)
 
-Go to `Command Line` and click to Enable experimental features. Then, click `Apply and Restart`.
+    #### Client
 
-![Command Line Mac](images/Command_Line_Mac.png)
+    Go to `Command Line` and click to Enable experimental features. Then, click `Apply and Restart`.
 
-#### Server
+    ![Command Line Mac](images/Command_Line_Mac.png)
 
-Go to `Docker Engine` and change false to true for experimental. Then, click`Apply & Restart`.
+    #### Server
 
-![Docker Engine Mac](images/Docker_Engine_Mac.png)
+    Go to `Docker Engine` and change false to true for experimental. Then, click`Apply & Restart`.
 
-#### Check for Success
+    ![Docker Engine Mac](images/Docker_Engine_Mac.png)
 
-Once docker is started check `docker version` again to see experimental set to true for both client and server:
+    #### Check for Success
 
-```
-docker version
-```
+    Once docker is started check `docker version` again to see experimental set to true for both client and server:
 
-![Docker Version Final Mac](images/Docker_Version_Final_Mac.png)
+    ```
+    docker version
+    ```
 
-## Cross-Architecture Docker 
+    ![Docker Version Final Mac](images/Docker_Version_Final_Mac.png)
+
+## Cross-Architecture Docker
 
 Normally, one can only run docker images compiled for the host machine's architecture. This means that in order to run an s390x image, you would need an s390x server. Additionally, since building an s390x image (in most cases) requires running s390x binaries on your system, this also requires an s390x server. The same holds true for arm, x86 (amd64), power (ppc64le), etc. This limits the ability to build images that are available across all platforms. One way to overcome this limitation is by using [binfmt_misc](https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html){target=_blank} in conjunction with [qemu](https://www.qemu.org/){target=_blank} (quick emulation) running using [user-mode-emulation](https://ownyourbits.com/2018/06/13/transparently-running-binaries-from-any-architecture-in-linux-with-qemu-and-binfmt_misc/){target=_blank}. Qemu dynamically translates the target architecture's instructions to the the host architecture's instruction set to enable binaries of a different architecture to run on a host system. [Binfmt_misc](https://lwn.net/Articles/679308/){target=_blank} comes in to enable the kernel to read the foreign architecture binary by ["directing"](https://lwn.net/Articles/679308/){target=_blank} the kernel to the correct qemu static binary to interpret the code.
 
@@ -149,7 +150,7 @@ The [docker/binfmt](https://github.com/docker/binfmt){target=_blank} GitHub proj
 
 Their implementation works for an amd64 host, so I made a separate image with the qemu-static binaries compiled from the s390x host and posted a multi-arch image for both amd64 and s390x hosts to `gmoney23/binfmt`.
 
-You can test this out by first running an image that is from a different platform than yours. 
+You can test this out by first running an image that is from a different platform than yours.
 
 === "Linux"
 
@@ -179,7 +180,9 @@ You can test this out by first running an image that is from a different platfor
         docker run hello-world
         ```
 
-    *Note: while the pictures in this section are for an s390x host, if you are using an amd64 host you should be getting similar errors with the s390x image you pulled. No need to worry that some of the messages say `s390x` for you vs `amd64` in the pictures that follow in this section.*
+    !!! Note
+    
+        While the pictures in this section are for an s390x host, if you are using an amd64 host you should be getting similar errors with the s390x image you pulled. No need to worry that some of the messages say `s390x` for you vs `amd64` in the pictures that follow in this section.
 
     You should get an exec format error like so:
     ![Failure exec error](images/exec_error_amd64_s390x.png)
@@ -251,9 +254,9 @@ You can test this out by first running an image that is from a different platfor
 
 ### Consequences of Cross-Architecture Docker
 
-This enables us to not only run images, but also build them for different architectures from a given host architecture. This makes it possible to build s390x (z), power (ppc64le), arm, and amd64 images all from the hosts you have available. This enables developers to support more images as they may have nodes with only specific architectures such as `amd64`. Using this technology, suddenly ecosystem contribution is no longer constrained by host architecture limitations, creating a broader docker image ecosystem for everyone. In fact, with the current stable docker CE build and onward  [buildx](https://github.com/docker/buildx){target=_blank} comes as an experimental future to build and push multi-arch images (using qemu behind the scenes) in a seamless process which we will briefly explore in a recommended optional follow-up to this section (given you have a workstation with Docker CE of version 19.0.3 or later). 
+This enables us to not only run images, but also build them for different architectures from a given host architecture. This makes it possible to build s390x (z), power (ppc64le), arm, and amd64 images all from the hosts you have available. This enables developers to support more images as they may have nodes with only specific architectures such as `amd64`. Using this technology, suddenly ecosystem contribution is no longer constrained by host architecture limitations, creating a broader docker image ecosystem for everyone. In fact, with the current stable docker CE build and onward  [buildx](https://github.com/docker/buildx){target=_blank} comes as an experimental future to build and push multi-arch images (using qemu behind the scenes) in a seamless process which we will briefly explore in a recommended optional follow-up to this section (given you have a workstation with Docker CE of version 19.0.3 or later).
 
-The big caveat to this capability remains that qemu does not support all instructions and is being constantly improved to handle more exceptions and work for more use cases in the future. What is supported will be dictated by which linux-user static binary you are using with arm and s390x having more support than ppc64le at the current time (at least for nodejs). This means for certain image builds you will still have to use the native hardware, but for many images qemu provides a quick and easy way to build images for more platforms. 
+The big caveat to this capability remains that qemu does not support all instructions and is being constantly improved to handle more exceptions and work for more use cases in the future. What is supported will be dictated by which linux-user static binary you are using with arm and s390x having more support than ppc64le at the current time (at least for nodejs). This means for certain image builds you will still have to use the native hardware, but for many images qemu provides a quick and easy way to build images for more platforms.
 
 Next, we will use an amd64 host to build images for both architectures and use them to make multi-arch images that support both architectures for each of the applications we have visited in parts 2 and 3 of this tutorial.
 
@@ -261,27 +264,25 @@ Next, we will use an amd64 host to build images for both architectures and use t
 
 ## Making multi-arch docker images
 
-In order to build all of the images for amd64 (x86), s390x (z) architectures, and power (ppc64le) architectures we will use a simple script that I wrote to go through the steps of building each individual architecture image with both a versioned and latest tag. Then, it creates a manifest list for each application and pushes it up to form a multiarch image for each of the applications we have gone over. It is heavily commented so it should explain itself. 
+In order to build all of the images for amd64 (x86), s390x (z) architectures, and power (ppc64le) architectures we will use a simple script that I wrote to go through the steps of building each individual architecture image with both a versioned and latest tag. Then, it creates a manifest list for each application and pushes it up to form a multiarch image for each of the applications we have gone over. It is heavily commented so it should explain itself.
 
 *Note: It has been updated to just create one `smallest-outyet` image currently by adding a new line `IMAGES=("smallest-outyet")` to override the full images list. You can simply uncomment this line to build all images but that will take a long time so this is a time save as the actual building is trivial (it is the repeatable process [which could easily be applied to all images as in this scenario] that is important).*
 
 ![Build and Push Images Script Overview](images/build_and_push_script.png)
 
-If you want to visit the script itself to see it up close and in a bigger font, please click on:
-
-<a href="https://github.com/siler23/MultiArchDockerKubernetes/blob/master/Build_And_Push_Images.sh" target="_blank" rel="noopener" rel="noreferrer">Build and Push Images Script</a> 
+If you want to visit the script itself to see it up close and in a bigger font, please click on [Build and Push Images Script](https://github.com/siler23/MultiArchDockerKubernetes/blob/master/Build_And_Push_Images.sh){target=_blank}
 
 ### Login to your Docker Repo [Account]
 
 Set `DOCKER_REPO=<docker_username>` which for me is:
 
-```
+``` bash
 DOCKER_REPO=gmoney23
 ```
 
 Set yours accordingly, then do a docker login:
 
-```
+``` bash
 docker login -u ${DOCKER_REPO}
 ```
 
@@ -343,4 +344,4 @@ Knowing that qemu builds a bridge from x to z for free fills you with [determina
 
 **This optional path is a manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path.**
 
-# [Part 5: Kubernetes Time](5-Deploy-to-Kubernetes.md)
+## [Part 5: Kubernetes Time](5-Deploy-to-Kubernetes.md)
