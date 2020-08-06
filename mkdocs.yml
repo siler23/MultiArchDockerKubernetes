@@ -1,5 +1,5 @@
 site_name: From Docker to Kubernetes - Multi-Arch with Go and Nodejs
-repo_url: https://github.com/siler23/MultiArchDockerICP
+repo_url: https://github.com/siler23/MultiArchDockerKubernetes
 edit_uri: ''
 nav:
     - Home: index.md
