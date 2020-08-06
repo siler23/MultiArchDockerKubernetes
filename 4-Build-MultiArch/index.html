@@ -1,0 +1,1140 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.3">
+    
+    
+      
+        <title>Bringing Multi-arch Images to a Computer Near You - From Docker to Kubernetes - Multi-Arch with Go and Nodejs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.947af8d5.min.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/palette.7f672a1f.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-174658170-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="preference" data-md-color-primary="" data-md-color-accent="">
+  
+    
+      <script>matchMedia("(prefers-color-scheme: dark)").matches&&document.body.setAttribute("data-md-color-scheme","slate")</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#4-bringing-multi-arch-images-to-a-computer-near-you" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="From Docker to Kubernetes - Multi-Arch with Go and Nodejs" class="md-header-nav__button md-logo" aria-label="From Docker to Kubernetes - Multi-Arch with Go and Nodejs">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            From Docker to Kubernetes - Multi-Arch with Go and Nodejs
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Bringing Multi-arch Images to a Computer Near You
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/siler23/MultiArchDockerKubernetes" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="From Docker to Kubernetes - Multi-Arch with Go and Nodejs" class="md-nav__button md-logo" aria-label="From Docker to Kubernetes - Multi-Arch with Go and Nodejs">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    From Docker to Kubernetes - Multi-Arch with Go and Nodejs
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/siler23/MultiArchDockerKubernetes" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../1-Official-Multiarch/" title="1. Getting Official with Multi-arch Images" class="md-nav__link">
+      1. Getting Official with Multi-arch Images
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2-Best-Practice-Nodejs/" title="2. Learning How to Build Best-practice Node.js Docker Images" class="md-nav__link">
+      2. Learning How to Build Best-practice Node.js Docker Images
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../3-Best-Practice-go/" title="3. Guide to Building Best-practice Go Docker Images" class="md-nav__link">
+      3. Guide to Building Best-practice Go Docker Images
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      4. Building Multi-arch Docker Images
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="4. Building Multi-arch Docker Images" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        4. Building Multi-arch Docker Images
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Bringing Multi-arch Images to a Computer Near You
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Bringing Multi-arch Images to a Computer Near You" class="md-nav__link md-nav__link--active">
+      Bringing Multi-arch Images to a Computer Near You
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dont-forget-to-set-the-multi-arch-lab-home-directory" class="md-nav__link">
+    Don't forget to set the multi-arch lab home directory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enabling-docker-experimental-features" class="md-nav__link">
+    Enabling Docker Experimental Features
+  </a>
+  
+    <nav class="md-nav" aria-label="Enabling Docker Experimental Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client" class="md-nav__link">
+    Client
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server" class="md-nav__link">
+    Server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-for-success" class="md-nav__link">
+    Check for Success
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client_1" class="md-nav__link">
+    Client
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server_1" class="md-nav__link">
+    Server
+  </a>
+  
+    <nav class="md-nav" aria-label="Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-etcdockerdaemonjson-exists" class="md-nav__link">
+    If /etc/docker/daemon.json exists:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-etcdockerdaemonjson-doesnt-exist" class="md-nav__link">
+    If /etc/docker/daemon.json doesn't exist:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restart-docker-to-pick-up-changes" class="md-nav__link">
+    Restart Docker to Pick Up Changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-for-success_1" class="md-nav__link">
+    Check for Success
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-architecture-docker" class="md-nav__link">
+    Cross-Architecture Docker
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-Architecture Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-cross-architecture-support" class="md-nav__link">
+    Setting up Cross-Architecture support
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consequences-of-cross-architecture-docker" class="md-nav__link">
+    Consequences of Cross-Architecture Docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#making-multi-arch-docker-images" class="md-nav__link">
+    Making multi-arch docker images
+  </a>
+  
+    <nav class="md-nav" aria-label="Making multi-arch docker images">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#login-to-your-docker-repo-account" class="md-nav__link">
+    Login to your Docker Repo [Account]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-script-to-build-and-push-images" class="md-nav__link">
+    Run Script to build and Push Images
+  </a>
+  
+    <nav class="md-nav" aria-label="Run Script to build and Push Images">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#without-proxy" class="md-nav__link">
+    Without Proxy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-proxy" class="md-nav__link">
+    With Proxy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-sections" class="md-nav__link">
+    OPTIONAL SECTIONS
+  </a>
+  
+    <nav class="md-nav" aria-label="OPTIONAL SECTIONS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recommended-most-users-should-try-if-they-have-docker-1903-ce-or-later-the-future-using-buildx-to-make-multi-arch-a-way-of-life" class="md-nav__link">
+    Recommended: [Most users should try if they have docker 19.03 CE or later]: The future - Using Buildx to make Multi-arch a Way of Life
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extra-content-most-users-should-skip-the-past-the-manual-way-aka-herding-cats" class="md-nav__link">
+    Extra Content: [Most Users Should Skip]: The past - The Manual Way aka Herding Cats
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-5-kubernetes-time" class="md-nav__link">
+    Part 5: Kubernetes Time
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../4-Multiarch-buildx-addendum/" title="The future - Using Buildx to make Multi-arch a Way of Life" class="md-nav__link">
+      The future - Using Buildx to make Multi-arch a Way of Life
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../4-Multiarch-manual-addendum/" title="The past - The Manual Way aka Herding Cats" class="md-nav__link">
+      The past - The Manual Way aka Herding Cats
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../5-Deploy-to-Kubernetes/" title="5. Kubernetes Time" class="md-nav__link">
+      5. Kubernetes Time
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../0-ProxyPSA/" title="0. Hello Proxy Users" class="md-nav__link">
+      0. Hello Proxy Users
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dont-forget-to-set-the-multi-arch-lab-home-directory" class="md-nav__link">
+    Don't forget to set the multi-arch lab home directory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enabling-docker-experimental-features" class="md-nav__link">
+    Enabling Docker Experimental Features
+  </a>
+  
+    <nav class="md-nav" aria-label="Enabling Docker Experimental Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client" class="md-nav__link">
+    Client
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server" class="md-nav__link">
+    Server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-for-success" class="md-nav__link">
+    Check for Success
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client_1" class="md-nav__link">
+    Client
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server_1" class="md-nav__link">
+    Server
+  </a>
+  
+    <nav class="md-nav" aria-label="Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-etcdockerdaemonjson-exists" class="md-nav__link">
+    If /etc/docker/daemon.json exists:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-etcdockerdaemonjson-doesnt-exist" class="md-nav__link">
+    If /etc/docker/daemon.json doesn't exist:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restart-docker-to-pick-up-changes" class="md-nav__link">
+    Restart Docker to Pick Up Changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-for-success_1" class="md-nav__link">
+    Check for Success
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-architecture-docker" class="md-nav__link">
+    Cross-Architecture Docker
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-Architecture Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-cross-architecture-support" class="md-nav__link">
+    Setting up Cross-Architecture support
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consequences-of-cross-architecture-docker" class="md-nav__link">
+    Consequences of Cross-Architecture Docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#making-multi-arch-docker-images" class="md-nav__link">
+    Making multi-arch docker images
+  </a>
+  
+    <nav class="md-nav" aria-label="Making multi-arch docker images">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#login-to-your-docker-repo-account" class="md-nav__link">
+    Login to your Docker Repo [Account]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-script-to-build-and-push-images" class="md-nav__link">
+    Run Script to build and Push Images
+  </a>
+  
+    <nav class="md-nav" aria-label="Run Script to build and Push Images">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#without-proxy" class="md-nav__link">
+    Without Proxy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-proxy" class="md-nav__link">
+    With Proxy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-sections" class="md-nav__link">
+    OPTIONAL SECTIONS
+  </a>
+  
+    <nav class="md-nav" aria-label="OPTIONAL SECTIONS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recommended-most-users-should-try-if-they-have-docker-1903-ce-or-later-the-future-using-buildx-to-make-multi-arch-a-way-of-life" class="md-nav__link">
+    Recommended: [Most users should try if they have docker 19.03 CE or later]: The future - Using Buildx to make Multi-arch a Way of Life
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extra-content-most-users-should-skip-the-past-the-manual-way-aka-herding-cats" class="md-nav__link">
+    Extra Content: [Most Users Should Skip]: The past - The Manual Way aka Herding Cats
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-5-kubernetes-time" class="md-nav__link">
+    Part 5: Kubernetes Time
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 id="4-bringing-multi-arch-images-to-a-computer-near-you">4. Bringing Multi-arch Images to a Computer Near You<a class="headerlink" href="#4-bringing-multi-arch-images-to-a-computer-near-you" title="Permanent link">&para;</a></h1>
+<p>This section goes through installing the manifest tool and building the multi-arch docker images.</p>
+<h2 id="dont-forget-to-set-the-multi-arch-lab-home-directory">Don't forget to set the multi-arch lab home directory<a class="headerlink" href="#dont-forget-to-set-the-multi-arch-lab-home-directory" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">MULTIARCH_HOME</span><span class="o">=</span><span class="s2">&quot;full path to directory of multiarch repo&quot;</span>
+</code></pre></div>
+
+<div class="admonition caution">
+<p class="admonition-title">If Using Proxy</p>
+<p><strong>If using proxy</strong>, make sure you've read <a href="../0-ProxyPSA/">0-ProxyPSA</a> and have set your <code>http_proxy</code>, <code>https_proxy</code>, and <code>no_proxy</code> variables for your environment as specified there. Also note that for all docker run commands add the <code>-e</code> for each of the proxy environment variables as specified in that <a href="../0-ProxyPSA/">0-ProxyPSA</a> document.</p>
+</div>
+<h2 id="enabling-docker-experimental-features">Enabling Docker Experimental Features<a class="headerlink" href="#enabling-docker-experimental-features" title="Permanent link">&para;</a></h2>
+<p>We need to enable experimental features for both the docker client and server in order to use the <code>docker manifest</code> command and <code>--platform</code> tags respectively. In order to do this please follow the steps below for your operating system. <code>docker manifest</code> enables us to push and pull manifest lists while <code>--platform</code> gives us the ability to pull images of a specific platform (i.e. operating system/architecture). This lets us pull s390x images even if we are on an amd64 platform which is needed to get the base images for our cross-builds later.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Please use <strong>Docker 18.06 or later</strong>. If you don't have at least this version, please upgrade.</p>
+</div>
+<p><img alt="Upgrade Docker" src="../images/DockerUpdate.png" /></p>
+<p>Check with:</p>
+<div class="highlight"><pre><span></span><code>docker version
+</code></pre></div>
+
+<p><img alt="Docker Version Output" src="../images/Docker_Version_Experimental_Check.png" /></p>
+<p><em>Under Client:</em> If <code>Experimental: false</code> like in the above picture then you need to do the <em>Client</em> steps. If <code>Experimental: true</code> then you can skip the <em>Client</em> steps.</p>
+<p><em>Under Server:</em> If <code>Experimental: false</code> like in the above picture, you need to do the <em>Server</em> steps. If <code>Experimental: true</code> then you can skip the <em>Server</em> steps.</p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Mac / Windows</label><div class="tabbed-content">
+<p>Open the Preferences from the menu</p>
+<p><img alt="Open Settings" src="../images/open_preferences_docker_mac.png" /></p>
+<h4 id="client">Client<a class="headerlink" href="#client" title="Permanent link">&para;</a></h4>
+<p>Go to <code>Command Line</code> and click to Enable experimental features. Then, click <code>Apply and Restart</code>.</p>
+<p><img alt="Command Line Mac" src="../images/Command_Line_Mac.png" /></p>
+<h4 id="server">Server<a class="headerlink" href="#server" title="Permanent link">&para;</a></h4>
+<p>Go to <code>Docker Engine</code> and change false to true for experimental. Then, click<code>Apply &amp; Restart</code>.</p>
+<p><img alt="Docker Engine Mac" src="../images/Docker_Engine_Mac.png" /></p>
+<h4 id="check-for-success">Check for Success<a class="headerlink" href="#check-for-success" title="Permanent link">&para;</a></h4>
+<p>Once docker is started check <code>docker version</code> again to see experimental set to true for both client and server:</p>
+<div class="highlight"><pre><span></span><code>docker version
+</code></pre></div>
+
+<p><img alt="Docker Version Final Mac" src="../images/Docker_Version_Final_Mac.png" /></p>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Linux</label><div class="tabbed-content">
+<h4 id="client_1">Client<a class="headerlink" href="#client_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>ls &quot;$HOME/.docker&quot;
+</code></pre></div>
+
+<p>If <code>$HOME/.docker/config.json</code> exists:</p>
+<p>(Open config.json with your favorite text editor)</p>
+<div class="highlight"><pre><span></span><code>vim $HOME/.docker/config.json
+</code></pre></div>
+
+<p>Add <code>"experimental": "enabled"</code> to config.json file</p>
+<p><img alt="End Result" src="../images/Linux_add_experimental.png" /></p>
+<p>If <code>$HOME/.docker/config.json</code> doesn’t exist:</p>
+<div class="highlight"><pre><span></span><code>mkdir &quot;$HOME/.docker&quot;
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>echo $&#39;{\n    &quot;experimental&quot;: &quot;enabled&quot;\n}&#39; | tee $HOME/.docker/config.json
+</code></pre></div>
+
+<p>Add <code>"experimental": "enabled"</code> to <code>config.json</code> file</p>
+<p><img alt="Client Enabled Result" src="../images/Linux_add_client_fresh.png" /></p>
+<h4 id="server_1">Server<a class="headerlink" href="#server_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>sudo ls /etc/docker
+</code></pre></div>
+
+<h5 id="if-etcdockerdaemonjson-exists">If /etc/docker/daemon.json exists:<a class="headerlink" href="#if-etcdockerdaemonjson-exists" title="Permanent link">&para;</a></h5>
+<p>(Open daemon.json with your favorite text editor)</p>
+<div class="highlight"><pre><span></span><code>sudo vim /etc/docker/daemon.json
+</code></pre></div>
+
+<p>Add <code>"experimental": true</code> to <code>daemon.json</code> file</p>
+<h5 id="if-etcdockerdaemonjson-doesnt-exist">If /etc/docker/daemon.json doesn't exist:<a class="headerlink" href="#if-etcdockerdaemonjson-doesnt-exist" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>echo $&#39;{\n    &quot;experimental&quot;: true\n}&#39; | sudo tee /etc/docker/daemon.json
+</code></pre></div>
+
+<p><img alt="Server Enabled Result" src="../images/Linux_add_server_experimental.png" /></p>
+<h4 id="restart-docker-to-pick-up-changes">Restart Docker to Pick Up Changes<a class="headerlink" href="#restart-docker-to-pick-up-changes" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>sudo service docker restart
+</code></pre></div>
+
+<h4 id="check-for-success_1">Check for Success<a class="headerlink" href="#check-for-success_1" title="Permanent link">&para;</a></h4>
+<p>Once docker is started, check <code>docker version</code> again to see experimental set to true for both client and server:</p>
+<div class="highlight"><pre><span></span><code>docker version
+</code></pre></div>
+
+<p><img alt="Docker Version Final Linux" src="../images/Docker_Version_Final_Mac.png" /></p>
+</div>
+</div>
+<h2 id="cross-architecture-docker">Cross-Architecture Docker<a class="headerlink" href="#cross-architecture-docker" title="Permanent link">&para;</a></h2>
+<p>Normally, one can only run docker images compiled for the host machine's architecture. This means that in order to run an s390x image, you would need an s390x server. Additionally, since building an s390x image (in most cases) requires running s390x binaries on your system, this also requires an s390x server. The same holds true for arm, x86 (amd64), power (ppc64le), etc. This limits the ability to build images that are available across all platforms. One way to overcome this limitation is by using <a href="https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html" target="_blank">binfmt_misc</a> in conjunction with <a href="https://www.qemu.org/" target="_blank">qemu</a> (quick emulation) running using <a href="https://ownyourbits.com/2018/06/13/transparently-running-binaries-from-any-architecture-in-linux-with-qemu-and-binfmt_misc/" target="_blank">user-mode-emulation</a>. Qemu dynamically translates the target architecture's instructions to the the host architecture's instruction set to enable binaries of a different architecture to run on a host system. <a href="https://lwn.net/Articles/679308/" target="_blank">Binfmt_misc</a> comes in to enable the kernel to read the foreign architecture binary by <a href="https://lwn.net/Articles/679308/" target="_blank">"directing"</a> the kernel to the correct qemu static binary to interpret the code.</p>
+<p>In order to set this up to work with Docker and its underlying linux kernel, we first need:</p>
+<ol>
+<li>
+<p>binfmt_misc to register the corresponding qemu-static binary for each architecture that has a static qemu image available [of course other than the native one].</p>
+</li>
+<li>
+<p>provide these qemu-static binaries to the system for the host architecture to all of the target architectures. <em>You can get these by building them from the qemu code or from a package of qemu for your os. To get the most recent ones, it is best to build from source at a stable version of the code</em></p>
+</li>
+<li>
+<p>load the static immediately so it is in place to be used with Docker for each container it creates in their new sets of namespaces [read: use <code>F flag</code> for binfmt_misc setup]</p>
+</li>
+</ol>
+<h3 id="setting-up-cross-architecture-support">Setting up Cross-Architecture support<a class="headerlink" href="#setting-up-cross-architecture-support" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://github.com/docker/binfmt" target="_blank">docker/binfmt</a> GitHub project creates a docker image which completes all 3 tasks.</p>
+<p>Their implementation works for an amd64 host, so I made a separate image with the qemu-static binaries compiled from the s390x host and posted a multi-arch image for both amd64 and s390x hosts to <code>gmoney23/binfmt</code>.</p>
+<p>You can test this out by first running an image that is from a different platform than yours.</p>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Mac / Windows</label><div class="tabbed-content">
+<p>Docker for Mac and Docker for Windows have this capability built-in out of the box so we don't even have to set it up with an image run. However, don't just take my word for it, demonstrate it to yourself by trying the <code>s390x</code> (z) image for <code>hello-world</code> on your <code>amd64</code> (x86) mac:</p>
+<div class="highlight"><pre><span></span><code>docker pull --platform s390x hello-world
+</code></pre></div>
+
+<p>Confirm the architecture with: </p>
+<div class="highlight"><pre><span></span><code>uname -m
+</code></pre></div>
+
+<p>Confirm the image architecture with: </p>
+<div class="highlight"><pre><span></span><code>docker inspect -f &#39;{{.Architecture}}&#39; hello-world
+</code></pre></div>
+
+<p>Finally, run the image successfully the 1<sup>st</sup> try with: </p>
+<div class="highlight"><pre><span></span><code>docker run hello-world
+</code></pre></div>
+
+<p><img alt="Run s390x with qemu" src="../images/qemu_mac_s390x_hello-world.png" /></p>
+<p>This works successfully (without additional configuration needed) </p>
+<p><strong>What do you mean by this capability is built-in out of the box?</strong></p>
+<p>Docker for Mac and Docker for Windows run containers in a vm (either a hypervisor of hyperkit on mac [a derivative of xhyve] or hyper-v on windows) which it uses to run a linux kernel that in this case is set up with binfmt_misc which is used to emulate the other architectures by setting up a file system with a static arch interpreter (a qemu linux-user static file for the given arch). The setup we did for linux, the Docker install does for us on mac/windows as part of the setup for that environment. Meanwhile, since we already have a linux kernel with docker for linux, we get the privilege of making our own changes to it for now. If this brief talk about Docker for Mac internals piqued your interest, I highly encourage <a href="http://collabnix.com/how-docker-for-mac-works-under-the-hood/">Under the Hood: Demystifying Docker For Mac CE Edition</a></p>
+<p>The ease of running and building multi-arch on mac and windows fills you with <a href="https://undertale.fandom.com/wiki/Determination" target="_blank">determination</a>.</p>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Linux</label><div class="tabbed-content">
+<p>Run the docker pull with --platform for the architecture different from yours.</p>
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">amd64 host (most users)</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>docker pull --platform s390x hello-world
+</code></pre></div>
+
+<p>Then, run the pulled image</p>
+<div class="highlight"><pre><span></span><code>docker run hello-world
+</code></pre></div>
+
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">s390x host (a few potential users)</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>docker pull --platform amd64 hello-world
+</code></pre></div>
+
+<p>Then, run the pulled image</p>
+<div class="highlight"><pre><span></span><code>docker run hello-world
+</code></pre></div>
+
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While the pictures in this section are for an s390x host, if you are using an amd64 host you should be getting similar errors with the s390x image you pulled. No need to worry that some of the messages say <code>s390x</code> for you vs <code>amd64</code> in the pictures that follow in this section.</p>
+</div>
+<p>You should get an exec format error like so:
+<img alt="Failure exec error" src="../images/exec_error_amd64_s390x.png" /></p>
+<p>Now, run the docker image to perform the aforementioned required 3 steps on either s390x of amd64:</p>
+<div class="highlight"><pre><span></span><code>docker run --rm --privileged gmoney23/binfmt
+</code></pre></div>
+
+<p><code>--privileged</code> gives the container the necessary permissions it requires. The script within this container registers qemu <code>linux-user</code> binaries with binfmt_misc. (These binaries are statically compiled on the host architecture for each supported target architecture. In our case: s390x, arm, and ppc64le on amd64 and arm, amd64, and ppc64le on s390x). These binaries are generated during container build and are found within the <code>gmoney23/binfmt</code> container. They are registered with the <a href="https://lwn.net/Articles/679308/" target="_blank">F (fixed) flag</a> which opens the static binary as soon as it is installed so that spawned containers can use the qemu static. This support was added to the linux kernel to enable things such as the cross-building we are going to do. (The full options are <code>OCF</code> and you can see the full description for each option <a href="https://www.kernel.org/doc/Documentation/admin-guide/binfmt-misc.rst" target="_blank">here</a>)</p>
+<p>Confirm the architecture with: </p>
+<div class="highlight"><pre><span></span><code>uname -m
+</code></pre></div>
+
+<p>Confirm the image architecture with: </p>
+<div class="highlight"><pre><span></span><code>docker inspect -f &#39;{{.Architecture}}&#39; hello-world
+</code></pre></div>
+
+<p>Finally, run the image successfully with the same command as before: </p>
+<div class="highlight"><pre><span></span><code>docker run hello-world
+</code></pre></div>
+
+<p><img alt="Run amd64 with qemu" src="../images/qemu_s390x_run_amd64.png" /></p>
+<p>We can also see in the <code>hello-world</code> output the <code>amd64</code> architecture mentioned. Thus we have achieved our goal of running amd64 (x86) images on <code>s390x</code>.</p>
+</div>
+</div>
+<h3 id="consequences-of-cross-architecture-docker">Consequences of Cross-Architecture Docker<a class="headerlink" href="#consequences-of-cross-architecture-docker" title="Permanent link">&para;</a></h3>
+<p>This enables us to not only run images, but also build them for different architectures from a given host architecture. This makes it possible to build s390x (z), power (ppc64le), arm, and amd64 images all from the hosts you have available. This enables developers to support more images as they may have nodes with only specific architectures such as <code>amd64</code>. Using this technology, suddenly ecosystem contribution is no longer constrained by host architecture limitations, creating a broader docker image ecosystem for everyone. In fact, with the current stable docker CE build and onward  <a href="https://github.com/docker/buildx" target="_blank">buildx</a> comes as an experimental future to build and push multi-arch images (using qemu behind the scenes) in a seamless process which we will briefly explore in a recommended optional follow-up to this section (given you have a workstation with Docker CE of version 19.0.3 or later).</p>
+<p>The big caveat to this capability remains that qemu does not support all instructions and is being constantly improved to handle more exceptions and work for more use cases in the future. What is supported will be dictated by which linux-user static binary you are using with arm and s390x having more support than ppc64le at the current time (at least for nodejs). This means for certain image builds you will still have to use the native hardware, but for many images qemu provides a quick and easy way to build images for more platforms.</p>
+<p>Next, we will use an amd64 host to build images for both architectures and use them to make multi-arch images that support both architectures for each of the applications we have visited in parts 2 and 3 of this tutorial.</p>
+<p><em>Note: amd64 linux-user does not have the capability required for these images at this time (i.e. running npm install) which is why the host needs to be amd64 if we want to include an amd64 image. This is largely in part to lack of need to emulate amd64 due to its wide availability and most personal workstations using amd64 architecture.</em></p>
+<h2 id="making-multi-arch-docker-images">Making multi-arch docker images<a class="headerlink" href="#making-multi-arch-docker-images" title="Permanent link">&para;</a></h2>
+<p>In order to build all of the images for amd64 (x86), s390x (z) architectures, and power (ppc64le) architectures we will use a simple script that I wrote to go through the steps of building each individual architecture image with both a versioned and latest tag. Then, it creates a manifest list for each application and pushes it up to form a multiarch image for each of the applications we have gone over. It is heavily commented so it should explain itself.</p>
+<p><em>Note: It has been updated to just create one <code>smallest-outyet</code> image currently by adding a new line <code>IMAGES=("smallest-outyet")</code> to override the full images list. You can simply uncomment this line to build all images but that will take a long time so this is a time save as the actual building is trivial (it is the repeatable process [which could easily be applied to all images as in this scenario] that is important).</em></p>
+<p><img alt="Build and Push Images Script Overview" src="../images/build_and_push_script.png" /></p>
+<p>If you want to visit the script itself to see it up close and in a bigger font, please click on <a href="https://github.com/siler23/MultiArchDockerKubernetes/blob/master/Build_And_Push_Images.sh" target="_blank">Build and Push Images Script</a></p>
+<h3 id="login-to-your-docker-repo-account">Login to your Docker Repo [Account]<a class="headerlink" href="#login-to-your-docker-repo-account" title="Permanent link">&para;</a></h3>
+<p>Set <code>DOCKER_REPO=&lt;docker_username&gt;</code> which for me is:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">DOCKER_REPO</span><span class="o">=</span>gmoney23
+</code></pre></div>
+
+<p>Set yours accordingly, then do a docker login:</p>
+<div class="highlight"><pre><span></span><code>docker login -u <span class="si">${</span><span class="nv">DOCKER_REPO</span><span class="si">}</span>
+</code></pre></div>
+
+<p>Enter your password when prompted:</p>
+<p><img alt="Docker Login Before Script" src="../images/docker_login_before_script.png" /></p>
+<h3 id="run-script-to-build-and-push-images">Run Script to build and Push Images<a class="headerlink" href="#run-script-to-build-and-push-images" title="Permanent link">&para;</a></h3>
+<p>Change into the main directory where you cloned or downloaded the github repository with the variable <code>MULTIARCH_HOME</code> you set at the start of this section to be the full path to the github project's directory on your computer.</p>
+<div class="highlight"><pre><span></span><code>cd &quot;${MULTIARCH_HOME}&quot;/
+</code></pre></div>
+
+<h4 id="without-proxy">Without Proxy<a class="headerlink" href="#without-proxy" title="Permanent link">&para;</a></h4>
+<p>The options are as follows:</p>
+<div class="highlight"><pre><span></span><code>DOCKER_REPO=&lt;my_docker_repo&gt; VERSION=&lt;version_number&gt; IMAGE_PREPEND=&lt;prepend_to_make_unique_image&gt; LATEST=&lt;true_or_false&gt; ./Build_And_Push_Images.sh
+</code></pre></div>
+
+<p>Sample Command with my docker repo of <code>gmoney23</code> please replace with your docker repo (the one you used for <code>docker login</code> above):</p>
+<div class="highlight"><pre><span></span><code>DOCKER_REPO=gmoney23
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>DOCKER_REPO=${DOCKER_REPO} VERSION=1.0 IMAGE_PREPEND=marchdockerlab LATEST=true ./Build_And_Push_Images.sh
+</code></pre></div>
+
+<h4 id="with-proxy">With Proxy<a class="headerlink" href="#with-proxy" title="Permanent link">&para;</a></h4>
+<p>The options are as follows:</p>
+<div class="highlight"><pre><span></span><code>DOCKER_REPO=&lt;my_docker_repo&gt; VERSION=&lt;version_number&gt; IMAGE_PREPEND=&lt;prepend_to_make_unique_image&gt; LATEST=&lt;true_or_false&gt; http_proxy=&lt;proxy_for_http_protocol&gt; https_proxy=&lt;proxy_for_https_protocol&gt; no_proxy=&lt;addresses_not_to_be_proxied&gt; ./Build_And_Push_Images.sh
+</code></pre></div>
+
+<p>Sample Command with my docker repo of <code>gmoney23</code> please replace with your docker repo (the one you used for <code>docker login</code> above):</p>
+<div class="highlight"><pre><span></span><code>DOCKER_REPO=gmoney23
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>DOCKER_REPO=${DOCKER_REPO} VERSION=1.0 IMAGE_PREPEND=marchdockerlab LATEST=true http_proxy=http://myproxy:8080 https_proxy=http://myproxy:8080 no_proxy=&quot;localhost, 127.0.0.1&quot; ./Build_And_Push_Images.sh
+</code></pre></div>
+
+<p>Knowing that qemu builds a bridge from x to z for free fills you with <a href="https://undertale.fandom.com/wiki/Determination" target="_blank">determination</a>.</p>
+<h2 id="optional-sections">OPTIONAL SECTIONS<a class="headerlink" href="#optional-sections" title="Permanent link">&para;</a></h2>
+<h3 id="recommended-most-users-should-try-if-they-have-docker-1903-ce-or-later-the-future-using-buildx-to-make-multi-arch-a-way-of-life">Recommended: [Most users should try if they have docker 19.03 CE or later]: <a href="../4-Multiarch-buildx-addendum/">The future - Using Buildx to make Multi-arch a Way of Life</a><a class="headerlink" href="#recommended-most-users-should-try-if-they-have-docker-1903-ce-or-later-the-future-using-buildx-to-make-multi-arch-a-way-of-life" title="Permanent link">&para;</a></h3>
+<h3 id="extra-content-most-users-should-skip-the-past-the-manual-way-aka-herding-cats">Extra Content: [Most Users Should Skip]: <a href="../4-Multiarch-manual-addendum/">The past - The Manual Way aka Herding Cats</a><a class="headerlink" href="#extra-content-most-users-should-skip-the-past-the-manual-way-aka-herding-cats" title="Permanent link">&para;</a></h3>
+<p><strong>This optional path is a manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path.</strong></p>
+<h2 id="part-5-kubernetes-time"><a href="../5-Deploy-to-Kubernetes/">Part 5: Kubernetes Time</a><a class="headerlink" href="#part-5-kubernetes-time" title="Permanent link">&para;</a></h2>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../3-Best-Practice-go/" title="3. Guide to Building Best-practice Go Docker Images" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                3. Guide to Building Best-practice Go Docker Images
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../4-Multiarch-buildx-addendum/" title="The future - Using Buildx to make Multi-arch a Way of Life" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                The future - Using Buildx to make Multi-arch a Way of Life
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/siler23" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://hub.docker.com/u/gmoney23" target="_blank" rel="noopener" title="hub.docker.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M349.9 236.3h-66.1v-59.4h66.1v59.4zm0-204.3h-66.1v60.7h66.1V32zm78.2 144.8H362v59.4h66.1v-59.4zm-156.3-72.1h-66.1v60.1h66.1v-60.1zm78.1 0h-66.1v60.1h66.1v-60.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1l-13.3-8.9zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm-78.1-72.1h-66.1v60.1h66.1v-60.1z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://linkedin.com/in/garrett-woodworth-9a9895142/" target="_blank" rel="noopener" title="linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.c3dc8c49.min.js"></script>
+      <script src="../assets/javascripts/bundle.f9edbbd5.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8e2cddea.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

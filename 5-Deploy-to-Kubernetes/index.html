@@ -1,0 +1,1560 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.3">
+    
+    
+      
+        <title>5. Kubernetes Time - From Docker to Kubernetes - Multi-Arch with Go and Nodejs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.947af8d5.min.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/palette.7f672a1f.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-174658170-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="preference" data-md-color-primary="" data-md-color-accent="">
+  
+    
+      <script>matchMedia("(prefers-color-scheme: dark)").matches&&document.body.setAttribute("data-md-color-scheme","slate")</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#5-kubernetes-time" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="From Docker to Kubernetes - Multi-Arch with Go and Nodejs" class="md-header-nav__button md-logo" aria-label="From Docker to Kubernetes - Multi-Arch with Go and Nodejs">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            From Docker to Kubernetes - Multi-Arch with Go and Nodejs
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              5. Kubernetes Time
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/siler23/MultiArchDockerKubernetes" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="From Docker to Kubernetes - Multi-Arch with Go and Nodejs" class="md-nav__button md-logo" aria-label="From Docker to Kubernetes - Multi-Arch with Go and Nodejs">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    From Docker to Kubernetes - Multi-Arch with Go and Nodejs
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/siler23/MultiArchDockerKubernetes" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../1-Official-Multiarch/" title="1. Getting Official with Multi-arch Images" class="md-nav__link">
+      1. Getting Official with Multi-arch Images
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2-Best-Practice-Nodejs/" title="2. Learning How to Build Best-practice Node.js Docker Images" class="md-nav__link">
+      2. Learning How to Build Best-practice Node.js Docker Images
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../3-Best-Practice-go/" title="3. Guide to Building Best-practice Go Docker Images" class="md-nav__link">
+      3. Guide to Building Best-practice Go Docker Images
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      4. Building Multi-arch Docker Images
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="4. Building Multi-arch Docker Images" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        4. Building Multi-arch Docker Images
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../4-Build-MultiArch/" title="Bringing Multi-arch Images to a Computer Near You" class="md-nav__link">
+      Bringing Multi-arch Images to a Computer Near You
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../4-Multiarch-buildx-addendum/" title="The future - Using Buildx to make Multi-arch a Way of Life" class="md-nav__link">
+      The future - Using Buildx to make Multi-arch a Way of Life
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../4-Multiarch-manual-addendum/" title="The past - The Manual Way aka Herding Cats" class="md-nav__link">
+      The past - The Manual Way aka Herding Cats
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        5. Kubernetes Time
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="5. Kubernetes Time" class="md-nav__link md-nav__link--active">
+      5. Kubernetes Time
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#if-you-are-starting-to-lose-your-determination" class="md-nav__link">
+    If you are starting to lose your determination
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dont-forget-to-set-the-multi-arch-lab-home-directory" class="md-nav__link">
+    Don't forget to set the multi-arch lab home directory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#if-you-dont-have-a-kubernetes-environment-you-can-use-docker" class="md-nav__link">
+    If you don't have a Kubernetes Environment you can use Docker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lets-create-our-first-deployment-using-our-node-web-app" class="md-nav__link">
+    Let's create our first Deployment using our node-web-app
+  </a>
+  
+    <nav class="md-nav" aria-label="Let's create our first Deployment using our node-web-app">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-note-about-jsonpath" class="md-nav__link">
+    A note about jsonpath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-note-about-labels" class="md-nav__link">
+    A note about labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-architectures" class="md-nav__link">
+    Changing Architectures
+  </a>
+  
+    <nav class="md-nav" aria-label="Changing Architectures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-its-running-on-x86-now-force-z" class="md-nav__link">
+    If it's running on x86 now, force z
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-its-running-on-ibm-z-force-x86" class="md-nav__link">
+    If it's running on IBM Z, force x86
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overview-of-nodeselector-what-did-we-just-do" class="md-nav__link">
+    Overview of NodeSelector (What did we just do?)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viewing-our-nodejs-web-application-in-kubernetes" class="md-nav__link">
+    Viewing our Nodejs Web application in Kubernetes
+  </a>
+  
+    <nav class="md-nav" aria-label="Viewing our Nodejs Web application in Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-a-service-to-talk-to-the-outside-world" class="md-nav__link">
+    Create a Service to talk to the Outside World
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a Service to talk to the Outside World">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#admin-can-run-this-command-or-check-the-console-for-the-proxy-ip" class="md-nav__link">
+    Admin can run this command or check the console for the Proxy IP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-admin-needs-to-get-the-ip-from-admin" class="md-nav__link">
+    Non-admin Needs to get the IP from Admin
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visit-node-web-app" class="md-nav__link">
+    Visit Node Web App
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lets-create-our-first-go-deployment" class="md-nav__link">
+    Let's create our first Go Deployment
+  </a>
+  
+    <nav class="md-nav" aria-label="Let's create our first Go Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#make-a-quick-deployment-and-force-on-z" class="md-nav__link">
+    Make a Quick Deployment and force on z
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expose-the-deployment-to-the-outside-world" class="md-nav__link">
+    Expose the Deployment to the Outside World
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find-the-node-hosting-my-pod" class="md-nav__link">
+    Find the Node Hosting my Pod
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up-sample-go-deployment" class="md-nav__link">
+    Clean Up Sample Go Deployment
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deal-with-proxies-with-a-configmap" class="md-nav__link">
+    Deal with Proxies with a ConfigMap
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explore-how-to-create-deployments-and-services-from-yaml" class="md-nav__link">
+    Explore how to create deployments and services from yaml
+  </a>
+  
+    <nav class="md-nav" aria-label="Explore how to create deployments and services from yaml">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-to-deploy-yaml" class="md-nav__link">
+    Time to Deploy YAML
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-to-service-yaml" class="md-nav__link">
+    Time to Service YAML
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-the-access-info-for-outyet" class="md-nav__link">
+    Get the Access Info for Outyet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-to-see-if-its-outyet" class="md-nav__link">
+    Time to See if it's Outyet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up" class="md-nav__link">
+    Clean Up
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-web-app-similar-steps-for-access" class="md-nav__link">
+    New Web App, Similar Steps for Access:
+  </a>
+  
+    <nav class="md-nav" aria-label="New Web App, Similar Steps for Access:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#small-outyet-deserves-a-chance-to-run" class="md-nav__link">
+    Small-Outyet Deserves a Chance to Run
+  </a>
+  
+    <nav class="md-nav" aria-label="Small-Outyet Deserves a Chance to Run">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#admin-can-run-this-command-or-to-find-out-the-proxy-ip" class="md-nav__link">
+    Admin can run this command or to find out the Proxy IP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-admin-needs-to-get-the-ip-from-the-admin" class="md-nav__link">
+    Non-admin Needs to get the IP from the Admin
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#its-still-out" class="md-nav__link">
+    It's still out!
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up-small-outyet" class="md-nav__link">
+    Clean up Small-Outyet
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-jobs-with-a-cronjob" class="md-nav__link">
+    Using Jobs with a CronJob
+  </a>
+  
+    <nav class="md-nav" aria-label="Using Jobs with a CronJob">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-lets-create-our-configmap" class="md-nav__link">
+    First, lets create our ConfigMap
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#closing-note" class="md-nav__link">
+    Closing Note
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-topics" class="md-nav__link">
+    Additional Topics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#home" class="md-nav__link">
+    HOME
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../0-ProxyPSA/" title="0. Hello Proxy Users" class="md-nav__link">
+      0. Hello Proxy Users
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#if-you-are-starting-to-lose-your-determination" class="md-nav__link">
+    If you are starting to lose your determination
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dont-forget-to-set-the-multi-arch-lab-home-directory" class="md-nav__link">
+    Don't forget to set the multi-arch lab home directory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#if-you-dont-have-a-kubernetes-environment-you-can-use-docker" class="md-nav__link">
+    If you don't have a Kubernetes Environment you can use Docker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lets-create-our-first-deployment-using-our-node-web-app" class="md-nav__link">
+    Let's create our first Deployment using our node-web-app
+  </a>
+  
+    <nav class="md-nav" aria-label="Let's create our first Deployment using our node-web-app">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-note-about-jsonpath" class="md-nav__link">
+    A note about jsonpath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-note-about-labels" class="md-nav__link">
+    A note about labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-architectures" class="md-nav__link">
+    Changing Architectures
+  </a>
+  
+    <nav class="md-nav" aria-label="Changing Architectures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-its-running-on-x86-now-force-z" class="md-nav__link">
+    If it's running on x86 now, force z
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-its-running-on-ibm-z-force-x86" class="md-nav__link">
+    If it's running on IBM Z, force x86
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overview-of-nodeselector-what-did-we-just-do" class="md-nav__link">
+    Overview of NodeSelector (What did we just do?)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viewing-our-nodejs-web-application-in-kubernetes" class="md-nav__link">
+    Viewing our Nodejs Web application in Kubernetes
+  </a>
+  
+    <nav class="md-nav" aria-label="Viewing our Nodejs Web application in Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-a-service-to-talk-to-the-outside-world" class="md-nav__link">
+    Create a Service to talk to the Outside World
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a Service to talk to the Outside World">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#admin-can-run-this-command-or-check-the-console-for-the-proxy-ip" class="md-nav__link">
+    Admin can run this command or check the console for the Proxy IP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-admin-needs-to-get-the-ip-from-admin" class="md-nav__link">
+    Non-admin Needs to get the IP from Admin
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visit-node-web-app" class="md-nav__link">
+    Visit Node Web App
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lets-create-our-first-go-deployment" class="md-nav__link">
+    Let's create our first Go Deployment
+  </a>
+  
+    <nav class="md-nav" aria-label="Let's create our first Go Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#make-a-quick-deployment-and-force-on-z" class="md-nav__link">
+    Make a Quick Deployment and force on z
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expose-the-deployment-to-the-outside-world" class="md-nav__link">
+    Expose the Deployment to the Outside World
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find-the-node-hosting-my-pod" class="md-nav__link">
+    Find the Node Hosting my Pod
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up-sample-go-deployment" class="md-nav__link">
+    Clean Up Sample Go Deployment
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deal-with-proxies-with-a-configmap" class="md-nav__link">
+    Deal with Proxies with a ConfigMap
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explore-how-to-create-deployments-and-services-from-yaml" class="md-nav__link">
+    Explore how to create deployments and services from yaml
+  </a>
+  
+    <nav class="md-nav" aria-label="Explore how to create deployments and services from yaml">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-to-deploy-yaml" class="md-nav__link">
+    Time to Deploy YAML
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-to-service-yaml" class="md-nav__link">
+    Time to Service YAML
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-the-access-info-for-outyet" class="md-nav__link">
+    Get the Access Info for Outyet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-to-see-if-its-outyet" class="md-nav__link">
+    Time to See if it's Outyet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up" class="md-nav__link">
+    Clean Up
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-web-app-similar-steps-for-access" class="md-nav__link">
+    New Web App, Similar Steps for Access:
+  </a>
+  
+    <nav class="md-nav" aria-label="New Web App, Similar Steps for Access:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#small-outyet-deserves-a-chance-to-run" class="md-nav__link">
+    Small-Outyet Deserves a Chance to Run
+  </a>
+  
+    <nav class="md-nav" aria-label="Small-Outyet Deserves a Chance to Run">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#admin-can-run-this-command-or-to-find-out-the-proxy-ip" class="md-nav__link">
+    Admin can run this command or to find out the Proxy IP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-admin-needs-to-get-the-ip-from-the-admin" class="md-nav__link">
+    Non-admin Needs to get the IP from the Admin
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#its-still-out" class="md-nav__link">
+    It's still out!
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean-up-small-outyet" class="md-nav__link">
+    Clean up Small-Outyet
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-jobs-with-a-cronjob" class="md-nav__link">
+    Using Jobs with a CronJob
+  </a>
+  
+    <nav class="md-nav" aria-label="Using Jobs with a CronJob">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-lets-create-our-configmap" class="md-nav__link">
+    First, lets create our ConfigMap
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#closing-note" class="md-nav__link">
+    Closing Note
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-topics" class="md-nav__link">
+    Additional Topics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#home" class="md-nav__link">
+    HOME
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 id="5-kubernetes-time">5. Kubernetes Time<a class="headerlink" href="#5-kubernetes-time" title="Permanent link">&para;</a></h1>
+<p>We will use the multi-arch docker images we have created to make deployments that will run across s390x and amd64 nodes as well as force pods to go to either s390x or amd64 nodes. We will cover the use of deployments, services, configmaps, jobs, and cronjobs including how to easily declare a proxy to your application.</p>
+<h2 id="if-you-are-starting-to-lose-your-determination">If you are starting to lose your determination<a class="headerlink" href="#if-you-are-starting-to-lose-your-determination" title="Permanent link">&para;</a></h2>
+<p><img alt="Undertale" src="../images/Undertale.jpg" />
+The inspiring picture fills you with <a href="https://undertale.fandom.com/wiki/Determination" target="_blank">determination</a>.</p>
+<h2 id="dont-forget-to-set-the-multi-arch-lab-home-directory">Don't forget to set the multi-arch lab home directory<a class="headerlink" href="#dont-forget-to-set-the-multi-arch-lab-home-directory" title="Permanent link">&para;</a></h2>
+<p>export MULTIARCH_HOME=<code>full path to directory of multiarch repo</code></p>
+<div class="admonition caution">
+<p class="admonition-title">If Using Proxy</p>
+<p><strong>If using proxy</strong>, make sure you've read <a href="../0-ProxyPSA/">0-ProxyPSA</a> and have set your <code>http_proxy</code>, <code>https_proxy</code>, and <code>no_proxy</code> variables for your environment as specified there. Also note that for all docker run commands add the <code>-e</code> for each of the proxy environment variables as specified in that <a href="../0-ProxyPSA/">0-ProxyPSA</a> document.</p>
+</div>
+<h2 id="if-you-dont-have-a-kubernetes-environment-you-can-use-docker">If you don't have a Kubernetes Environment you can use Docker<a class="headerlink" href="#if-you-dont-have-a-kubernetes-environment-you-can-use-docker" title="Permanent link">&para;</a></h2>
+<p>To set up Kubernetes on Docker for Mac follow <a href="https://docs.docker.com/docker-for-mac/#kubernetes" target="_blank">these Mac instructions</a></p>
+<p>To set up Kubernetes on Docker for Windows follow <a href="https://docs.docker.com/docker-for-windows/#kubernetes" target="_blank">these Windows instructions</a></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If you follow this path you will have a single architecture cluster. Thus, when you try to force things to run on a different architecture node, you should expect to get a pending pod. This demonstrates that the multiarch capability is working and checking to ensure image and node architectures match. If you run on a multiarch cluster, you can tell things are working in an "arguably cooler" way (pods move to a node of the specified architecture). Nevertheless, both methods demonstrate the multiarch selection capabilities. Moreover, Docker is seemingly ubiquitous, so I have included pointers to the docs above to set up Kubernetes with Docker just in case you don't have access to a multiarch cluster at the moment.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Running on windows [Mac/Linux Users Skip This]</p>
+<p>The commands listed are bash commands. In order to use bash on Windows 10 see <a href="https://www.lifewire.com/how-to-run-the-bash-command-line-in-windows-10-4072207" target="_blank">Enabling Bash on PC</a>. If you do that, all of the commands below will work in a bash script for you. If you don't want to do that you can also use the command prompt. Just replace the <code>$var</code> with <code>%var%</code> and <code>var=x</code> with <code>set var=x</code>. The kubectl commands themselves are the same across operating systems. An example is changing the bash command:</p>
+<div class="highlight"><pre><span></span><code>peer_pod=&quot;$(kubectl get pods -l app=node-web,lab=multi-arch-docker -o jsonpath=&#39;{.items[*].metadata.name}&#39;)&quot;
+</code></pre></div>
+
+<p>to the Windows command:</p>
+<div class="highlight"><pre><span></span><code>kubectl get pods -l <span class="nv">app</span><span class="o">=</span>node-web,lab<span class="o">=</span>multi-arch-docker -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[*].metadata.name}&#39;</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="k">set</span> <span class="nv">peer_pod</span><span class="p">=</span>result
+</code></pre></div>
+
+<p>where result is the output of the previous command</p>
+<p>and when referencing it change bash:</p>
+<div class="highlight"><pre><span></span><code>kubectl <span class="nb">exec</span> <span class="nv">$peer_pod</span> -- ash -c <span class="s2">&quot;uname -m&quot;</span>
+</code></pre></div>
+
+<p>(bash)</p>
+<p>to Windows:</p>
+<div class="highlight"><pre><span></span><code>kubectl exec <span class="nv">%peer_pod%</span> -- ash -c <span class="s2">&quot;uname -m&quot;</span>
+</code></pre></div>
+
+<p>(Windows)</p>
+<p>Again, you'll notice the kubectl command is exactly the same. We are just changing the variable use reference in bash to command prompt style. Also that <code>$()</code> was a bash way to run the command its in own shell and feed the output to our command so I broke the command into two for windows instead.</p>
+</div>
+<h2 id="lets-create-our-first-deployment-using-our-node-web-app">Let's create our first Deployment using our node-web-app<a class="headerlink" href="#lets-create-our-first-deployment-using-our-node-web-app" title="Permanent link">&para;</a></h2>
+<p>Create the deployment with:</p>
+<div class="highlight"><pre><span></span><code>kubectl apply -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/node-web-app/deployment.yaml
+</code></pre></div>
+
+<p>You can think of the <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" target="_blank">deployment</a> as deploying all of the parts needed to manage your running application. The deployment itself manages updates and configuration of your application. It creates a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/" target="_blank">ReplicaSet</a> that manages the number of replicas [pods] that are up at a time for a given application with a control loop. A <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/" target="_blank">pod</a> is the smallest unit in Kubernetes and is made up of all the containers in a given deployment (application) that have to be scheduled on the same node. Now, let's use a label to determine one pod that belongs to your deployment.</p>
+<p>Then:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">peer_pod</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>kubectl get pods -l <span class="nv">app</span><span class="o">=</span>node-web,lab<span class="o">=</span>multi-arch-docker -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[*].metadata.name}&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<h3 id="a-note-about-jsonpath">A note about jsonpath<a class="headerlink" href="#a-note-about-jsonpath" title="Permanent link">&para;</a></h3>
+<p>You may have noticed the <code>-o jsonpath='{.items[*].metadata.name}')</code> in the previous example. Kubernetes has <a href="https://restfulapi.net/json-jsonpath/" target="_blank">jsonpath</a> capability built-in. Jsonpath is a query language that lets us extract the bits of a json document, in this case the bits of the Kubernetes json document (found with <code>kubectl get pods $peer_pod -o json</code>), to get the information we need. This enables us to easily find up to date information about the objects in our cluster and allows us to use this information to make automation scripts among other things. In this example, we are finding the name of our pod in an automated way.</p>
+<h3 id="a-note-about-labels">A note about labels<a class="headerlink" href="#a-note-about-labels" title="Permanent link">&para;</a></h3>
+<p>We used a <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors" target="_blank">selector</a> to select a pod with a specific set of labels. We can also do this with other objects that have labels such as deployments with:</p>
+<div class="highlight"><pre><span></span><code>kubectl get deploy -l <span class="nv">app</span><span class="o">=</span>node-web,lab<span class="o">=</span>multi-arch-docker
+</code></pre></div>
+
+<p><img alt="Deploy Selector" src="../images/deploy_selector_image.png" /></p>
+<p><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/" target="_blank">Labels</a> are key-value pairs attached to objects to specify certain qualities and enable users and controllers to select objects based on these qualities. For example, we can attach a label to a pod such as lab and look for pods that have that label to see all pods that are part of a lab. Furthermore, we can look at the value of the label and see all pods labeled for a specific lab such as <code>multi-arch-docker</code>. The replicaSets and deployments introduced above use labels to keep track of which objects they are controlling and services (which we'll dive into later) use selectors of certain labels to see to which pods they should route traffic.</p>
+<p>In order to see all the labels on a specific object we can use the <code>--show-labels</code> option such as:</p>
+<div class="highlight"><pre><span></span><code>kubectl get pod <span class="si">${</span><span class="nv">peer_pod</span><span class="si">}</span> --show-labels
+</code></pre></div>
+
+<p><img alt="Show Labels" src="../images/node_web_show_labels.png" /></p>
+<h3 id="changing-architectures">Changing Architectures<a class="headerlink" href="#changing-architectures" title="Permanent link">&para;</a></h3>
+<p>Since the node-web-app has a base image with ash, we can run ash on this pod to find out the architecture of the node it's running on:</p>
+<div class="highlight"><pre><span></span><code>kubectl <span class="nb">exec</span> <span class="nv">$peer_pod</span> -- ash -c <span class="s2">&quot;uname -m&quot;</span>
+</code></pre></div>
+
+<p>Depending on if it's currently running on x86 or s390x, we can force it to run on the other with a <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/" target="_blank">nodeSelector</a>. (We could also force it to stay on that arch, but that's no fun). A <code>nodeSelector</code> is a special label which needs to be satisfied for a pod to be assigned to a node. The <code>nodeSelector</code> <code>beta.kubernetes.io/arch:</code> is for deploying pods on a node with the specified architecture. (i.e. specify z with <code>beta.kubernetes.io/arch: s390x</code>)</p>
+<h4 id="if-its-running-on-x86-now-force-z">If it's running on x86 now, force z<a class="headerlink" href="#if-its-running-on-x86-now-force-z" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="nv">deployment</span><span class="o">=</span><span class="k">$(</span>kubectl get deploy -l <span class="nv">app</span><span class="o">=</span>node-web,lab<span class="o">=</span>multi-arch-docker -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[*].metadata.name}&#39;</span><span class="k">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code> kubectl patch deployment <span class="nv">$deployment</span> --patch <span class="s2">&quot;</span><span class="k">$(</span>cat <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/zNodeSelector.yaml<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>The file itself just includes the necessary nodeSelector with the correct number of {} for json placement <img alt="z-select" src="../images/select-z.png" /></p>
+<p>Now, a new pod will be created on the target architecture. Thus, first we will get our pod name and then check it's architecture again after waiting ten seconds first with sleep to give the new pod time to be created.</p>
+<div class="highlight"><pre><span></span><code>sleep <span class="m">10</span> <span class="o">&amp;&amp;</span> <span class="nv">peer_pod</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>kubectl get pods -l <span class="nv">app</span><span class="o">=</span>node-web,lab<span class="o">=</span>multi-arch-docker -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>confirm the architecture changed with:</p>
+<div class="highlight"><pre><span></span><code>kubectl <span class="nb">exec</span> <span class="nv">$peer_pod</span> -- ash -c <span class="s2">&quot;uname -m&quot;</span>
+</code></pre></div>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you are using Docker, you will get an error here due to the inability to reschedule the pod to a node of a different architecture.</p>
+</div>
+<h4 id="if-its-running-on-ibm-z-force-x86">If it's running on IBM Z, force x86<a class="headerlink" href="#if-its-running-on-ibm-z-force-x86" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="nv">deployment</span><span class="o">=</span><span class="k">$(</span>kubectl get deploy -l <span class="nv">app</span><span class="o">=</span>node-web,lab<span class="o">=</span>multi-arch-docker -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[*].metadata.name}&#39;</span><span class="k">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>kubectl patch deployment <span class="nv">$deployment</span> --patch <span class="s2">&quot;</span><span class="k">$(</span>cat <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/xNodeSelector.yaml<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>The file itself just includes the necessary nodeSelector with the correct number of {} for json placement <img alt="x-select" src="../images/select-x.png" /></p>
+<p>Now, a new pod will be created on the target architecture. Thus, first we will get our pod name and then check it's architecture again after waiting ten seconds first with sleep to give the new pod time to be created.</p>
+<div class="highlight"><pre><span></span><code>sleep <span class="m">10</span> <span class="o">&amp;&amp;</span> <span class="nv">peer_pod</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>kubectl get pods -l <span class="nv">app</span><span class="o">=</span>node-web,lab<span class="o">=</span>multi-arch-docker -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>confirm the architecture changed with:</p>
+<div class="highlight"><pre><span></span><code>kubectl <span class="nb">exec</span> <span class="nv">$peer_pod</span> -- ash -c <span class="s2">&quot;uname -m&quot;</span>
+</code></pre></div>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you are using Docker, you will get an error here due to the inability to reschedule the pod to a node of a different architecture***</p>
+</div>
+<h4 id="overview-of-nodeselector-what-did-we-just-do">Overview of NodeSelector (What did we just do?)<a class="headerlink" href="#overview-of-nodeselector-what-did-we-just-do" title="Permanent link">&para;</a></h4>
+<p>The <code>nodeSelector</code> element can be very useful when working with multiple architectures because in certain cases you only want your workload to go on one architecture of your multi-architecture cluster. For example, you may want a database to run without the need for sharding on LinuxONE and a deep learning workload to run on x86. This is one of the ways you can tell your cluster to do that. To see all the ways to assign pods to nodes look at <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/" target="_blank">Assigning Pods to Nodes</a></p>
+<h3 id="viewing-our-nodejs-web-application-in-kubernetes">Viewing our Nodejs Web application in Kubernetes<a class="headerlink" href="#viewing-our-nodejs-web-application-in-kubernetes" title="Permanent link">&para;</a></h3>
+<h4 id="create-a-service-to-talk-to-the-outside-world">Create a Service to talk to the Outside World<a class="headerlink" href="#create-a-service-to-talk-to-the-outside-world" title="Permanent link">&para;</a></h4>
+<p>A <a href="https://kubernetes.io/docs/concepts/services-networking/service/" target="_blank">service</a> exposes our application to traffic from both inside the cluster and to the outside world depending on the <a href="https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types" target="_blank">service type</a>.</p>
+<p>In order to create the service for our node-web-app we will apply the yaml files as before using:</p>
+<div class="highlight"><pre><span></span><code>kubectl apply -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/node-web-app/service.yaml
+</code></pre></div>
+
+<p><code>service/multi-arch-docker-node-web created</code></p>
+<p>Then, we can get the address our service exposed by first finding our service using label selectors again with the command:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">service</span><span class="o">=</span><span class="k">$(</span>kubectl get svc -l <span class="nv">app</span><span class="o">=</span>node-web,lab<span class="o">=</span>multi-arch-docker -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span>
+</code></pre></div>
+
+<p>Now we can find the external address the service exposed for us.</p>
+<h5 id="admin-can-run-this-command-or-check-the-console-for-the-proxy-ip">Admin can run this command or check the console for the Proxy IP<a class="headerlink" href="#admin-can-run-this-command-or-check-the-console-for-the-proxy-ip" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="o">[</span> -z <span class="s2">&quot;</span><span class="nv">$CLUSTERIP</span><span class="s2">&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">CLUSTERIP</span><span class="o">=</span><span class="k">$(</span>kubectl get nodes -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.items[0].status.addresses[0].address}&quot;</span><span class="k">)</span>
+</code></pre></div>
+
+<h5 id="non-admin-needs-to-get-the-ip-from-admin">Non-admin Needs to get the IP from Admin<a class="headerlink" href="#non-admin-needs-to-get-the-ip-from-admin" title="Permanent link">&para;</a></h5>
+<p><code>CLUSTERIP=&lt;your_proxy_node_ip&gt;</code></p>
+<h4 id="visit-node-web-app">Visit Node Web App<a class="headerlink" href="#visit-node-web-app" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>NODEPORT=$(kubectl get svc $service -o jsonpath=&#39;{.spec.ports[0].nodePort}&#39;)
+</code></pre></div>
+
+<p>Now, visit the app at the url you get from the following command:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s2">&quot;http://</span><span class="si">${</span><span class="nv">CLUSTERIP</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">NODEPORT</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>in our browser</p>
+<p>A NodePort opens up all externally accessible nodes in the cluster at a fixed port. This is a little messy in practice, but good for demos, etc. because of its ease.</p>
+<p>After visiting our app, we can delete it and our service with:</p>
+<div class="highlight"><pre><span></span><code>kubectl delete -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/node-web-app/deployment.yaml
+</code></pre></div>
+
+<p><code>deployment.extensions "multi-arch-docker-node-web" deleted</code></p>
+<div class="highlight"><pre><span></span><code>kubectl delete -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/node-web-app/service.yaml
+</code></pre></div>
+
+<p><code>service "multi-arch-docker-node-web" deleted</code></p>
+<h2 id="lets-create-our-first-go-deployment">Let's create our first Go Deployment<a class="headerlink" href="#lets-create-our-first-go-deployment" title="Permanent link">&para;</a></h2>
+<p>We'll use the example-go-server image and some quick kubectl one-line commands to spin things up. The advantage of these is that it is easy to get things running. However, your configuration isn't automatically saved and configured, which is why managing with <code>.yaml</code> files in production is preferred.</p>
+<h3 id="make-a-quick-deployment-and-force-on-z">Make a Quick Deployment and force on z<a class="headerlink" href="#make-a-quick-deployment-and-force-on-z" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>kubectl run go-example --image<span class="o">=</span>gmoney23/example-go-server --port <span class="m">5000</span> --image-pull-policy<span class="o">=</span>Always <span class="o">&amp;&amp;</span> kubectl patch deployment go-example --patch <span class="s2">&quot;</span><span class="k">$(</span>cat <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/zNodeSelector.yaml<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<p><code>kubectl run --generator=deployment/apps.v1beta1 is DEPRECATED and will be removed in a future version. Use kubectl create instead.</code></p>
+<p><code>deployment.apps/go-example created</code></p>
+<div class="highlight"><pre><span></span><code>kubectl get deploy go-example
+</code></pre></div>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you are using Docker on a non-z architecture, you will get a pending pod here along with the original running pod due to the inability to reschedule the pod to a node with the z (s390x) architecture. You can proceed as the original pod is still up and running so the workload faces no downtime.</p>
+</div>
+<p><img alt="Get Deploy Go Example" src="../images/Get_Deploy_go_example.png" /></p>
+<h3 id="expose-the-deployment-to-the-outside-world">Expose the Deployment to the Outside World<a class="headerlink" href="#expose-the-deployment-to-the-outside-world" title="Permanent link">&para;</a></h3>
+<p>This deployment is available. However, I can't access it from nodes outside of my cluster which is no good for a web app, so lets expose it to external connections by adding a nodePort service</p>
+<div class="highlight"><pre><span></span><code>kubectl expose deployment go-example --type<span class="o">=</span>NodePort
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>kubectl get svc go-example
+</code></pre></div>
+
+<p><img alt="Get Service Go Example" src="../images/Get_svc_go_example.png" /></p>
+<p>Now if I go to my <code>$CLUSTERIP:32532</code> as specified in port I can see my app running. To print out this as a url to go to like before run the following commands:</p>
+<div class="highlight"><pre><span></span><code>NODEPORT=$(kubectl get svc go-example -o jsonpath=&#39;{.spec.ports[0].nodePort}&#39;)
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>echo &quot;http://${CLUSTERIP}:${NODEPORT}&quot;
+</code></pre></div>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Notice that this parsed the <em>NodePort</em> that was visible in the earlier output using jsonpath in order to easily print it for us with echo like before.</p>
+</div>
+<p>Now I can save the deployment and service I created to a file with --export.</p>
+<div class="highlight"><pre><span></span><code>kubectl get deployment go-example -o yaml --export &gt; go-example-deployment.yaml
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>kubectl get svc go-example -o yaml --export &gt; go-example-svc.yaml
+</code></pre></div>
+
+<h3 id="find-the-node-hosting-my-pod">Find the Node Hosting my Pod<a class="headerlink" href="#find-the-node-hosting-my-pod" title="Permanent link">&para;</a></h3>
+<p>Since this pod doesn't have a bash shell, since it was made from scratch, I'll use <code>kubectl get pods -o wide</code> to figure out which node it is running on. (We should know which architecture each host node is or could get that from our cluster admin.)</p>
+<div class="highlight"><pre><span></span><code>kubectl get pods -l <span class="nv">run</span><span class="o">=</span>go-example -o wide
+</code></pre></div>
+
+<p><img alt="Show node example" src="../images/show_node_go_example.png" /></p>
+<h3 id="clean-up-sample-go-deployment">Clean Up Sample Go Deployment<a class="headerlink" href="#clean-up-sample-go-deployment" title="Permanent link">&para;</a></h3>
+<p>We can delete the deployment and service by using <code>kubectl delete resource name</code> such as <code>kubectl delete deployment deployment_name</code>. For our sample go deployment this means:</p>
+<div class="highlight"><pre><span></span><code>kubectl delete deployment go-example
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>kubectl delete service go-example
+</code></pre></div>
+
+<h2 id="deal-with-proxies-with-a-configmap">Deal with Proxies with a ConfigMap<a class="headerlink" href="#deal-with-proxies-with-a-configmap" title="Permanent link">&para;</a></h2>
+<p>In our first 2 deployments, our apps were confined within our own premises, not requiring any calls to the outside world. However, in many cases, an app will need to make calls to the outside world for things like live updates and information from web sites. Soon, our <code>outyet</code> deployment will need to check the golang git page to see if version 1.11 of go has been released. Later, our <code>href</code> application will need to call out to websites to check their internal and external hrefs. Many applications require this functionality and many corporations have proxies that prevent apps running in containers from making these calls natively. In order to achieve this functionality, we will be using ConfigMaps. A <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/" target="_blank">configmap</a> enables us to specify our configuration values in one place, where they can be referenced by an application. This way if a user needs different values for something such as a proxy, they can be changed in one place instead of digging into the application. Here is our proxy ConfigMap:</p>
+<p><img alt="Proxy Configmap" src="../images/proxy-configmap.png" /></p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Regular Users</label><div class="tabbed-content">
+<p>If a user doesn't need a proxy they can just not apply this ConfigMap since we will make it <code>optional</code> in the deployment.</p>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Proxy users</label><div class="tabbed-content">
+<div class="admonition info">
+<p class="admonition-title">Only if you use a proxy</p>
+<p>Please put your proxy values here and apply this ConfigMap with:</p>
+<div class="highlight"><pre><span></span><code>kubectl apply -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/proxy-configmap.yaml
+</code></pre></div>
+
+</div>
+</div>
+</div>
+<h2 id="explore-how-to-create-deployments-and-services-from-yaml">Explore how to create deployments and services from yaml<a class="headerlink" href="#explore-how-to-create-deployments-and-services-from-yaml" title="Permanent link">&para;</a></h2>
+<p>Here we will explore a sample deployment file to use in our cluster.</p>
+<h3 id="time-to-deploy-yaml">Time to Deploy YAML<a class="headerlink" href="#time-to-deploy-yaml" title="Permanent link">&para;</a></h3>
+<p><img alt="deployment" src="../images/smallest-outyet-deploy.png" /></p>
+<p>This deployment attaches a label of small-outyet to identify it and selects pods with that same label running the <code>gmoney23/smallest-outyet:1.0</code> image. The port (as we learned before with docker) is 8080 for the outyet family of applications. Additionally, the deployment references the configMap we previously created to deal with proxies. The <code>envFrom</code> means that all of the variables from the configMap will be deployed. The configMapRef marked as <code>optional: true</code> means that if you don't have a proxy and thus didn't apply the referenced configMap, you are not affected at all. This allows us to make an application that works for both proxy and regular users. Finally, the <code>imagePullPolicy</code> marked as <code>Always</code> means that we will check for a new version of the image every time we run a container from it. The default is that this happens for an image marked latest/no tag because that image is frequently updated with new versions. The default for images tagged with a version number is to only pull the image <code>IfNotPresent</code> which means if it is not on the machine. This is because usually a versioned release is updated with a new version rather than updating that same versioned image. If that's not the case, we can specify a different imagePullPolicy for those images like we do here with <code>Always</code> which overrides the default. If your image lies in a private repository, we can also add a secret to reference it without having to <code>docker login</code> to the repository first. See <a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/" target="_blank">Pulling an image from a private registry</a>. This can be important in Kubernetes, when many times the user should  not have direct access to the host server and you want to be able to pull from a private registry with authentication. That was a mouthful ... Now, we can simply apply this file to create the deployment.</p>
+<h3 id="time-to-service-yaml">Time to Service YAML<a class="headerlink" href="#time-to-service-yaml" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>kubectl apply -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/smallest-outyet/deployment.yaml
+</code></pre></div>
+
+<p><code>deployment.extensions/multi-arch-docker-smallest-outyet created</code></p>
+<p>Now, to enable us to connect to this app, we need to deploy a service. We will create a yaml file for this as well called <code>service.yaml</code>.</p>
+<p><img alt="service.yaml" src="../images/service-outyet.png" /></p>
+<p>This service again uses the <code>NodePort</code> type mapping port <code>8080</code> as the container port and internal port to connect to the external <code>NodePort</code>.
+We can apply this to create the service.</p>
+<div class="highlight"><pre><span></span><code>kubectl apply -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/smallest-outyet/service.yaml
+</code></pre></div>
+
+<p><code>service/multi-arch-docker-smallest-outyet created</code></p>
+<p>We can look at how the service maps to the pod by looking at the endpoints of the service.</p>
+<div class="highlight"><pre><span></span><code>kubectl get ep -l <span class="nv">app</span><span class="o">=</span>smallest-outyet,lab<span class="o">=</span>multi-arch-docker
+</code></pre></div>
+
+<p><img alt="Endpoints smallest outyet" src="../images/Smallest-outyet-endpoints.png" /></p>
+<p>Now, I can scale the deployment to having 2 replicas instead of 1.</p>
+<div class="highlight"><pre><span></span><code>deployment=multi-arch-docker-smallest-outyet
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>kubectl patch deployment <span class="nv">$deployment</span> -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;replicas&quot;: 2}}&#39;</span>
+</code></pre></div>
+
+<p>Let's look at the endpoints for the service again.</p>
+<div class="highlight"><pre><span></span><code>kubectl get ep -l <span class="nv">app</span><span class="o">=</span>smallest-outyet,lab<span class="o">=</span>multi-arch-docker
+</code></pre></div>
+
+<p><img alt="Smallest Outyet 2 Endpoints" src="../images/smallest-outyet-2-endpoints.png" /></p>
+<p>We can see the two pods' endpoints using the service instead of the one before.</p>
+<h3 id="get-the-access-info-for-outyet">Get the Access Info for Outyet<a class="headerlink" href="#get-the-access-info-for-outyet" title="Permanent link">&para;</a></h3>
+<p>To access the application itself, I can get the IP and <code>NodePort</code> using kubectl</p>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Admin</label><div class="tabbed-content">
+<p>Can run this command or check the console for the Proxy IP</p>
+<div class="highlight"><pre><span></span><code><span class="o">[</span> -z <span class="s2">&quot;</span><span class="nv">$CLUSTERIP</span><span class="s2">&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">CLUSTERIP</span><span class="o">=</span><span class="k">$(</span>kubectl get nodes -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.items[0].status.addresses[0].address}&quot;</span><span class="k">)</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Non-admin</label><div class="tabbed-content">
+<p>Needs to get the IP from Admin</p>
+<div class="highlight"><pre><span></span><code><span class="nv">CLUSTERIP</span><span class="o">=</span>&lt;your_proxy_node_ip&gt;
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="time-to-see-if-its-outyet">Time to See if it's Outyet<a class="headerlink" href="#time-to-see-if-its-outyet" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>NODEPORT=$(kubectl get svc -l app=smallest-outyet,lab=multi-arch-docker -o jsonpath=&#39;{.items[0].spec.ports[0].nodePort}&#39;)
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s2">&quot;http://</span><span class="si">${</span><span class="nv">CLUSTERIP</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">NODEPORT</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>I can plug this address into my browser to view the app.</p>
+<h3 id="clean-up">Clean Up<a class="headerlink" href="#clean-up" title="Permanent link">&para;</a></h3>
+<p>To clean app I can delete the deployment using the yaml I created it with. The same goes for the service.</p>
+<div class="highlight"><pre><span></span><code>kubectl delete -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/smallest-outyet/deployment.yaml
+</code></pre></div>
+
+<p><code>deployment.extensions "multi-arch-docker-smallest-outyet" deleted</code></p>
+<div class="highlight"><pre><span></span><code>kubectl delete -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/smallest-outyet/service.yaml
+</code></pre></div>
+
+<p><code>service "multi-arch-docker-smallest-outyet" deleted</code></p>
+<h2 id="new-web-app-similar-steps-for-access">New Web App, Similar Steps for Access:<a class="headerlink" href="#new-web-app-similar-steps-for-access" title="Permanent link">&para;</a></h2>
+<h3 id="small-outyet-deserves-a-chance-to-run">Small-Outyet Deserves a Chance to Run<a class="headerlink" href="#small-outyet-deserves-a-chance-to-run" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>kubectl apply -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/small-outyet/deployment.yaml
+</code></pre></div>
+
+<p><code>deployment.extensions/multi-arch-docker-small-outyet created</code></p>
+<div class="highlight"><pre><span></span><code>kubectl apply -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/small-outyet/service.yaml
+</code></pre></div>
+
+<p><code>service/multi-arch-docker-small-outyet created</code></p>
+<div class="highlight"><pre><span></span><code><span class="nv">service</span><span class="o">=</span>multi-arch-docker-small-outyet
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="nv">peer_pod</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>kubectl get pods -l <span class="nv">app</span><span class="o">=</span>small-outyet,lab<span class="o">=</span>multi-arch-docker -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[*].metadata.name}&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<h4 id="admin-can-run-this-command-or-to-find-out-the-proxy-ip">Admin can run this command or to find out the Proxy IP<a class="headerlink" href="#admin-can-run-this-command-or-to-find-out-the-proxy-ip" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="o">[</span> -z <span class="s2">&quot;</span><span class="nv">$CLUSTERIP</span><span class="s2">&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">CLUSTERIP</span><span class="o">=</span><span class="k">$(</span>kubectl get nodes -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.items[0].status.addresses[0].address}&quot;</span><span class="k">)</span>
+</code></pre></div>
+
+<h4 id="non-admin-needs-to-get-the-ip-from-the-admin">Non-admin Needs to get the IP from the Admin<a class="headerlink" href="#non-admin-needs-to-get-the-ip-from-the-admin" title="Permanent link">&para;</a></h4>
+<p><code>CLUSTERIP=&lt;your_proxy_node_ip&gt;</code></p>
+<h3 id="its-still-out">It's still out!<a class="headerlink" href="#its-still-out" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nv">NODEPORT</span><span class="o">=</span><span class="k">$(</span>kubectl get svc <span class="nv">$service</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.ports[0].nodePort}&#39;</span><span class="k">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s2">&quot;http://</span><span class="si">${</span><span class="nv">CLUSTERIP</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">NODEPORT</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>We can visit this address, to visit our <code>small-outyet</code> app.</p>
+<p>We can follow similar steps for all of the outyets and example-go-server since they are all web applications with similar constraints.</p>
+<h3 id="clean-up-small-outyet">Clean up Small-Outyet<a class="headerlink" href="#clean-up-small-outyet" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>kubectl delete -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/small-outyet/deployment.yaml
+</code></pre></div>
+
+<p><code>deployment.extensions "multi-arch-docker-small-outyet" deleted</code></p>
+<div class="highlight"><pre><span></span><code>kubectl delete -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/small-outyet/service.yaml
+</code></pre></div>
+
+<p><code>service "multi-arch-docker-small-outyet" deleted</code></p>
+<h2 id="using-jobs-with-a-cronjob">Using Jobs with a CronJob<a class="headerlink" href="#using-jobs-with-a-cronjob" title="Permanent link">&para;</a></h2>
+<p>A <a href="https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/" target="_blank">job</a> runs a number of pods in order to achieve a given number of successful completions at which point it is done. A <a href="https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/" target="_blank">CronJob</a> runs a job on a time-based schedule. In this example, we will use a cronjob to launch our trusty <code>href-counter</code>, every minute. We will then change the environment values sent into href-counter, to get it to switch to a different website and look at its logs to show us the results. Instead of mounting the environment variables directly in the pod we will be using a new <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/" target="_blank">configmap</a> and the one for proxies we created before to map configuration values to a container instead of hard coding them in (if applicable)</p>
+<h3 id="first-lets-create-our-configmap">First, lets create our ConfigMap<a class="headerlink" href="#first-lets-create-our-configmap" title="Permanent link">&para;</a></h3>
+<p>Our configmap.yaml is as follows:</p>
+<p><img alt="configmap.yaml" src="../images/configmap.png" /></p>
+<p>It simply maps the http-url for us to hit with the href-tool to the site-url configmap with key http-url.
+We will be patching this when we want to update our container's environment value. Let's create our configmap:</p>
+<div class="highlight"><pre><span></span><code>kubectl apply -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/href-counter/configmap.yaml
+</code></pre></div>
+
+<p><code>configmap/multi-arch-docker-site-url created</code></p>
+<p>Next, we have to make our CronJob. The following yaml will suffice:</p>
+<p><img alt="Cronjob" src="../images/cronjob.png" /></p>
+<p>This CronJob schedules a job every minute using href-counter as our label and our image as <code>gmoney23/href:1.0</code>. We also use our new <code>ConfigMap</code> in the valueFrom field of the <code>env</code> field where we specify our <code>configMapKeyRef</code> to reference a specific key. Finally, we connect to our proxy <code>ConfigMap</code> again since this app makes calls to outside websites. We should be all set. Time to make the cronjob.</p>
+<div class="highlight"><pre><span></span><code>kubectl apply -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/href-counter/cronjob.yaml
+</code></pre></div>
+
+<p><code>cronjob.batch/multi-arch-docker-href-counter created</code></p>
+<p><strong>After waiting a few minutes</strong>, run the logs to see the results:</p>
+<div class="highlight"><pre><span></span><code>kubectl logs -l <span class="nv">app</span><span class="o">=</span>href-counter,lab<span class="o">=</span>multi-arch-docker
+</code></pre></div>
+
+<p><code>{"internal":5,"external":89}</code></p>
+<p><code>{"internal":5,"external":89}</code></p>
+<p><code>{"internal":5,"external":86}</code></p>
+<p>Finally, it's time to patch the configmap and see the changes...</p>
+<div class="highlight"><pre><span></span><code>kubectl patch configmap multi-arch-docker-site-url -p <span class="s1">&#39;{&quot;data&quot;: {&quot;http-url&quot;: &quot;http://google.com&quot;}}&#39;</span>
+</code></pre></div>
+
+<p>With the configmap patched we should be able to see the changes to the logs of the pods run by the jobs from the CronJob though you might have to wait up to a minute to see a change (<em>Note: usually only the 3 most recent pods at a given time are available for log reading</em>):</p>
+<div class="highlight"><pre><span></span><code>kubectl logs -l <span class="nv">app</span><span class="o">=</span>href-counter,lab<span class="o">=</span>multi-arch-docker
+</code></pre></div>
+
+<p><code>{"internal":5,"external":89}</code></p>
+<p><code>{"internal":5,"external":86}</code></p>
+<p><code>{"internal":8,"external":11}</code></p>
+<p>Indeed, our values have changed. Our work is complete, time to clean up.</p>
+<div class="highlight"><pre><span></span><code>kubectl delete -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/href-counter/cronjob.yaml
+</code></pre></div>
+
+<p><code>cronjob.batch "multi-arch-docker-href-counter" deleted</code></p>
+<div class="highlight"><pre><span></span><code>kubectl delete -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MULTIARCH_HOME</span><span class="si">}</span><span class="s2">&quot;</span>/href-counter/configmap.yaml
+</code></pre></div>
+
+<p><code>configmap "multi-arch-docker-site-url" deleted</code></p>
+<p>In reality, our <code>CronJob</code> could be used to do anything from running the logs at the end of a day, to sending emails to a list of participants weekly, to running health checks on an application every minute to other automated tasks that need to be done every period of time.</p>
+<p>If you need more <code>Kubernetes</code> skills, cover your bases with <a href="https://kubernetes.io/docs/tutorials/kubernetes-basics/" target="_blank">Kubernetes basics</a>. Additionally, if you have a hard time figuring out which api to use for a given type look no <a href="https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html" target="_blank">further</a></p>
+<h2 id="closing-note">Closing Note<a class="headerlink" href="#closing-note" title="Permanent link">&para;</a></h2>
+<p><strong>THAT'S ALL FOLKS!</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note to Self</p>
+<p><em>Oops that was off message. I meant to say:</em></p>
+<p><strong>Knowing you have a guide as a template for future success fills you with <a href="https://undertale.fandom.com/wiki/Determination" target="_blank">determination</a>.</strong></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">P.S.</p>
+<p>My ability to stay on message and reminisce about <a href="https://store.steampowered.com/app/391540/Undertale/" target="_blank">Undertale</a> fills me with <a href="https://undertale.fandom.com/wiki/Determination" target="_blank">determination</a>.*</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">P.P.S</p>
+<p>What ever will I do <a href="https://studybreaks.com/tvfilm/deltarune-is-the-sequel-undertale-needs/" target="_blank">next</a>*</p>
+</div>
+<h2 id="additional-topics">Additional Topics<a class="headerlink" href="#additional-topics" title="Permanent link">&para;</a></h2>
+<p>After finishing everything here, check out:</p>
+<ul>
+<li>
+<p><a href="https://developers.redhat.com/topics/kubernetes/operators" target="_blank">Packaging Applications and Services with Kubernetes Operators</a></p>
+</li>
+<li>
+<p><a href="https://learn.openshift.com" target="_blank">Red Hat OpenShift Free Interactive Online Learning</a></p>
+</li>
+</ul>
+<h2 id="home"><a href="..">HOME</a><a class="headerlink" href="#home" title="Permanent link">&para;</a></h2>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../4-Multiarch-manual-addendum/" title="The past - The Manual Way aka Herding Cats" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                The past - The Manual Way aka Herding Cats
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../0-ProxyPSA/" title="0. Hello Proxy Users" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                0. Hello Proxy Users
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/siler23" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://hub.docker.com/u/gmoney23" target="_blank" rel="noopener" title="hub.docker.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M349.9 236.3h-66.1v-59.4h66.1v59.4zm0-204.3h-66.1v60.7h66.1V32zm78.2 144.8H362v59.4h66.1v-59.4zm-156.3-72.1h-66.1v60.1h66.1v-60.1zm78.1 0h-66.1v60.1h66.1v-60.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1l-13.3-8.9zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm-78.1-72.1h-66.1v60.1h66.1v-60.1z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://linkedin.com/in/garrett-woodworth-9a9895142/" target="_blank" rel="noopener" title="linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.c3dc8c49.min.js"></script>
+      <script src="../assets/javascripts/bundle.f9edbbd5.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8e2cddea.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

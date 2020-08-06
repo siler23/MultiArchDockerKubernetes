@@ -1,0 +1,884 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.3">
+    
+    
+      
+        <title>3. Guide to Building Best-practice Go Docker Images - From Docker to Kubernetes - Multi-Arch with Go and Nodejs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.947af8d5.min.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/palette.7f672a1f.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-174658170-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="preference" data-md-color-primary="" data-md-color-accent="">
+  
+    
+      <script>matchMedia("(prefers-color-scheme: dark)").matches&&document.body.setAttribute("data-md-color-scheme","slate")</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#3-guide-to-building-best-practice-go-docker-images" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="From Docker to Kubernetes - Multi-Arch with Go and Nodejs" class="md-header-nav__button md-logo" aria-label="From Docker to Kubernetes - Multi-Arch with Go and Nodejs">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            From Docker to Kubernetes - Multi-Arch with Go and Nodejs
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              3. Guide to Building Best-practice Go Docker Images
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/siler23/MultiArchDockerKubernetes" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="From Docker to Kubernetes - Multi-Arch with Go and Nodejs" class="md-nav__button md-logo" aria-label="From Docker to Kubernetes - Multi-Arch with Go and Nodejs">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    From Docker to Kubernetes - Multi-Arch with Go and Nodejs
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/siler23/MultiArchDockerKubernetes" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../1-Official-Multiarch/" title="1. Getting Official with Multi-arch Images" class="md-nav__link">
+      1. Getting Official with Multi-arch Images
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2-Best-Practice-Nodejs/" title="2. Learning How to Build Best-practice Node.js Docker Images" class="md-nav__link">
+      2. Learning How to Build Best-practice Node.js Docker Images
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        3. Guide to Building Best-practice Go Docker Images
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="3. Guide to Building Best-practice Go Docker Images" class="md-nav__link md-nav__link--active">
+      3. Guide to Building Best-practice Go Docker Images
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#but-firstdownload-go-for-later" class="md-nav__link">
+    But first...Download Go for later
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outyet" class="md-nav__link">
+    Outyet
+  </a>
+  
+    <nav class="md-nav" aria-label="Outyet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iteration-1-outyet" class="md-nav__link">
+    Iteration 1: Outyet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-2-small-outyet" class="md-nav__link">
+    Iteration 2: Small-outyet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-3-smallest-outyet" class="md-nav__link">
+    Iteration 3: Smallest-Outyet
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-was-our-go-container-transformation-worth-it" class="md-nav__link">
+    Why was our Go Container Transformation Worth it?
+  </a>
+  
+    <nav class="md-nav" aria-label="Why was our Go Container Transformation Worth it?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    Security
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#size" class="md-nav__link">
+    Size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clarity" class="md-nav__link">
+    Clarity
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#go-hello-world" class="md-nav__link">
+    Go Hello World
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#href-counter" class="md-nav__link">
+    Href-Counter
+  </a>
+  
+    <nav class="md-nav" aria-label="Href-Counter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#note-this-tool-is-operating-on-live-websites-so-numbers-will-change-as-sites-are-updated-altering-their-internal-and-external-hrefs" class="md-nav__link">
+    Note: This tool is operating on live websites so numbers will change as sites are updated, altering their internal and external hrefs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-4-bringing-multi-arch-images-to-a-computer-near-you" class="md-nav__link">
+    Part 4: Bringing Multi-arch Images to a Computer Near You!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      4. Building Multi-arch Docker Images
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="4. Building Multi-arch Docker Images" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        4. Building Multi-arch Docker Images
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../4-Build-MultiArch/" title="Bringing Multi-arch Images to a Computer Near You" class="md-nav__link">
+      Bringing Multi-arch Images to a Computer Near You
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../4-Multiarch-buildx-addendum/" title="The future - Using Buildx to make Multi-arch a Way of Life" class="md-nav__link">
+      The future - Using Buildx to make Multi-arch a Way of Life
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../4-Multiarch-manual-addendum/" title="The past - The Manual Way aka Herding Cats" class="md-nav__link">
+      The past - The Manual Way aka Herding Cats
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../5-Deploy-to-Kubernetes/" title="5. Kubernetes Time" class="md-nav__link">
+      5. Kubernetes Time
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../0-ProxyPSA/" title="0. Hello Proxy Users" class="md-nav__link">
+      0. Hello Proxy Users
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#but-firstdownload-go-for-later" class="md-nav__link">
+    But first...Download Go for later
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outyet" class="md-nav__link">
+    Outyet
+  </a>
+  
+    <nav class="md-nav" aria-label="Outyet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iteration-1-outyet" class="md-nav__link">
+    Iteration 1: Outyet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-2-small-outyet" class="md-nav__link">
+    Iteration 2: Small-outyet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iteration-3-smallest-outyet" class="md-nav__link">
+    Iteration 3: Smallest-Outyet
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-was-our-go-container-transformation-worth-it" class="md-nav__link">
+    Why was our Go Container Transformation Worth it?
+  </a>
+  
+    <nav class="md-nav" aria-label="Why was our Go Container Transformation Worth it?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    Security
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#size" class="md-nav__link">
+    Size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clarity" class="md-nav__link">
+    Clarity
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#go-hello-world" class="md-nav__link">
+    Go Hello World
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#href-counter" class="md-nav__link">
+    Href-Counter
+  </a>
+  
+    <nav class="md-nav" aria-label="Href-Counter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#note-this-tool-is-operating-on-live-websites-so-numbers-will-change-as-sites-are-updated-altering-their-internal-and-external-hrefs" class="md-nav__link">
+    Note: This tool is operating on live websites so numbers will change as sites are updated, altering their internal and external hrefs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-4-bringing-multi-arch-images-to-a-computer-near-you" class="md-nav__link">
+    Part 4: Bringing Multi-arch Images to a Computer Near You!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 id="3-guide-to-building-best-practice-go-docker-images">3. Guide to Building Best-practice Go Docker Images<a class="headerlink" href="#3-guide-to-building-best-practice-go-docker-images" title="Permanent link">&para;</a></h1>
+<p>We will go over three apps and show how to optimize our Golang code for Docker.</p>
+<ol>
+<li>Go example Outyet program</li>
+<li>Go Hello world</li>
+<li>Go href-counter</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We will build all of these images in Part 4. This is a guide explaining the ins and outs of making the files to do so [i.e. the foundation for success]*</p>
+</div>
+<h2 id="but-firstdownload-go-for-later">But first...Download Go for later<a class="headerlink" href="#but-firstdownload-go-for-later" title="Permanent link">&para;</a></h2>
+<p>Here is the <a href="https://golang.org/dl/" target="_blank">Go download</a> if you want to run it locally to familiarize yourself with it/develop with it. For this section, you actually don't need golang installed on your computer because of the power of Docker.</p>
+<div class="admonition caution">
+<p class="admonition-title">If Using Proxy</p>
+<p><strong>If using proxy</strong>, make sure you've read <a href="../0-ProxyPSA/">0-ProxyPSA</a> and have set your <code>http_proxy</code>, <code>https_proxy</code>, and <code>no_proxy</code> variables for your environment as specified there. Also note that for all docker run commands add the <code>-e</code> for each of the proxy environment variables as specified in that <a href="../0-ProxyPSA/">0-ProxyPSA</a> document.</p>
+</div>
+<h2 id="outyet">Outyet<a class="headerlink" href="#outyet" title="Permanent link">&para;</a></h2>
+<p>Outyet is a go example program from <a href="https://github.com/golang/example/tree/master/outyet" target="_blank">Go Outyet Example</a>. This app checks if the version of Go specified (in our case 1.11 is out yet). Since we are using it, it better be! We will be dockerizing this app, shrinking our image down on the way over 3 iterations.</p>
+<h3 id="iteration-1-outyet">Iteration 1: Outyet<a class="headerlink" href="#iteration-1-outyet" title="Permanent link">&para;</a></h3>
+<p>In this first iteration we make the go app in a container and get it running. Since there is a large base image needed for compiling the application and a large os is used for that image, this will be a rather large container. Here is the <a href="https://github.com/siler23/MultiArchDockerKubernetes/blob/master/outyet/Dockerfile" target="_blank">outyet Dockerfile</a>. Read the comments below for details about the Dockerfile.</p>
+<p><img alt="Outyet-Dockerfile" src="../images/outyet-Dockerfile.png" /></p>
+<p>Run it with:</p>
+<div class="highlight"><pre><span></span><code>docker run --rm -it -p 3000:8080 gmoney23/outyet
+</code></pre></div>
+
+<p><em>Note: This should just hang in the cli:</em></p>
+<p><img alt="Hanging Cli" src="../images/hanging_outyet_working.png" /></p>
+<p>The real action is in the browser.</p>
+<p>Click on <a href="http://localhost:3000/" target="_blank">outyet</a> (while it's running) to see it in your web browser.</p>
+<p>If you're on a server instead of a desktop go to <code>http://serverip:3000</code> where serverip is your server's ip address.</p>
+<div class="admonition success">
+<p class="admonition-title">It should look like this</p>
+<p><img alt="outyet initial page" src="../images/outyet-page.png" /></p>
+<p>Here's the git page for go 1.11 when you click YES </p>
+<p><img alt="outyet secondary page" src="../images/outyet-link.PNG" /></p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.</p>
+</div>
+<p>To check it's size I ran:</p>
+<div class="highlight"><pre><span></span><code>docker images gmoney23/outyet
+</code></pre></div>
+
+<p>I got a whopping 786 Mb, no room for dessert :(</p>
+<p><img alt="Massive Outyet Image" src="../images/big_outyet_image_size.png" /></p>
+<p><em>Seeing the room for improvement fills you with <a href="https://undertale.fandom.com/wiki/Determination" target="_blank">determination</a>.</em></p>
+<h3 id="iteration-2-small-outyet">Iteration 2: Small-outyet<a class="headerlink" href="#iteration-2-small-outyet" title="Permanent link">&para;</a></h3>
+<p>In this second iteration, we attempt to improve upon our original endeavor using multi-stage builds. What is a multi-stage build? A build that happens in multiple stages. Mic drop...<a href="https://docs.docker.com/develop/develop-images/multistage-build/" target="_blank">Docker multi-stage build</a>. Employing multi-stage builds we can build the golang application in a container with all the bells and whistles and then copy it to another container that is much smaller. Here, we just run it. This works well with golang because when we set <code>CGO_ENABLED=0</code> everything is statically compiled. In this case, we're going to copy it into the Alpine base image which should cut down its size considerably. Without further ado, the <a href="https://github.com/siler23/MultiArchDockerKubernetes/blob/master/small-outyet/Dockerfile" target="_blank">small-outyet Dockerfile</a> below:</p>
+<p><img alt="Small-Outyet-Dockerfile" src="../images/small-outyet-Dockerfile.png" /></p>
+<p>Run it with</p>
+<div class="highlight"><pre><span></span><code>docker run --rm -it -p <span class="m">3000</span>:8080 gmoney23/small-outyet
+</code></pre></div>
+
+<p>Click on <a href="http://localhost:3000/" target="_blank">small-outyet</a> (while it's running) to see it in your web browser.</p>
+<p>If you're on a server instead of a desktop go to <code>http://serverip:3000</code> where serverip is your server's ip address.</p>
+<p><em>Note: The cli hangs and the web page looks the same as for <code>outyet</code>, since it's the same app, so I've omitted images here.</em></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.</p>
+</div>
+<p>To check it's size I ran:</p>
+<div class="highlight"><pre><span></span><code>docker images gmoney23/small-outyet
+</code></pre></div>
+
+<p><img alt="Getting smaller yet" src="../images/getting_smaller_yet.png" /></p>
+<p>From 786MB -&gt; 13.9MB that's some serious shrinkage.</p>
+<p><em>The amount the container has shrunk fills you with <a href="https://undertale.fandom.com/wiki/Determination" target="_blank">determination</a>.</em></p>
+<h3 id="iteration-3-smallest-outyet">Iteration 3: Smallest-Outyet<a class="headerlink" href="#iteration-3-smallest-outyet" title="Permanent link">&para;</a></h3>
+<p>How do we get smaller than starting with a 5MB alpine image? How about start with nothing. We are going to use the special <a href="https://hub.docker.com/_/scratch/" target="_blank">scratch image</a> which starts fresh. Since everything can be set to statically compile in go with <code>CGO_ENABLED=0</code>, we can just package the binary in a container without even a shell. This lessons attack surface and gives us a super light image. On top of that, we'll add some compiler flags for production to cut off the debug info space in go. Here's how it all looks in the <a href="https://github.com/siler23/MultiArchDockerKubernetes/blob/master/smallest-outyet/Dockerfile" target="_blank">smallest-outyet Dockerfile</a></p>
+<p><img alt="Smallest-Outyet-Dockerfile" src="../images/smallest-outyet-Dockerfile.png" /></p>
+<p>Run it:</p>
+<div class="highlight"><pre><span></span><code>docker run --rm -it -p <span class="m">3000</span>:8080 gmoney23/smallest-outyet
+</code></pre></div>
+
+<p>Click on <a href="http://localhost:3000/" target="_blank">smallest-outyet</a> (while it's running) to see it in your web browser.</p>
+<p>If you're on a server instead of a desktop go to <code>http://serverip:3000</code> where serverip is your server's ip address.</p>
+<p><em>Note: You know the drill. The cli hangs and the web page looks the same as for <code>outyet</code> and <code>small-outyet</code>, since it's the same app, so I've omitted images here.</em></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.</p>
+</div>
+<p>To check it's size I ran:</p>
+<div class="highlight"><pre><span></span><code>docker images gmoney23/smallest-outyet
+</code></pre></div>
+
+<p><img alt="Smallest Outyet Size" src="../images/smallest_outyet_size.png" /></p>
+<p><strong><em>From 13.9MB -&gt; 6.89MB for a grand transformation of 786MB -&gt; 6.89MB, a little over 114X smaller than the original image! That's a lot of room for dessert :)</em></strong></p>
+<h2 id="why-was-our-go-container-transformation-worth-it">Why was our Go Container Transformation Worth it?<a class="headerlink" href="#why-was-our-go-container-transformation-worth-it" title="Permanent link">&para;</a></h2>
+<h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
+<p>Running the container from scratch enables us to take away even a shell into our container. The only software we are adding to the container is the executable that needs to run. This dramatically reduces the attack surface and means you don't need to worry about the security patches for the libs/bins you are adding in your container (since you aren't adding any). You simply need to worry about the security of your application itself and the pieces it is made with.</p>
+<h3 id="size">Size<a class="headerlink" href="#size" title="Permanent link">&para;</a></h3>
+<p>By minimizing the size of images, we can prevent wasting resources for large base images and prevent using a ton of storage for all of our container images. Moreover, we can take better advantage of cache for our running containers.</p>
+<h3 id="clarity">Clarity<a class="headerlink" href="#clarity" title="Permanent link">&para;</a></h3>
+<p>It is easy to see exactly what we are doing in our container and we don't need to worry about potential problems when updating the bins/libs of our container because we don't have any.</p>
+<p>If the scratch image has piqued your interest, check out this article exploring <a href="https://www.mgasch.com/post/scratch/">"Inside Docker's FROM scratch"</a></p>
+<h2 id="go-hello-world">Go Hello World<a class="headerlink" href="#go-hello-world" title="Permanent link">&para;</a></h2>
+<p>Using the techniques we just employed, let's see how small of a Docker image we can make for a <a href="https://gist.github.com/enricofoltran/10b4a980cd07cb02836f70a4ab3e72d7">basic go hello world app</a> from gist.
+Say hello to the <a href="https://github.com/siler23/MultiArchDockerKubernetes/blob/master/example-go-server/Dockerfile" target="_blank">example-go-server Dockerfile</a>.</p>
+<p><img alt="example-go-server-Dockerfile" src="../images/example-go-server-Dockerfile.png" /></p>
+<p>Run it with:</p>
+<div class="highlight"><pre><span></span><code>docker run --rm -it -p 3000:5000 gmoney23/example-go-server
+</code></pre></div>
+
+<p>Click on <a href="http://localhost:3000/" target="_blank">example-go-server</a> (while it's running) to see it in your web browser.</p>
+<p>If you're on a server instead of a desktop go to <code>http://serverip:3000</code> where serverip is your server's ip address.</p>
+<p>Here is what it will look like in the browser:</p>
+<p><img alt="go-hello-web" src="../images/go_hello.PNG" /></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Quit the app by hitting both the control and c keys (ctrl c) in the terminal/ command prompt / PowerShell.</p>
+</div>
+<p>Here's what it will look like in the cli after its been shut down.</p>
+<p><img alt="go-hello-cli" src="../images/go-hello-cli.png" /></p>
+<p>To check its size I ran:</p>
+<div class="highlight"><pre><span></span><code>docker images gmoney23/example-go-server
+</code></pre></div>
+
+<p><img alt="Small Go Web Server Image" src="../images/go-web-server-small-image-size.png" /></p>
+<p>This gives us an image size of 4.9MB, quite astounding!</p>
+<h2 id="href-counter">Href-Counter<a class="headerlink" href="#href-counter" title="Permanent link">&para;</a></h2>
+<p>Finally, lets dockerize an app that prints output for us instead of a web app. <a href="https://github.com/alexellis/href-counter">Href-counter</a> is an application that counts the number of internal and external-hrefs on a web-page to rate SEO. It is referenced in the multi-stage build manual for docker we looked at <a href="https://docs.docker.com/develop/develop-images/multistage-build/" target="_blank">before</a> and fits the bill for us. Let's take a peak at the <a href="https://github.com/siler23/MultiArchDockerKubernetes/blob/master/href-counter/Dockerfile" target="_blank">href-counter Dockerfile</a> inside of MultiArchDockerKubernetes.</p>
+<p><img alt="href-counter-Dockerfile" src="../images/href-counter-Dockerfile.png" /></p>
+<h3 id="note-this-tool-is-operating-on-live-websites-so-numbers-will-change-as-sites-are-updated-altering-their-internal-and-external-hrefs"><strong>Note: This tool is operating on live websites so numbers will change as sites are updated, altering their internal and external hrefs</strong><a class="headerlink" href="#note-this-tool-is-operating-on-live-websites-so-numbers-will-change-as-sites-are-updated-altering-their-internal-and-external-hrefs" title="Permanent link">&para;</a></h3>
+<p>We can try the tool out against different sites (starting with this site) using:</p>
+<div class="highlight"><pre><span></span><code>docker run --rm -e url=https://siler23.github.io/MultiArchDockerKubernetes/ gmoney23/href
+</code></pre></div>
+
+<p><code>{"internal":35,"external":9}</code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For PROXY**: add your -e for http_proxy, etc.:</p>
+<div class="highlight"><pre><span></span><code>docker run --rm -e http_proxy=<span class="nv">%http_proxy%</span> -e https_proxy=<span class="nv">%https_proxy%</span> -e no_proxy=<span class="s2">&quot;</span><span class="nv">%no_proxy%</span><span class="s2">&quot;</span> -e url=http://google.com href
+</code></pre></div>
+
+</div>
+<div class="admonition example">
+<p class="admonition-title">More Examples</p>
+<div class="highlight"><pre><span></span><code>docker run --rm -e <span class="nv">url</span><span class="o">=</span>http://yahoo.com gmoney23/href
+</code></pre></div>
+
+<p><code>{"internal":29,"external":82}</code></p>
+<div class="highlight"><pre><span></span><code>docker run --rm -e <span class="nv">url</span><span class="o">=</span>http://blog.alexellis.io/ gmoney23/href
+</code></pre></div>
+
+<p><code>{"internal":51,"external":2}</code></p>
+<p>You'll be pleased to know our Dockerfile made this image small as well. We can see with:</p>
+<div class="highlight"><pre><span></span><code>docker images gmoney23/href
+</code></pre></div>
+
+<p><img alt="Small Href Image Size" src="../images/href_image_size_small.png" /></p>
+</div>
+<p>For more go best practices and tips with Docker see this <a href="https://blog.docker.com/2016/09/docker-golang/" target="_blank">excellent article</a></p>
+<h2 id="part-4-bringing-multi-arch-images-to-a-computer-near-you"><a href="../4-Build-MultiArch/">Part 4: Bringing Multi-arch Images to a Computer Near You!</a><a class="headerlink" href="#part-4-bringing-multi-arch-images-to-a-computer-near-you" title="Permanent link">&para;</a></h2>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../2-Best-Practice-Nodejs/" title="2. Learning How to Build Best-practice Node.js Docker Images" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                2. Learning How to Build Best-practice Node.js Docker Images
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../4-Build-MultiArch/" title="Bringing Multi-arch Images to a Computer Near You" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Bringing Multi-arch Images to a Computer Near You
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/siler23" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://hub.docker.com/u/gmoney23" target="_blank" rel="noopener" title="hub.docker.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M349.9 236.3h-66.1v-59.4h66.1v59.4zm0-204.3h-66.1v60.7h66.1V32zm78.2 144.8H362v59.4h66.1v-59.4zm-156.3-72.1h-66.1v60.1h66.1v-60.1zm78.1 0h-66.1v60.1h66.1v-60.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1l-13.3-8.9zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm-78.1-72.1h-66.1v60.1h66.1v-60.1z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://linkedin.com/in/garrett-woodworth-9a9895142/" target="_blank" rel="noopener" title="linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.c3dc8c49.min.js"></script>
+      <script src="../assets/javascripts/bundle.f9edbbd5.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8e2cddea.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
