@@ -1,11 +1,12 @@
 # The past - The Manual Way aka Herding Cats
 
-## If Using Proxy
-If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that 0-ProxyPSA document.
+!!! caution "If Using Proxy"
+    **If using proxy**, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that [0-ProxyPSA](0-ProxyPSA.md) document.
 
 ## Overview of Process the Manual Way - Building on Separate Machines
 
-**Below is a manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path to follow the main path click to go to [part 5](5-Deploy-to-Kubernetes.md)**
+!!! info
+    Below is a manual collection of tasks to build images in more depth if you want more detail. This is purely for educational purposes if something in the script didn't make sense or you want further material and not part of the main path to follow the main path click to go to [part 5](5-Deploy-to-Kubernetes.md)**
 
 ### 1.	Build image for all architectures and push to docker registry.
 First is the list of basic steps, then a pattern you can use with both the mac and command  prompt commands.
@@ -13,9 +14,9 @@ First is the list of basic steps, then a pattern you can use with both the mac a
 #### Basic Steps
   a. Build and push image for s390x (Go onto an s390x linux instance, ssh in)
 
-    i. Get your code onto the instance (i.e. download git files onto the machine or git clone https://github.com/siler23/MultiArchMultiArchDockerICP.git)
+    i. Get your code onto the instance (i.e. download git files onto the machine or git clone https://github.com/siler23/MultiArchMultiArchDockerKubernetes.git)
 
-    ii. Get to the directory with the code (cd MultiArchDockerICP)
+    ii. Get to the directory with the code (cd MultiArchDockerKubernetes)
 
     iii. Build the image using docker (docker build -t myrepo/outyet-s390x .)
 
@@ -27,9 +28,9 @@ First is the list of basic steps, then a pattern you can use with both the mac a
 
   b. Build and push image for x86 (Go onto an x86 computer with docker, probably your workstation)
 
-    i. Get your code onto the instance if not already there (i.e. git clone https://github.com/siler23/MultiArchDockerICP.git)
+    i. Get your code onto the instance if not already there (i.e. git clone https://github.com/siler23/MultiArchDockerKubernetes.git)
 
-    ii. Get to the directory with the code and Dockerfile (cd MultiArchDockerICP)
+    ii. Get to the directory with the code and Dockerfile (cd MultiArchDockerKubernetes)
 
     iii. Build the image using docker (docker build -t myrepo/outyet-x86 .)
 
@@ -130,9 +131,9 @@ The docker manifest command is experimental because while it does create manifes
 
 ***You only need to do this from one computer which for ease of access should probably be your workstation computer rather than a server***
 
-If golang not yet installed, install here with package for your os/arch [here](https://golang.org/dl/)
+If golang not yet installed, install here with package for your os/arch [here](https://golang.org/dl/){target=_blank}
 
-If git not yet installed, see instructions here for how to install for your os [Git install instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+If git not yet installed, see instructions here for how to install for your os [Git install instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git){target=_blank}
 
 ***If using proxy***, set git proxy settings. An example would be if you want to use proxy for all git push/pull set:
 
@@ -140,9 +141,9 @@ If git not yet installed, see instructions here for how to install for your os [
 git config --global http.proxy http://proxyUsername:proxyPassword@proxy.server.com:port
 ```
  
-replacing with your proxy values. For more different git proxy configurations for your specific needs so [this gist on using git with proxies](https://gist.github.com/evantoli/f8c23a37eb3558ab8765)
+replacing with your proxy values. For more different git proxy configurations for your specific needs so [this gist on using git with proxies](https://gist.github.com/evantoli/f8c23a37eb3558ab8765){target=_blank}
 
-Install manifest-tool here with package for your os/arch [here](https://github.com/estesp/manifest-tool/releases)
+Install manifest-tool here with package for your os/arch [here](https://github.com/estesp/manifest-tool/releases){target=_blank}
 
 #### After all s390x and amd64 images are pushed (Only do the do following if you haven't done with the docker manifest command)
 ***You only need to do this from one computer which for ease of access should probably be your workstation computer rather than a server***
@@ -161,6 +162,6 @@ manifest-tool --username gmoney23 --password *** push from-spec smallest-outyet/
 manifest-tool --username gmoney23 --password *** push from-spec smallest-outyet/manifest.yaml
 ```
 
-Having your hands dirty fills you with [determination](https://undertale.fandom.com/wiki/Determination).
+Having your hands dirty fills you with [determination](https://undertale.fandom.com/wiki/Determination){target=_blank}.
 
 # [Part 5: Kubernetes Time](5-Deploy-to-Kubernetes.md)

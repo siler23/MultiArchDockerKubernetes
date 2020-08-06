@@ -6,8 +6,8 @@ This section goes through installing the manifest tool and building the multi-ar
 
 export MULTIARCH_HOME=`full path to directory of multiarch repo`
 
-## If Using Proxy
-If using proxy, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that 0-ProxyPSA document.
+!!! caution "If Using Proxy"
+    **If using proxy**, make sure you've read [0-ProxyPSA](0-ProxyPSA.md) and have set your `http_proxy`, `https_proxy`, and `no_proxy` variables for your environment as specified there. Also note that for all docker run commands add the `-e` for each of the proxy environment variables as specified in that [0-ProxyPSA](0-ProxyPSA.md) document.
 
 ## Enabling Docker Experimental Features
 We need to enable experimental features for both the docker client and server in order to use the `docker manifest` command and `--platform` tags respectively. In order to do this please follow the steps below for your operating system. `docker manifest` enables us to push and pull manifest lists while `--platform` gives us the ability to pull images of a specific platform (i.e. operating system/architecture). This lets us pull s390x images even if we are on an amd64 platform which is needed to get the base images for our cross-builds later.
@@ -133,7 +133,7 @@ docker version
 
 ## Cross-Architecture Docker 
 
-Normally, one can only run docker images compiled for the host machine's architecture. This means that in order to run an s390x image, you would need an s390x server. Additionally, since building an s390x image (in most cases) requires running s390x binaries on your system, this also requires an s390x server. The same holds true for arm, x86 (amd64), power (ppc64le), etc. This limits the ability to build images that are available across all platforms. One way to overcome this limitation is by using [binfmt_misc](https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html) in conjunction with [qemu](https://www.qemu.org/) (quick emulation) running using [user-mode-emulation](https://ownyourbits.com/2018/06/13/transparently-running-binaries-from-any-architecture-in-linux-with-qemu-and-binfmt_misc/). Qemu dynamically translates the target architecture's instructions to the the host architecture's instruction set to enable binaries of a different architecture to run on a host system. [Binfmt_misc](https://lwn.net/Articles/679308/) comes in to enable the kernel to read the foreign architecture binary by ["directing"](https://lwn.net/Articles/679308/) the kernel to the correct qemu static binary to interpret the code.
+Normally, one can only run docker images compiled for the host machine's architecture. This means that in order to run an s390x image, you would need an s390x server. Additionally, since building an s390x image (in most cases) requires running s390x binaries on your system, this also requires an s390x server. The same holds true for arm, x86 (amd64), power (ppc64le), etc. This limits the ability to build images that are available across all platforms. One way to overcome this limitation is by using [binfmt_misc](https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html){target=_blank} in conjunction with [qemu](https://www.qemu.org/){target=_blank} (quick emulation) running using [user-mode-emulation](https://ownyourbits.com/2018/06/13/transparently-running-binaries-from-any-architecture-in-linux-with-qemu-and-binfmt_misc/){target=_blank}. Qemu dynamically translates the target architecture's instructions to the the host architecture's instruction set to enable binaries of a different architecture to run on a host system. [Binfmt_misc](https://lwn.net/Articles/679308/){target=_blank} comes in to enable the kernel to read the foreign architecture binary by ["directing"](https://lwn.net/Articles/679308/){target=_blank} the kernel to the correct qemu static binary to interpret the code.
 
 In order to set this up to work with Docker and its underlying linux kernel, we first need:
 
@@ -145,113 +145,113 @@ In order to set this up to work with Docker and its underlying linux kernel, we 
 
 ### Setting up Cross-Architecture support
 
-The [docker/binfmt](https://github.com/docker/binfmt) github project creates a docker image which completes all 3 tasks.
+The [docker/binfmt](https://github.com/docker/binfmt){target=_blank} GitHub project creates a docker image which completes all 3 tasks.
 
 Their implementation works for an amd64 host, so I made a separate image with the qemu-static binaries compiled from the s390x host and posted a multi-arch image for both amd64 and s390x hosts to `gmoney23/binfmt`.
 
 You can test this out by first running an image that is from a different platform than yours. 
 
-#### Linux
+=== "Linux"
 
-Run the docker pull with --platform for the architecture different from yours.
+    Run the docker pull with --platform for the architecture different from yours.
 
-**amd64 host (most users)**
+    === "amd64 host (most users)"
 
-```
-docker pull --platform s390x hello-world
-```
+        ```
+        docker pull --platform s390x hello-world
+        ```
 
-Then, run the pulled image
+        Then, run the pulled image
 
-```
-docker run hello-world
-```
+        ```
+        docker run hello-world
+        ```
 
-**s390x host (a few potential users)**
+    === "s390x host (a few potential users)"
 
-```
-docker pull --platform amd64 hello-world
-```
+        ```
+        docker pull --platform amd64 hello-world
+        ```
 
-Then, run the pulled image
+        Then, run the pulled image
 
-```
-docker run hello-world
-```
+        ```
+        docker run hello-world
+        ```
 
-*Note: while the pictures in this section are for an s390x host, if you are using an amd64 host you should be getting similar errors with the s390x image you pulled. No need to worry that some of the messages say `s390x` for you vs `amd64` in the pictures that follow in this section.*
+    *Note: while the pictures in this section are for an s390x host, if you are using an amd64 host you should be getting similar errors with the s390x image you pulled. No need to worry that some of the messages say `s390x` for you vs `amd64` in the pictures that follow in this section.*
 
-You should get an exec format error like so:
-![Failure exec error](images/exec_error_amd64_s390x.png)
+    You should get an exec format error like so:
+    ![Failure exec error](images/exec_error_amd64_s390x.png)
 
-Now, run the docker image to perform the aforementioned required 3 steps on either s390x of amd64:
+    Now, run the docker image to perform the aforementioned required 3 steps on either s390x of amd64:
 
-```
-docker run --rm --privileged gmoney23/binfmt
-```
+    ```
+    docker run --rm --privileged gmoney23/binfmt
+    ```
 
-`--privileged` gives the container the necessary permissions it requires. The script within this container registers qemu `linux-user` binaries with binfmt_misc. (These binaries are statically compiled on the host architecture for each supported target architecture. In our case: s390x, arm, and ppc64le on amd64 and arm, amd64, and ppc64le on s390x). These binaries are generated during container build and are found within the `gmoney23/binfmt` container. They are registered with the [F (fixed) flag](https://lwn.net/Articles/679308/) which opens the static binary as soon as it is installed so that spawned containers can use the qemu static. This support was added to the linux kernel to enable things such as the cross-building we are going to do. (The full options are `OCF` and you can see the full description for each option [here](https://www.kernel.org/doc/Documentation/admin-guide/binfmt-misc.rst))
+    `--privileged` gives the container the necessary permissions it requires. The script within this container registers qemu `linux-user` binaries with binfmt_misc. (These binaries are statically compiled on the host architecture for each supported target architecture. In our case: s390x, arm, and ppc64le on amd64 and arm, amd64, and ppc64le on s390x). These binaries are generated during container build and are found within the `gmoney23/binfmt` container. They are registered with the [F (fixed) flag](https://lwn.net/Articles/679308/){target=_blank} which opens the static binary as soon as it is installed so that spawned containers can use the qemu static. This support was added to the linux kernel to enable things such as the cross-building we are going to do. (The full options are `OCF` and you can see the full description for each option [here](https://www.kernel.org/doc/Documentation/admin-guide/binfmt-misc.rst){target=_blank})
 
-Confirm the architecture with: 
+    Confirm the architecture with: 
 
-```
-uname -m
-```
+    ```
+    uname -m
+    ```
 
-Confirm the image architecture with: 
+    Confirm the image architecture with: 
 
-```
-docker inspect -f '{{.Architecture}}' hello-world
-```
+    ```
+    docker inspect -f '{{.Architecture}}' hello-world
+    ```
 
-Finally, run the image successfully with the same command as before: 
+    Finally, run the image successfully with the same command as before: 
 
-```
-docker run hello-world
-```
+    ```
+    docker run hello-world
+    ```
 
-![Run amd64 with qemu](images/qemu_s390x_run_amd64.png)
+    ![Run amd64 with qemu](images/qemu_s390x_run_amd64.png)
 
-We can also see in the `hello-world` output the `amd64` architecture mentioned. Thus we have achieved our goal of running amd64 (x86) images on `s390x`.
+    We can also see in the `hello-world` output the `amd64` architecture mentioned. Thus we have achieved our goal of running amd64 (x86) images on `s390x`.
 
-#### Mac / Windows
-Docker for Mac and Docker for Windows have this capability built-in out of the box so we don't even have to set it up with an image run. However, don't just take my word for it, demonstrate it to yourself by trying the `s390x` (z) image for `hello-world` on your `amd64` (x86) mac:
+=== "Mac / Windows"
+    Docker for Mac and Docker for Windows have this capability built-in out of the box so we don't even have to set it up with an image run. However, don't just take my word for it, demonstrate it to yourself by trying the `s390x` (z) image for `hello-world` on your `amd64` (x86) mac:
 
-```
-docker pull --platform s390x hello-world
-```
+    ```
+    docker pull --platform s390x hello-world
+    ```
 
-Confirm the architecture with: 
+    Confirm the architecture with: 
 
-```
-uname -m
-```
+    ```
+    uname -m
+    ```
 
-Confirm the image architecture with: 
+    Confirm the image architecture with: 
 
-```
-docker inspect -f '{{.Architecture}}' hello-world
-```
+    ```
+    docker inspect -f '{{.Architecture}}' hello-world
+    ```
 
-Finally, run the image successfully the 1st try with: 
+    Finally, run the image successfully the 1st try with: 
 
-```
-docker run hello-world
-```
+    ```
+    docker run hello-world
+    ```
 
-![Run s390x with qemu](images/qemu_mac_s390x_hello-world.png)
+    ![Run s390x with qemu](images/qemu_mac_s390x_hello-world.png)
 
-This works successfully (without additional configuration needed) 
+    This works successfully (without additional configuration needed) 
 
-**What do you mean by this capability is built-in out of the box?**
+    **What do you mean by this capability is built-in out of the box?**
 
-Docker for Mac and Docker for Windows run containers in a vm (either a hypervisor of hyperkit on mac [a derivative of xhyve] or hyper-v on windows) which it uses to run a linux kernel that in this case is set up with binfmt_misc which is used to emulate the other architectures by setting up a file system with a static arch interpreter (a qemu linux-user static file for the given arch). The setup we did for linux, the Docker install does for us on mac/windows as part of the setup for that environment. Meanwhile, since we already have a linux kernel with docker for linux, we get the privilege of making our own changes to it for now. If this brief talk about Docker for Mac internals piqued your interest, I highly encourage [Under the Hood: Demystifying Docker For Mac CE Edition](http://collabnix.com/how-docker-for-mac-works-under-the-hood/)
+    Docker for Mac and Docker for Windows run containers in a vm (either a hypervisor of hyperkit on mac [a derivative of xhyve] or hyper-v on windows) which it uses to run a linux kernel that in this case is set up with binfmt_misc which is used to emulate the other architectures by setting up a file system with a static arch interpreter (a qemu linux-user static file for the given arch). The setup we did for linux, the Docker install does for us on mac/windows as part of the setup for that environment. Meanwhile, since we already have a linux kernel with docker for linux, we get the privilege of making our own changes to it for now. If this brief talk about Docker for Mac internals piqued your interest, I highly encourage [Under the Hood: Demystifying Docker For Mac CE Edition](http://collabnix.com/how-docker-for-mac-works-under-the-hood/)
 
-The ease of running and building multi-arch on mac and windows fills you with [determination](https://undertale.fandom.com/wiki/Determination).
+    The ease of running and building multi-arch on mac and windows fills you with [determination](https://undertale.fandom.com/wiki/Determination){target=_blank}.
 
 ### Consequences of Cross-Architecture Docker
 
-This enables us to not only run images, but also build them for different architectures from a given host architecture. This makes it possible to build s390x (z), power (ppc64le), arm, and amd64 images all from the hosts you have available. This enables developers to support more images as they may have nodes with only specific architectures such as `amd64`. Using this technology, suddenly ecosystem contribution is no longer constrained by host architecture limitations, creating a broader docker image ecosystem for everyone. In fact, with the current stable docker CE build and onward  [buildx](https://github.com/docker/buildx) comes as an experimental future to build and push multi-arch images (using qemu behind the scenes) in a seamless process which we will briefly explore in a recommended optional follow-up to this section (given you have a workstation with Docker CE of version 19.0.3 or later). 
+This enables us to not only run images, but also build them for different architectures from a given host architecture. This makes it possible to build s390x (z), power (ppc64le), arm, and amd64 images all from the hosts you have available. This enables developers to support more images as they may have nodes with only specific architectures such as `amd64`. Using this technology, suddenly ecosystem contribution is no longer constrained by host architecture limitations, creating a broader docker image ecosystem for everyone. In fact, with the current stable docker CE build and onward  [buildx](https://github.com/docker/buildx){target=_blank} comes as an experimental future to build and push multi-arch images (using qemu behind the scenes) in a seamless process which we will briefly explore in a recommended optional follow-up to this section (given you have a workstation with Docker CE of version 19.0.3 or later). 
 
 The big caveat to this capability remains that qemu does not support all instructions and is being constantly improved to handle more exceptions and work for more use cases in the future. What is supported will be dictated by which linux-user static binary you are using with arm and s390x having more support than ppc64le at the current time (at least for nodejs). This means for certain image builds you will still have to use the native hardware, but for many images qemu provides a quick and easy way to build images for more platforms. 
 
@@ -269,7 +269,7 @@ In order to build all of the images for amd64 (x86), s390x (z) architectures, an
 
 If you want to visit the script itself to see it up close and in a bigger font, please click on:
 
-<a href="https://github.com/siler23/MultiArchDockerICP/blob/master/Build_And_Push_Images.sh" target="_blank" rel="noopener" rel="noreferrer">Build and Push Images Script</a> 
+<a href="https://github.com/siler23/MultiArchDockerKubernetes/blob/master/Build_And_Push_Images.sh" target="_blank" rel="noopener" rel="noreferrer">Build and Push Images Script</a> 
 
 ### Login to your Docker Repo [Account]
 
@@ -333,7 +333,7 @@ DOCKER_REPO=gmoney23
 DOCKER_REPO=${DOCKER_REPO} VERSION=1.0 IMAGE_PREPEND=marchdockerlab LATEST=true http_proxy=http://myproxy:8080 https_proxy=http://myproxy:8080 no_proxy="localhost, 127.0.0.1" ./Build_And_Push_Images.sh
 ```
 
-Knowing that qemu builds a bridge from x to z for free fills you with [determination](https://undertale.fandom.com/wiki/Determination).
+Knowing that qemu builds a bridge from x to z for free fills you with [determination](https://undertale.fandom.com/wiki/Determination){target=_blank}.
 
 ## OPTIONAL SECTIONS
 
