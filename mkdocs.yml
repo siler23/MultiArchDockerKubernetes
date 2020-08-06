@@ -15,7 +15,7 @@ nav:
 
 theme: material
 google_analytics:
-  - G-WEC526G3XY
+  - UA-174658170-1
   - auto
 markdown_extensions:
   - admonition
